@@ -1,0 +1,32 @@
+name: cicd-workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+      - name: Create .env file
+        run: echo "SITE_URL=${{ secrets.LIGHTSAIL_HOST }}" >> .env
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/myworld .
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Publish Docker Image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/myworld:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull Image from Docker Hub
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/myworld:latest
+      - name : Delete old container
+        run: docker rm -f nextjs-app-container
+      - name: Run Docker Container
+        run: docker run -d -p 3000:3000 --name nextjs-app-container ${{ secrets.DOCKER_USERNAME }}/myworld
