@@ -37,7 +37,7 @@ export async function createVisitor(formData: FormData): Promise<void> {
   }
 
   // 작업 후 방문자 리스트 갱신
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
 }
 
 // ====== 방명록 목록 조회 (페이지 + 이메일 옵션) ======
@@ -80,7 +80,7 @@ export async function editVisitor(visitorId: string, content: string) {
     throw new Error('방명록 수정 실패');
   }
 
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
   return response.json();
 }
 
@@ -99,7 +99,7 @@ export async function deleteVisitor({ visitorId }: { visitorId: string }) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
   return response.json();
 }
 
@@ -123,7 +123,7 @@ export async function reportVisitor({ visitorId, userEmail }: ReportParams) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
   return response.json();
 }
 
@@ -145,7 +145,7 @@ export async function secretVisitor(visitorId: string) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
   return response.json();
 }
 
@@ -168,7 +168,7 @@ export async function createComment(formData: FormData): Promise<void> {
   }
 
   // 작업 후 방문자 리스트 갱신
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
 }
 
 export async function deleteComment(commentId: string) {
@@ -180,5 +180,5 @@ export async function deleteComment(commentId: string) {
     method: 'DELETE',
   });
 
-  revalidateTag('visitorList');
+  // revalidateTag('visitorList');
 }

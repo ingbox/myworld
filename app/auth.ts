@@ -32,7 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role as "ADMIN" | "USER";
+        // session.user.role = token.role as "ADMIN" | "USER";
         session.user.image = token.picture as string;
       }
       return session;
