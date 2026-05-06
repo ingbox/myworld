@@ -38,6 +38,10 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           source: .
+          exclude: |
+            .git*
+            node_modules
+            .next
           target: /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
           strip_components: 0
 
