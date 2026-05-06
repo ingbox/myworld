@@ -11,17 +11,15 @@ jobs:
     steps:
       # 1. 코드 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. pnpm 설치
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
+        uses: pnpm/action-setup@v4
 
       # 3. Node.js 설치
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22.x
           cache: "pnpm"
