@@ -16,6 +16,8 @@ jobs:
       # 2. pnpm 설치
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       # 3. Node.js 설치
       - name: Setup Node.js
