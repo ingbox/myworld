@@ -38,18 +38,9 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           rm: true
-          source: |
-            app
-            components
-            public
-            package.json
-            pnpm-lock.yaml
-            pnpm-workspace.yaml
-            next.config.ts
-            tsconfig.json
-            postcss.config.mjs
-            eslint.config.mjs
+          source: .
           target: /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
+          strip_components: 1
 
       # 6. 서버 배포
       - name: Deploy on server
