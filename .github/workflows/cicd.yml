@@ -37,11 +37,17 @@ jobs:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          source: .
-          exclude: |
-            .git*
-            node_modules
-            .next
+          source: |
+            app/**
+            components/**
+            public/**
+            package.json
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+            next.config.ts
+            tsconfig.json
+            postcss.config.mjs
+            eslint.config.mjs
           target: /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
           strip_components: 0
 
