@@ -26,21 +26,22 @@ jobs:
           node-version: 22.x
           cache: "pnpm"
 
-      # 4. 의존성 설치 (CI에서 build 안 해도 되지만 lock 검증용)
+      # 4. 의존성 설치
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5. 서버로 필요한 파일만 전송
+      # 5. 파일 업로드
       - name: Upload project files to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          rm: true
           source: |
-            app/**
-            components/**
-            public/**
+            app
+            components
+            public
             package.json
             pnpm-lock.yaml
             pnpm-workspace.yaml
@@ -49,9 +50,8 @@ jobs:
             postcss.config.mjs
             eslint.config.mjs
           target: /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
-          strip_components: 0
 
-      # 6. 서버에서 설치 + 빌드 + 재시작
+      # 6. 서버 배포
       - name: Deploy on server
         uses: appleboy/ssh-action@master
         with:
@@ -60,15 +60,17 @@ jobs:
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           script: |
             cd /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
-            # pnpm 없으면 설치 (최초 1회 대비)
+
             command -v pnpm >/dev/null 2>&1 || npm install -g pnpm
+
             pnpm install --frozen-lockfile
             pnpm build
-            # pm2 프로세스 재시작 (없으면 새로 실행)
+
             pm2 describe myworld > /dev/null 2>&1
             if [ $? -eq 0 ]; then
               pm2 restart myworld
             else
               pm2 start pnpm --name myworld -- start
             fi
+
             pm2 save
