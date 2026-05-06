@@ -11,46 +11,120 @@ jobs:
       matrix:
         node-version: [22.x]
 
-    steps:
-      # 브랜치 체크아웃
-      - name: branch checkout
-        uses: actions/checkout@v3
-      # pnpm 적용
-      - name: use pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      # 노드 설치
-      - name: install node version ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
-      # 의존성 설치
-      - name: install dependencies
-        run: pnpm install
-      # 빌드
-      - name: build project
-        run: pnpm build
-      # lightsail 에 build 파일 전송
-      - name: push project output to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.LIGHTSAIL_HOST }}
-          username: ${{ secrets.LIGHTSAIL_USERNAME }}
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          rm: true
-          source: "./"
-          target: "/home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld"
-          strip_components: 1
-      # build 파일 배포하기
-      - name: deploy project
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.LIGHTSAIL_HOST }}
-          username: ${{ secrets.LIGHTSAIL_USERNAME }}
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          script: |
-            cd /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
-            pnpm install
-            pm2 restart myworld
+steps:
+
+  # 1. 코드 체크아웃
+
+  - name: Checkout repository
+
+    uses: actions/checkout@v3
+
+  # 2. pnpm 설치
+
+  - name: Setup pnpm
+
+    uses: pnpm/action-setup@v2
+
+    with:
+
+      version: 7
+
+  # 3. Node.js 설치
+
+  - name: Setup Node.js
+
+    uses: actions/setup-node@v3
+
+    with:
+
+      node-version: 22.x
+
+      cache: "pnpm"
+
+  # 4. 의존성 설치 (CI에서 build 안 해도 되지만 lock 검증용)
+
+  - name: Install dependencies
+
+    run: pnpm install --frozen-lockfile
+
+  # 5. 서버로 필요한 파일만 전송
+
+  - name: Upload project files to server
+
+    uses: appleboy/scp-action@master
+
+    with:
+
+      host: ${{ secrets.LIGHTSAIL_HOST }}
+
+      username: ${{ secrets.LIGHTSAIL_USERNAME }}
+
+      key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+
+      source: |
+
+        app
+
+        components
+
+        public
+
+        package.json
+
+        pnpm-lock.yaml
+
+        pnpm-workspace.yaml
+
+        next.config.ts
+
+        tsconfig.json
+
+        postcss.config.mjs
+
+        eslint.config.mjs
+
+      target: /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
+
+      strip_components: 0
+
+  # 6. 서버에서 설치 + 빌드 + 재시작
+
+  - name: Deploy on server
+
+    uses: appleboy/ssh-action@master
+
+    with:
+
+      host: ${{ secrets.LIGHTSAIL_HOST }}
+
+      username: ${{ secrets.LIGHTSAIL_USERNAME }}
+
+      key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+
+      script: |
+
+        cd /home/${{ secrets.LIGHTSAIL_USERNAME }}/myworld
+
+        # pnpm 없으면 설치 (최초 1회 대비)
+
+        command -v pnpm >/dev/null 2>&1 || npm install -g pnpm
+
+        pnpm install --frozen-lockfile
+
+        pnpm build
+
+        # pm2 프로세스 재시작 (없으면 새로 실행)
+
+        pm2 describe myworld > /dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+
+          pm2 restart myworld
+
+        else
+
+          pm2 start pnpm --name myworld -- start
+
+        fi
+
+        pm2 save
