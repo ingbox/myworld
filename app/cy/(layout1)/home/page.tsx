@@ -45,7 +45,7 @@ export default function Page() {
                     <span>Mini Room</span>
                     <span className="absolute font-ginto font-light text-[8px] text-gray-400 tracking-wide right-[-80px] top-[3px]">EXPRESS YOURSELF</span>
                 </div>
-                <Image src="/images/miniroom.gif" width="616" height="300" alt="" />
+                <Image src="/images/miniroom.png" width="616" height="300" alt="" />
             </div>
 
             {/* 하단 */}

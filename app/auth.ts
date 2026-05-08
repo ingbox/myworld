@@ -18,7 +18,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: profile.email,
           image: profile.picture, // ← 이미지 필드 포함!
           role: getRoleFromEmail(profile.email),
-        };
+          accessToken: profile.accessToken,
+        };  
       },
     }),
   ],

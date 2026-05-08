@@ -50,6 +50,8 @@ export async function getVisitorList({ page, userEmail, userRole }: PaginationPa
   if (userEmail) query.append('user_email', userEmail);
   if (userRole) query.append('user_role', userRole);
 
+  console.log("@@@@@@@@@@@@@@@@@@@@@url@@@@@@@@@@@@@@@@@@@@@", `${url}/api/cy/visitor?${query.toString()}`);
+
   const response = await fetch(
     `${url}/api/cy/visitor?${query.toString()}`,
     {
@@ -58,6 +60,8 @@ export async function getVisitorList({ page, userEmail, userRole }: PaginationPa
       next: { tags: ['visitorList'] },
     }
   );
+
+  console.log("@@@@@@@@@@@@@@@@@@@@@response@@@@@@@@@@@@@@@@@@@@@", response);
 
   if (!response.ok) {
     throw new Error('방명록 목록 조회 실패');
