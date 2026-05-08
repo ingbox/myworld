@@ -2,7 +2,8 @@
 'use server';
 
 import { signIn } from '@/app/auth';
-import { revalidateTag } from 'next/cache';
+import { getBaseUrl } from '@/app/actions/url';
+import { updateTag } from 'next/cache';
 
 // ====== Google 로그인 처리 ======
 export async function GoogleSignIn() {
@@ -23,9 +24,7 @@ type ReportParams = {
 
 // ====== 방명록 작성 (이미지 업로드 포함) ======
 export async function createVisitor(formData: FormData): Promise<void> {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(`${url}/api/cy/visitor`, {
     method: 'POST',
@@ -37,14 +36,12 @@ export async function createVisitor(formData: FormData): Promise<void> {
   }
 
   // 작업 후 방문자 리스트 갱신
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
 }
 
 // ====== 방명록 목록 조회 (페이지 + 이메일 옵션) ======
 export async function getVisitorList({ page, userEmail, userRole }: PaginationParams) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const query = new URLSearchParams({ page: String(page) });
   if (userEmail) query.append('user_email', userEmail);
@@ -71,9 +68,7 @@ export async function getVisitorList({ page, userEmail, userRole }: PaginationPa
 
 // ====== 방명록 수정 (PUT) ======
 export async function editVisitor(visitorId: string, content: string) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(`${url}/api/cy/visitor/${visitorId}`, {
     method: 'PUT',
@@ -84,15 +79,13 @@ export async function editVisitor(visitorId: string, content: string) {
     throw new Error('방명록 수정 실패');
   }
 
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
   return response.json();
 }
 
 // ====== 방명록 삭제 (DELETE) ======
 export async function deleteVisitor({ visitorId }: { visitorId: string }) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(`${url}/api/cy/visitor/${visitorId}`, {
     method: 'DELETE',
@@ -103,15 +96,13 @@ export async function deleteVisitor({ visitorId }: { visitorId: string }) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
   return response.json();
 }
 
 // ====== 방명록 신고 (REPORT) ======
 export async function reportVisitor({ visitorId, userEmail }: ReportParams) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(
     `${url}/api/cy/visitor/${visitorId}/report`,
@@ -127,14 +118,12 @@ export async function reportVisitor({ visitorId, userEmail }: ReportParams) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
   return response.json();
 }
 
 export async function secretVisitor(visitorId: string) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(
     `${url}/api/cy/visitor/${visitorId}/secret`,
@@ -149,15 +138,13 @@ export async function secretVisitor(visitorId: string) {
     throw new Error(errorData.message || '알 수 없는 오류가 발생했습니다.');
   }
 
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
   return response.json();
 }
 
 // ====== 댓글 작성(COMMENT) ======
 export async function createComment(formData: FormData): Promise<void> {
-  const url = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:3000'
-  : '';
+  const url = getBaseUrl();
 
   const response = await fetch(
     `${url}/api/cy/visitor/${formData.get('visitor_id')}/comment`,
@@ -172,17 +159,15 @@ export async function createComment(formData: FormData): Promise<void> {
   }
 
   // 작업 후 방문자 리스트 갱신
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
 }
 
 export async function deleteComment(commentId: string) {
-  const url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : '';
+  const url = getBaseUrl();
 
   const response = await fetch(`${url}/api/cy/visitor/comment/${commentId}`, {
     method: 'DELETE',
   });
 
-  // revalidateTag('visitorList');
+  updateTag('visitorList');
 }
