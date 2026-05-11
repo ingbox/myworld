@@ -16,11 +16,15 @@ export async function getSignedURL(key: string) {
     Key: key, // 예: 'uploads/filename.png'
   };
 
+  console.log("@@@params", params);
+
   const command = new PutObjectCommand(params);
 
   const signedURL = await getSignedUrl(s3, command, {
     expiresIn: 60,
   })
+
+  console.log("@@@signedURL", signedURL);
 
   // 업로드된 파일의 URL 반환
   return { success : { url: signedURL } }

@@ -11,9 +11,6 @@ import Comment from '@/components/cy/visitor/comment';
 
 export default async function Page(props: { searchParams: { page: string } }) {
   const session = await auth();
-
-
-  console.log("@@@session", session);
   const user = session?.user;
 
   const param = await props.searchParams;
@@ -86,7 +83,9 @@ export default async function Page(props: { searchParams: { page: string } }) {
               </div>
             </div>
             :
-            <GoogleButton />
+            <div className="px-7 py-5">
+              <GoogleButton />
+            </div>
         }
 
 

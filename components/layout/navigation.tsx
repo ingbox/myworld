@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navigation() {
-
+export default function Navigation({ user }: { user: any }) {
     const pathname = usePathname();
+
+    console.log("@@@user", user);
 
     const navigation = [
         {
@@ -47,7 +48,7 @@ export default function Navigation() {
 
     return (
         <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]">
-           {navigation.map((item) => {
+            {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                     <Link href={item.href} key={item.href}>
@@ -71,6 +72,12 @@ export default function Navigation() {
                     </Link>
                 );
             })}
+            {
+                user?.role === "ADMIN" &&
+                <Link href="/cy/admin" className="w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] bg-[#2a8dac] text-white">
+                    <span className="text-white font-bold">관리</span>
+                </Link>
+            }
         </div>
     );
 }

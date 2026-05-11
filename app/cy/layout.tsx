@@ -1,6 +1,9 @@
 import Navigation from "@/components/layout/navigation";
+import { auth } from '@/app/auth';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
+    const session = await auth();
+    const user = session?.user;
     return (
         <div className="w-screen h-screen"
             style={{
@@ -36,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </>
 
                     {/* 네비게이션 버튼 */}
-                    <Navigation />
+                    <Navigation user={user} />
 
                     {children}
 
