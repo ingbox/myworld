@@ -38,6 +38,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const ip = rawIp.split(',')[0].trim();
   const normalizedIp = ip === '::1' ? '127.0.0.1' : ip;
 
+
+  console.log("@@@data", data);
+  console.log("@@@normalizedIp", normalizedIp);
+
   try {
     const existing = await pool.query(SELECT_VISITOR_PROFILE_IMAGE, [data.profile_image]);
     if (existing.rows.length < 1 && data.profile_image) {
