@@ -41,8 +41,6 @@ export default async function Page(props: { searchParams: { page: string } }) {
     (_, i) => startPage + i
   );
 
-  console.log("@@@user?.image", user?.image);
-
   return (
     <div className='h-full overflow-auto relative'>
       <>
