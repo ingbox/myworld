@@ -1,7 +1,7 @@
 export const INSERT_VISITOR = `
   INSERT INTO visitor (
-    user_email, user_name, profile_image_url, s3_image_url, content, is_secret, ip_address
-  ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+    user_email, user_name, profile_image_url, content, is_secret, ip_address
+  ) VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING *;
 `;
 
@@ -11,7 +11,6 @@ SELECT
   user_email,
   user_name,
   profile_image_url,
-  s3_image_url,
   CASE
     -- Admin은 모든 content 보기
     WHEN $3 = 'ADMIN' THEN content

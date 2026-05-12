@@ -33,7 +33,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     profile_image: formData.get('profile_image') as string | undefined,
   };
 
-  let s3_image_url: string | null = null;
+  // let s3_image_url: string | null = null;
   const rawIp = req.headers.get('x-forwarded-for') ?? '127.0.0.1';
   const ip = rawIp.split(',')[0].trim();
   const normalizedIp = ip === '::1' ? '127.0.0.1' : ip;
@@ -43,37 +43,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   console.log("@@@normalizedIp", normalizedIp);
 
   try {
-    const existing = await pool.query(SELECT_VISITOR_PROFILE_IMAGE, [data.profile_image]);
-    if (existing.rows.length < 1 && data.profile_image) {
-      const uuid = uuidv4();
-      const date = new Date().toISOString().slice(0, 10);
-      const res = await fetch(data.profile_image);
-      if (!res.ok) throw new Error('Failed to fetch profile image');
-      const contentType = res.headers.get('content-type') ?? '';
-      const ext = contentType.includes('png')
-        ? '.png'
-        : contentType.includes('jpeg')
-        ? '.jpg'
-        : contentType.includes('gif')
-        ? '.gif'
-        : '';
-      const key = `cy/visitor/${date}/${uuid}${ext}`;
-      const blob = await res.blob();
-      const signed = await getSignedURL(key);
-      const uploadUrl = signed.success?.url;
-      if (!uploadUrl) throw new Error('Failed to get signed URL');
-      const uploadRes = await fetch(uploadUrl, { method: 'PUT', body: blob, headers: { 'Content-Type': blob.type } });
-      if (!uploadRes.ok) throw new Error('Failed to upload image to S3');
-      s3_image_url = uploadUrl.split('?')[0];
-    } else if (existing.rows[0]?.s3_image_url) {
-      s3_image_url = existing.rows[0].s3_image_url;
-    }
+    // const existing = await pool.query(SELECT_VISITOR_PROFILE_IMAGE, [data.profile_image]);
+    // if (existing.rows.length < 1 && data.profile_image) {
+    //   const uuid = uuidv4();
+    //   const date = new Date().toISOString().slice(0, 10);
+    //   const res = await fetch(data.profile_image);
+    //   if (!res.ok) throw new Error('Failed to fetch profile image');
+    //   const contentType = res.headers.get('content-type') ?? '';
+    //   const ext = contentType.includes('png')
+    //     ? '.png'
+    //     : contentType.includes('jpeg')
+    //     ? '.jpg'
+    //     : contentType.includes('gif')
+    //     ? '.gif'
+    //     : '';
+    //   const key = `cy/visitor/${date}/${uuid}${ext}`;
+    //   const blob = await res.blob();
+    //   const signed = await getSignedURL(key);
+    //   const uploadUrl = signed.success?.url;
+    //   if (!uploadUrl) throw new Error('Failed to get signed URL');
+    //   const uploadRes = await fetch(uploadUrl, { method: 'PUT', body: blob, headers: { 'Content-Type': blob.type } });
+    //   if (!uploadRes.ok) throw new Error('Failed to upload image to S3');
+    //   s3_image_url = uploadUrl.split('?')[0];
+    // } else if (existing.rows[0]?.s3_image_url) {
+      // s3_image_url = existing.rows[0].s3_image_url;
+    // }
 
     const values = [
       data.user_email,
       data.user_name,
       data.profile_image,
-      s3_image_url,
       data.content,
       false,
       normalizedIp,

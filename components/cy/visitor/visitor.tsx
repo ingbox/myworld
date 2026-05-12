@@ -40,7 +40,7 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
   const handleDelete = async () => {
     const confirm = window.confirm('정말 삭제하시겠습니까?');
     if (!confirm) return;
-    deleteVisitor(visitor.id);
+    deleteVisitor({ visitorId: visitor.id });
   }
 
   const handleReport = async () => {

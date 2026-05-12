@@ -49,7 +49,9 @@ export default function Navigation({ user }: { user: any }) {
     return (
         <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]">
             {navigation.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                    pathname === item.href ||
+                    pathname.startsWith(`${item.href}/`);
                 return (
                     <Link href={item.href} key={item.href}>
                         <div
