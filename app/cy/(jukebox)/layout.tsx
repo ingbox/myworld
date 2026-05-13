@@ -37,12 +37,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         {/* 프로필 */}
                         <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
                             <div>
-                                <span className="text-gray-600 pl-[20px] pb-1 block">Profile</span>
+                                <span className="text-gray-600 pl-[20px] pb-1 block">JUKE BOX</span>
                                 <hr className="border-dashed border-gray-200 mt-1" />
                             </div>
-                            <Accordion title="내 소개" image="/images/profile/intro.svg" items={["소개", "키워드", "히스토리", "42문답", "기본정보"]} depths={[["intro", "my"], ["intro", "keyword"], ["intro", "history"], ["intro", "42"], ["intro", "general"]]} />
-                            <Accordion title="내 인맥" image="/images/profile/friends.svg" items={[]} depths={[]}/>
-                            <Accordion title="내 즐겨찾기" image="/images/profile/favorites.svg" items={[]} depths={[]}/>
+                      
                         </div>
                     </div>
                 </div>

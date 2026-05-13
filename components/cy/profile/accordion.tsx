@@ -24,7 +24,7 @@ export default function Accordion({ title, image ,items = [], depths = [] }: Acc
       >
         <div className="flex items-center gap-2">
             <Image src={image} alt="image" width={16} height={16} />
-            <span>{title}</span>
+            <span className="text-gray-600">{title}</span>
         </div>
         <span className={`${open ? "rotate-180" : ""}`}>
           <Image src="/images/arrow-down.png" alt="arrow" width={16} height={9} />
