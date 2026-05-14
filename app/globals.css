@@ -706,3 +706,39 @@ textarea {
 /* ==========================================================================
    Print styles
    ========================================================================== */
+
+
+   /* 기본 트랙 */
+   .jukebox-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: #3f3f46;
+  }
+  
+  /* Chrome, Safari */
+  
+  .jukebox-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 8px;
+    background: #e5e7eb;
+    border: 1px solid #8b8b8d;
+    border-radius: 2px !important; /* 🔥 핵심: 완전 네모 */
+    box-shadow: none;
+    margin-top: 0px;
+    cursor: pointer;
+  }
+  
+  /* Firefox */
+  
+  .jukebox-range::-moz-range-thumb {
+    width: 16px;
+    height: 8px;
+    background: #e5e7eb;
+    border: 1px solid #8b8b8d;
+    border-radius: 2px !important; /* 🔥 */
+    box-shadow: none;
+    cursor: pointer;
+  }

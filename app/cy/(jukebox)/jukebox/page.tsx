@@ -1,7 +1,9 @@
+import Queue from "@/components/cy/jukebox/queue";
+
 export default function Page() {
     return (
       <div>
-        <h1>Home</h1>
+        <Queue />
       </div>
     );
   }

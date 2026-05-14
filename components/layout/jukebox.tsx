@@ -1,16 +1,22 @@
 'use client'
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image"
+import { usePlayerStore } from "@/stores/usePlayerStore"
 
 
 export default function Jukebox() {
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [volume, setVolume] = useState(50);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [previousVolume, setPreviousVolume] = useState(0);
+
+    const progress = duration ? (currentTime / duration) * 100 : 0;
+
+    const { queue, currentIndex, playNext, playPrev } = usePlayerStore()
 
     const togglePlayButton = () => {
         if(!audioRef.current) return;
@@ -80,27 +86,47 @@ export default function Jukebox() {
         <>
             {/* 오디오 플레이어 */}
             <audio src="/audios/audio1.mp3" ref={audioRef}></audio>
-            <div className="w-full h-12 bg-[#eeeeee] mt-2 rounded-sm p-1">
-              
-            
-                <div className="flex items-center h-4 bg-white rounded-xs p-2">
+            <div className="w-full bg-[#eeeeee] mt-2 rounded-sm p-1">
+                <div 
+                    onClick={()=> setIsOpen(prev => !prev)}
+                    className="flex items-center h-4 bg-white rounded-xs p-2 cursor-pointer"
+                >
                     <Image src="/images/jukebox/cd.png" width={12} height={12} alt=""/>
                 </div>
-
-
-                <div className="h-2">
-                    <span>{formatTime(currentTime)}</span>
-                    <div className="w-full">
+              {
+                isOpen && (
+                <div>
+                    <div className="flex items-center justify-center gap-2">
+                        <span className="text-xs text-gray-400">{formatTime(currentTime)}</span>
                         <input 
-                            onChange={handleSeek}
-                            value={currentTime}
-                            type="range" 
-                            min="0" 
-                            max={duration || 0}
-                            className="w-full outline-none h-1 bg-zinc-700 rounded-md appearance-none accent-white"/>
+                                onChange={handleSeek}
+                                value={currentTime}
+                                type="range" 
+                                min="0" 
+                                max={duration || 0}
+                                style={{
+                                    background: `linear-gradient(to right, #2563eb ${progress}%, #cccccc ${progress}%)`
+                                  }}
+                                className="jukebox-range w-full outline-none h-[2px] bg-zinc-700 appearance-none" 
+                        />
+                        <span className="text-xs text-gray-400">{formatTime(duration)}</span>
                     </div>
-                    <span>{formatTime(duration)}</span>
+                {queue.length === 0 ? (
+                    <div className="text-xs text-gray-400">재생 목록이 비어있음</div>
+                ) : (
+                    queue.map((item, idx) => (
+                        <div
+                            key={idx}
+                            className=""
+                        >
+                            {item.title ?? `track ${idx}`}
+                        </div>
+                    ))
+                )}
+              
                 </div>
+                )
+            }
 
 
                 <div className="flex justify-between">
