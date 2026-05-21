@@ -3,7 +3,6 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image"
 import { usePlayerStore } from "@/stores/usePlayerStore"
 
-
 export default function Jukebox() {
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -128,7 +127,6 @@ export default function Jukebox() {
                 )
             }
 
-
                 <div className="flex justify-between">
                     {/* 플레이 조절 */}
                     <div className="flex gap-2">
@@ -170,10 +168,6 @@ export default function Jukebox() {
 
                         </div>
                     </div>
-
-               
-                 
-                
                 </div>
             </div>
         </>

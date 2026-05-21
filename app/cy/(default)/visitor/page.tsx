@@ -7,8 +7,6 @@ import Link from 'next/link';
 import Visitor from '@/components/cy/visitor/visitor';
 import Comment from '@/components/cy/visitor/comment';
 
-
-
 export default async function Page(props: { searchParams: { page: string } }) {
   const session = await auth();
   const user = session?.user;
