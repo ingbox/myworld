@@ -18,8 +18,6 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
     });
   };
 
-  console.log(jukeboxList)
-
   const handlePlay = () => {
     const selectedTracks = jukeboxList.filter((t: any) => selected.has(t.id));
     if (selectedTracks.length === 0) return;
@@ -48,7 +46,9 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
         </thead>
         <tbody>
           {jukeboxList.map((track: any) => (
-            <tr className="text-[#3e4b64] leading-[1.1]
+            <tr 
+            key={track.id}
+            className="text-[#3e4b64] leading-[1.1]
                           [background-image:linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
                           [background-size:3px_1px] [background-repeat:repeat-x] [background-position:bottom]
                          

@@ -41,6 +41,16 @@ export default function Jukebox() {
         audio.addEventListener("loadedmetadata", updateTime);
     },[]);
 
+    useEffect(() => {
+        if (!audioRef.current) return;
+        if (!queue[currentIndex]) return;
+    
+        audioRef.current.src = queue[currentIndex].download_url;
+        audioRef.current.play();
+    
+        setIsPlaying(true);
+    }, [currentIndex, queue]);
+
     const formatTime = (time : number) => {
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60).toString().padStart(2, "0");
@@ -54,6 +64,16 @@ export default function Jukebox() {
         if(audioRef.current) {
             audioRef.current.currentTime = newTime;
             setCurrentTime(newTime);
+        }
+    };
+
+    // UX 1초 이전에 이전 버튼 누르면 이전곡 아니면 처음부터 재생
+    const handlePrev = () => {
+        if (!audioRef.current) return;
+        if (audioRef.current.currentTime > 1) {
+            audioRef.current.currentTime = 0;
+        } else {
+            playPrev();
         }
     };
     
@@ -84,7 +104,7 @@ export default function Jukebox() {
     return (
         <>
             {/* 오디오 플레이어 */}
-            <audio src="/audios/audio1.mp3" ref={audioRef}></audio>
+            <audio src={queue[currentIndex]?.download_url} ref={audioRef}></audio>
             <div className="w-full bg-[#eeeeee] mt-2 rounded-sm p-1">
                 <div 
                     onClick={()=> setIsOpen(prev => !prev)}
@@ -130,11 +150,15 @@ export default function Jukebox() {
                 <div className="flex justify-between">
                     {/* 플레이 조절 */}
                     <div className="flex gap-2">
-                        <Image src="/images/jukebox/skipback.svg" width={10} height={10} alt="" />
+                        <Image 
+                        onClick={handlePrev}
+                        src="/images/jukebox/skipback.svg" width={10} height={10} alt="" />
                         <Image 
                         onClick={togglePlayButton}
                         src={isPlaying ? '/images/jukebox/stop.svg':'/images/jukebox/play.svg'} width={8} height={8} alt="" />
-                        <Image src="/images/jukebox/skipforward.svg" width={10} height={10} alt="" />
+                        <Image 
+                        onClick={playNext}
+                        src="/images/jukebox/skipforward.svg" width={10} height={10} alt="" />
                     </div>
                     {/* 음량 조절 */}
                     <div className="flex items-center gap-2">

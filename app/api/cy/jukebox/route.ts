@@ -14,8 +14,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const pageNum = Math.max(1, Number(pageStr));
     const offset = (pageNum - 1) * 10;
 
-    console.log("@@@:",pageStr);
-  
     try {
       const list = await pool.query(SELECT_ALL_JUKEBOX_PAGINATED, [offset]);
       const total = await pool.query(SELECT_JUKEBOX_TOTAL_COUNT);
