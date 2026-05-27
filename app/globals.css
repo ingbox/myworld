@@ -742,3 +742,20 @@ textarea {
     box-shadow: none;
     cursor: pointer;
   }
+
+  /* 전광판 움직이는 효과 */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+  
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .marquee {
+    display: inline-block;
+    padding-left: 100%; /* 처음에 오른쪽에서 시작 */
+    animation: marquee 10s linear infinite;
+  }
