@@ -44,13 +44,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
                             {/* TODAY IS.. */}
                             <div className="w-full h-[26px] border-2 border-gray-200 rounded-sm shadow-xs px-2 mb-2">
-                                <p className="font-ginto font-bold text-[10px] text-[#459ebe] leading-6 tracking-wide">TODAY IS..</p>
+                                <span className="font-ginto font-bold text-[10px] text-[#459ebe] leading-6 tracking-wide">TODAY IS..</span>
+                                <Image className="inline ml-2" src="/images/common/happy.png" width={13} height={13} alt="" />
                             </div>
 
                             {/* 상태 메시지 */}
                             <div>
-                                <p className="text-sm text-blue-400">일단은 하드코딩 할게요. 어쨋든 DB는 나중에 손 봐야하니깐요.</p>
-
+                                <p className="text-sm text-blue-400">안녕하세요!</p>
+                                <p className="text-sm text-blue-400">여기는 이름의 미니홈피 입니다</p>
+                                <p className="text-sm text-blue-400">만나서 반갑습니다 ♡.(*⌒⌒*)~♡</p>
                             </div>
 
 
