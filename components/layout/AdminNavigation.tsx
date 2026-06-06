@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Admin() {
+export default function AdminNavigation() {
     const pathname = usePathname();
 
     const navigation = [

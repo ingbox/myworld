@@ -1,11 +1,11 @@
 import Form from 'next/form';
 import Image from 'next/image';
-import GoogleButton from '@/components/auth/googleButton';
+import GoogleButton from '@/components/auth/GoogleButton';
 import { auth } from '@/app/auth';
 import { createVisitor, createComment, getVisitorList } from '@/app/actions/cy/visitor';
 import Link from 'next/link';
-import Visitor from '@/components/cy/visitor/visitor';
-import Comment from '@/components/cy/visitor/comment';
+import Visitor from '@/components/cy/visitor/Visitor';
+import Comment from '@/components/cy/visitor/Comment';
 
 export default async function Page(props: { searchParams: { page: string } }) {
   const session = await auth();

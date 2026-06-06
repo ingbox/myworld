@@ -1,5 +1,5 @@
 import { getJukeboxList } from "@/app/actions/cy/jukebox";
-import Queue from "@/components/cy/jukebox/queue";
+import Queue from "@/components/cy/jukebox/Queue";
 
 export default async function Page(props: { searchParams: { page: string } }) {
 

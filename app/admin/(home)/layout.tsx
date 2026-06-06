@@ -1,7 +1,7 @@
 import Image from "next/image";
+import ProfileImage from "@/components/admin/home/ProfileImage";
 import { getProfileImage } from "@/app/actions/common/home";
 import { auth } from "@/app/auth";
-
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
@@ -45,7 +45,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                             {/* 프사 */}
                             <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2">
-                                <Image src={profileImage} style={{ objectFit: "cover" }} fill alt="" />
+                                <ProfileImage image={profileImage} />
                             </div>
                             <hr className="border-dashed border-[#c7e9f1] mb-1" />
 

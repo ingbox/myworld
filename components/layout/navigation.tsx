@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 export default function Navigation({ user }: { user: any }) {
     const pathname = usePathname();
 
-    console.log("@@@user", user);
-
     const navigation = [
         {
             name: '홈',
