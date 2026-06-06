@@ -4,6 +4,7 @@ import pool from '@/lib/db';
 
 // ====== GET Handler – 프로필 이미지 가져오기 ======
 export async function GET(req: NextRequest): Promise<NextResponse> {
+  // 유저 이메일 가져오기
   const email = req.nextUrl.searchParams.get('email');
 
   try {
