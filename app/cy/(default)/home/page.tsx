@@ -23,12 +23,8 @@ export default function Page() {
                     <table className="w-full table-fixed border-collapse bg-[#f8f8f8] text-[12px] text-[#697ea8] leading-5">
                         <tbody>
                             <tr>
-                                <td className="border border-gray-300 px-1">투데이</td>
                                 <td className="border border-gray-300 px-1">쥬크박스</td>
-                            </tr>
-                            <tr>
                                 <td className="border border-gray-300 px-1">사진첩</td>
-                                <td className="border border-gray-300 px-1">갤러리</td>
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-1">게시판</td>

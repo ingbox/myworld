@@ -27,10 +27,6 @@ export default function AdminNavigation() {
             href: '/admin/photo',
         },
         {
-            name: '갤러리',
-            href: '/admin/gallery',
-        },
-        {
             name: '게시판',
             href: '/admin/board',
         },

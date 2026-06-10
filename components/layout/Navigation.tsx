@@ -27,10 +27,6 @@ export default function Navigation({ user }: { user: any }) {
             href: '/cy/photo',
         },
         {
-            name: '갤러리',
-            href: '/cy/gallery',
-        },
-        {
             name: '게시판',
             href: '/cy/board',
         },
@@ -74,7 +70,7 @@ export default function Navigation({ user }: { user: any }) {
             })}
             {
                 user?.role === "ADMIN" &&
-                <Link href="/cy/admin" className="w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] bg-[#2a8dac] text-white">
+                <Link href="/admin/home" className="w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] bg-[#2a8dac] text-white">
                     <span className="text-white font-bold">관리</span>
                 </Link>
             }
