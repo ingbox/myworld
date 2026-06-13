@@ -22,13 +22,13 @@ export default async function Page({ params }: { params: { page: number } }) {
   );
 
   return (
-    <>
+    <div className="h-[560px] overflow-scroll">
       {
       photoList.photos.map((list: any) => (
         <div key={list.id}>
           <ReadOnlyEditor content={list.content} />
         </div>
       ))}
-    </>
+    </div>
   );
 }

@@ -12,5 +12,9 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL('/admin/home', request.url));
     }
 
+    if(request.nextUrl.pathname === '/cy/photo') {
+        return NextResponse.redirect(new URL('/cy/photo/1', request.url));
+    }
+
     return NextResponse.next(); 
 }

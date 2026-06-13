@@ -1,5 +1,6 @@
 import type { Node as PMNode } from "@tiptap/pm/model"
 import type { Transaction } from "@tiptap/pm/state"
+
 import {
   AllSelection,
   NodeSelection,
@@ -12,6 +13,7 @@ import {
   type Editor,
   type NodeWithPos,
 } from "@tiptap/react"
+import { uploadImage } from "@/app/actions/admin/photo"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -374,17 +376,17 @@ export const handleImageUpload = async (
     )
   }
 
-  // For demo/testing: Simulate upload progress. In production, replace the following code
-  // with your own upload implementation.
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled")
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    onProgress?.({ progress })
-  }
+  if(abortSignal?.aborted) throw new Error("업로드가 취소되었습니다.");
 
-  return "/images/tiptap-ui-placeholder-image.jpg"
+  try {
+    const uploaded = await uploadImage({ file });
+    onProgress?.({ progress: 100 });
+    return uploaded.url ?? ""
+
+  } catch (error) {
+    if(abortSignal?.aborted) throw new Error("업로드가 취소되었습니다.");
+    throw error;
+  }
 }
 
 type ProtocolOptions = {

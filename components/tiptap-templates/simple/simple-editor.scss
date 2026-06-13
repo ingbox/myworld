@@ -54,7 +54,8 @@ body,
   max-width: 100%;
   width: 100%;
   margin: 0 auto;
-  height: 481px;
+  min-height: 440px;
+  max-height: 440px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -68,6 +69,27 @@ body,
 
 @media screen and (max-width: 480px) {
   .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 1.5rem 30vh;
+  }
+}
+
+
+.read-only-simple-editor-content {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.read-only-simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1;
+  padding: 1rem 3rem 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .read-only-simple-editor-content .tiptap.ProseMirror.simple-editor {
     padding: 1rem 1.5rem 30vh;
   }
 }

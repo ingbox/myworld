@@ -44,7 +44,7 @@ export default function ReadOnlyEditor({ content }: { content: string }) {
     return (
         <EditorContent
             editor={editor}
-            className="simple-editor-content"
+            className="read-only-simple-editor-content"
         />
     );
 }

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   try {
     const profileImage = await pool.query(SELECT_PROFILE_IMAGE, [email]);
-    return NextResponse.json(profileImage.rows[0]?.image_url);
+    return NextResponse.json(profileImage.rows[0]?.image_url ?? null);
   
   } catch (err) {
     console.error('GET err:', err);

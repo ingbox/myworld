@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['gieokbucket.s3.ap-northeast-2.amazonaws.com'],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
 };
 
 export default nextConfig;
