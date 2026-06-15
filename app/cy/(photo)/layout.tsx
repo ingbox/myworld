@@ -1,11 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getTypeList } from "@/app/actions/common/photo";
 
-import Accordion from "@/components/cy/profile/Accordion";
-
-
 export default async function Layout({ children }: { children: React.ReactNode }) {
-
     // 카테고리 가져오기
     const typeList = await getTypeList();
 
@@ -47,18 +44,21 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">PHOTO ALBUM</p>
                             </div>
                             <div className="flex gap-2 mb-1 text-[15px]">
-                                <Image src="/images/photo/folder.png" width={18} height={6} alt="" />
-                                전체보기
+                                <div>
+                                    <Image src="/images/photo/file.png" width={16} height={14} alt="" />
+                                </div>
+                                <Link href={`/cy/photo/1`} className="text-[15px]">전체보기</Link>
                             </div>
                             <hr className="border-1 border-gray-200" />
                             <div className="mt-1">
                                 {
                                     typeList.map((list: any) => (
-                                        <div key={list.id} className="flex gap-2 mb-1 text-[15px]">
-                                            <Image src="/images/photo/folder.png" width={18} height={6} alt="" />
-                                            {list.name}
+                                        <div key={list.id} className="flex gap-2 mb-1">
+                                            <div className="inline-block">
+                                                <Image src="/images/photo/file.png" width={16} height={14} alt="" />
+                                            </div>
+                                            <Link href={`/cy/photo/1?type=${list.id}`} className="text-[15px]">{list.name}</Link>
                                         </div>
-
                                     ))}
                             </div>
                         </div>
@@ -96,7 +96,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
                         <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md">
                             {children}
                         </div>
-
                     </div>
                 </div>
             </div>
