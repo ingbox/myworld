@@ -1,6 +1,13 @@
+import Image from "next/image";
+import { getTypeList } from "@/app/actions/common/photo";
+
 import Accordion from "@/components/cy/profile/Accordion";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+
+export default async function Layout({ children }: { children: React.ReactNode }) {
+
+    // 카테고리 가져오기
+    const typeList = await getTypeList();
 
     return (
         <>
@@ -35,13 +42,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
                         {/* 프로필 */}
                         <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
-                            <div>
-                                <span className="text-gray-600 pl-[20px] pb-1 block">Profile</span>
-                                <hr className="border-dashed border-gray-200 mt-1" />
+                            <div className="mb-4">
+                                <p className="font-ginto font-light text-[8px] text-gray-400 tracking-wide">SAVE MY MEMORY</p>
+                                <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">PHOTO ALBUM</p>
                             </div>
-                            <Accordion title="내 소개" image="/images/profile/intro.svg" items={["소개", "키워드", "히스토리", "42문답", "기본정보"]} depths={[["intro", "my"], ["intro", "keyword"], ["intro", "history"], ["intro", "42"], ["intro", "general"]]} />
-                            <Accordion title="내 인맥" image="/images/profile/friends.svg" items={[]} depths={[]}/>
-                            <Accordion title="내 즐겨찾기" image="/images/profile/favorites.svg" items={[]} depths={[]}/>
+                            <div className="flex gap-2 mb-1 text-[15px]">
+                                <Image src="/images/photo/folder.png" width={18} height={6} alt="" />
+                                전체보기
+                            </div>
+                            <hr className="border-1 border-gray-200" />
+                            <div className="mt-1">
+                                {
+                                    typeList.map((list: any) => (
+                                        <div key={list.id} className="flex gap-2 mb-1 text-[15px]">
+                                            <Image src="/images/photo/folder.png" width={18} height={6} alt="" />
+                                            {list.name}
+                                        </div>
+
+                                    ))}
+                            </div>
                         </div>
                     </div>
                 </div>

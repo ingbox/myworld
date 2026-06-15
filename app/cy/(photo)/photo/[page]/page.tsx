@@ -22,10 +22,22 @@ export default async function Page({ params }: { params: { page: number } }) {
   );
 
   return (
-    <div className="h-[560px] overflow-scroll">
+    <div className="h-[560px] px-7 py-5 overflow-scroll">
       {
       photoList.photos.map((list: any) => (
         <div key={list.id}>
+          {/* 제목 */}
+          <hr className="border-[#c7e9f1]" />
+          <div className="bg-[#F8F8F8] w-full h-7 flex justify-center items-center mb-1">
+            {list.title}
+          </div>
+          <div className="flex justify-between">
+            <div>임지섭</div>
+            <div className="flex gap-2">
+              <div>{list.created_at_formatted}</div>
+              <div className="cursor-pointer">스크랩</div>
+            </div>
+          </div>
           <ReadOnlyEditor content={list.content} />
         </div>
       ))}

@@ -3,7 +3,7 @@
 import { getBaseUrl } from '@/app/actions/url';
 
 // ====== 사진첩 생성 ======
-export async function createPhoto({ title, content }: { title: string, content: string }) {
+export async function createPhoto({ title, content, type }: { title: string, content: string, type: number }) {
   const url = getBaseUrl();
 
   const response = await fetch(
@@ -11,7 +11,7 @@ export async function createPhoto({ title, content }: { title: string, content: 
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, type }),
       next: { tags: ['photo'] },
     }
   );
