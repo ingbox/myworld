@@ -20,3 +20,22 @@ export async function getProfileImage({userEmail}: {userEmail: string}) {
     }
     return response.json();
   }
+
+  // ====== 유저 능력치 가져오기 ======
+export async function getUserStats() {
+  const url = getBaseUrl();
+
+  const response = await fetch(
+    `${url}/api/common/stats`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      next: { tags: ['userStats'] },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('유저 능력치 가져오기 실패');
+  }
+  return response.json();
+}

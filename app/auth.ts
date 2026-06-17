@@ -1,4 +1,5 @@
 // auth.ts
+import db from "@/lib/db";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -24,6 +25,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    // 로그인 정보 DB에 기록
+    async signIn({ user }) {
+      await db.query(`
+        INSERT INTO users (email, created_at, last_login_at)
+        VALUES ($1, NOW(), NOW())
+        ON CONFLICT (email)
+        DO UPDATE SET last_login_at = NOW()
+      `, [user.email]);
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as any).role;

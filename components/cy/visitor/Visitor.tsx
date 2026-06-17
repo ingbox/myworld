@@ -116,10 +116,10 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
         </div>
       </div>
       <div className="pt-4 px-4 flex mb-8">
-        <div className="w-30 h-30 bg-white border flex items-center justify-center overflow-hidden rounded mr-4">
+        <div className="w-30 h-30 bg-white flex items-center justify-center overflow-hidden rounded mr-4">
           <Image
             src={visitor.profile_image_url || '/images/cy/noimage.jpg'}
-            alt="preview"
+            alt=""
             width={120}
             height={120}
             className="object-contain w-full h-full"

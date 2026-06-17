@@ -46,7 +46,7 @@ export default async function Page(props: { searchParams: { page: string } }) {
           user ?
             <div className="px-7 py-5">
               <div className='flex gap-2 bg-gray-50 border-y-2 border-gray-200 pt-4 pb-2 px-4'>
-                <div className="w-30 h-30 bg-white border flex items-center justify-center overflow-hidden rounded">
+                <div className="w-30 h-30 bg-white flex items-center justify-center overflow-hidden rounded">
                   <Image
                     src={user?.image || '/images/cy/noimage.jpg'}
                     alt="preview"
