@@ -7,7 +7,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
     const session = await auth();
     const user = session?.user;
-    const profileImage = await getProfileImage({userEmail: user?.email || ''});
+    const profileImage = await getProfileImage({userEmail: 'ingbox01@gmail.com'});
 
     return (
         <>

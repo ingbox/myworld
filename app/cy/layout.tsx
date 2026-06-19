@@ -87,7 +87,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                             />
                                         </div>
                                         <div className="w-[12px] h-[12px] bg-gray-100 border border-gray-400 flex justify-center items-center">
-                                          <Image src={Number(stats[key]?.diff) > 0 ? '/images/common/arrow-up.svg' : '/images/common/minus.svg'} width={10} height={10} alt=""/>
+                                            <Image src={Number(stats[key]?.diff) > 0 ? '/images/common/arrow-up.svg' : '/images/common/minus.svg'} width={10} height={10} alt="" />
                                         </div>
 
                                         <div className="min-w-[18px] text-[12px] text-gray-600">
@@ -98,8 +98,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             </div>
                             <hr className="border-gray-200" />
 
-                            {/* 스크랩 즐겨찾기 */ }
-                                    < div className = "flex w-full bg-white" >
+                            {/* 스크랩 즐겨찾기 */}
+                            < div className="flex w-full bg-white" >
                                 <span className="w-1/2 text-[12px] text-gray-600">스크랩</span>
                                 <span className="w-1/2 text-[12px] text-gray-600">즐겨찾기</span>
                             </div>

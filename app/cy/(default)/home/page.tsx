@@ -1,6 +1,14 @@
+import { getContentCount } from "@/app/actions/cy/home";
+import ProfileComment from "@/components/cy/home/ProfileComment";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Page() {
+
+export default async function Page() {
+
+    const content_count = await getContentCount();
+    console.log("CC:", content_count);
+
     return (
         <div className="h-full px-7 py-5 overflow-auto">
             {/* 상단 */}
@@ -16,19 +24,42 @@ export default function Page() {
                 {/* 페이지 현황 */}
                 <div className="w-2/5 h-full">
                     {/* 쥬크박스 */}
-                    <div>
-                        <p className="font-ginto text-[11px] text-[#459ebe] font-light tracking-wider leading-6">💿 BGM ▶</p>
+                    <div className="h-[22px]">
                     </div>
 
                     <table className="w-full table-fixed border-collapse bg-[#f8f8f8] text-[12px] text-[#697ea8] leading-5">
                         <tbody>
                             <tr>
-                                <td className="border border-gray-300 px-1">쥬크박스</td>
-                                <td className="border border-gray-300 px-1">사진첩</td>
+                                <td className="border border-gray-300 px-1">
+                                    <Link href="/cy/jukebox" className="inline-block mr-1">쥬크박스 {content_count.jukebox.today}/{content_count.jukebox.total}</Link>
+                                    {
+                                        content_count.jukebox.today > 0 ?
+                                            <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
+                                            :
+                                            <></>
+                                    }
+                                </td>
+                                <td className="border border-gray-300 px-1">
+                                    <Link href="/cy/photo" className="inline-block mr-1">사진첩 {content_count.photo.today}/{content_count.photo.total}</Link>
+                                    {
+                                        content_count.photo.today > 0 ?
+                                            <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
+                                            :
+                                            <></>
+                                    }
+                                </td>
                             </tr>
                             <tr>
-                                <td className="border border-gray-300 px-1">게시판</td>
-                                <td className="border border-gray-300 px-1">방명록</td>
+                                <td className="border border-gray-300 px-1">게시판 {0}/{0}</td>
+                                <td className="border border-gray-300 px-1">
+                                    <Link href="/cy/visitor" className="inline-block mr-1">방명록 {content_count.visitor.today}/{content_count.visitor.total}</Link>
+                                    {
+                                        content_count.visitor.today > 0 ?
+                                            <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
+                                            :
+                                            <></>
+                                    }
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -53,6 +84,7 @@ export default function Page() {
                     <span className="absolute font-dotum text-[15px] text-gray-500 right-[-91px] top-[-3px]">~</span>
                 </div>
                 <hr className="border-gray-300" />
+                <ProfileComment />
             </div>
         </div >
     );

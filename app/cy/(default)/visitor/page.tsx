@@ -21,8 +21,6 @@ export default async function Page(props: { searchParams: { page: string } }) {
   const totalPage = Math.ceil(visitorList.totalCount / limitPage);
   const currentPage = Number(page);
 
-  console.log(visitorList.totalCount);
-
   // 게시글 넘버링: 내림차순, 한 페이지에 10개씩, totalCount에서 현재 페이지와 인덱스 기반으로 계산
   const getPostNumber = (index: number) => {
     return visitorList.totalCount - ((currentPage - 1) * limitPage + index);
