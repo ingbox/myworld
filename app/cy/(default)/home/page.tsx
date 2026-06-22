@@ -7,7 +7,7 @@ import Link from "next/link";
 export default async function Page() {
 
     const content_count = await getContentCount();
-    console.log("CC:", content_count);
+    console.log("CC:", content_count); 
 
     return (
         <div className="h-full px-7 py-5 overflow-auto">
