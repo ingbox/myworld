@@ -5,8 +5,6 @@ import { getBaseUrl } from '@/app/actions/url';
 // ====== 프로필 이미지 가져오기 ======
 export async function getProfileImage({userEmail}: {userEmail: string}) {
     const url = getBaseUrl();
-
-    console.log("@@:", userEmail)
  
     const response = await fetch(
       `${url}/api/common/home?email=${userEmail}`,

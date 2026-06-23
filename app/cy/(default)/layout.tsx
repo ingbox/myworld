@@ -1,13 +1,17 @@
 import Image from "next/image";
 import { getProfileImage } from "@/app/actions/common/home";
 import { auth } from "@/app/auth";
+import { getVisitCount } from "@/app/actions/common/visit";
 
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
     const session = await auth();
     const user = session?.user;
-    const profileImage = await getProfileImage({userEmail: 'ingbox01@gmail.com'});
+    const profileImage = await getProfileImage({ userEmail: 'ingbox01@gmail.com' });
+    const visitCount = await getVisitCount();
+
+    console.log(visitCount);
 
     return (
         <>
@@ -36,8 +40,18 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             borderBottomLeftRadius: '10px',
                         }}
                     >
-                        <div className="h-[40px]">
+                        <div className="flex justify-center items-end h-[40px] text-gray-600">
+                            <div className="flex items-start gap-1">
 
+                                <span className="text-[10px] leading-[13px]">TODAY</span>
+                                <span className="text-sm leading-[16px]">{visitCount?.today_count}</span>
+
+                                <span className="text-md leading-[13px]">|</span>
+
+                                <span className="text-[10px] leading-[13px]">TOTAL</span>
+                                <span className="text-sm leading-[16px]">{visitCount?.total_count}</span>
+
+                            </div>
                         </div>
 
                         {/* 프로필 */}
@@ -56,10 +70,17 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             </div>
 
                             {/* 상태 메시지 */}
-                            <div>
+                            <div className="h-[150px]">
                                 <p className="text-sm text-blue-400">안녕하세요!</p>
                                 <p className="text-sm text-blue-400">여기는 이름의 미니홈피 입니다</p>
                                 <p className="text-sm text-blue-400">만나서 반갑습니다 ♡.(*⌒⌒*)~♡</p>
+                            </div>
+
+                            <div className="mt-auto">
+                                <p className="text-[10px]">▸ HISTORY</p>
+                                <hr />
+                                <p className="font-bold text-[#4a60ab] mt-2">임지섭</p>
+                                <p className="text-sm text-[#f4a562]">ingbox01@gmail.com</p>
                             </div>
 
 
