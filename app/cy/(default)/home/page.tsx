@@ -1,13 +1,13 @@
-import { getContentCount } from "@/app/actions/cy/home";
+import { getContentCount, getUpdatedNews } from "@/app/actions/cy/home";
 import ProfileComment from "@/components/cy/home/ProfileComment";
 import Image from "next/image";
 import Link from "next/link";
 
-
 export default async function Page() {
 
     const content_count = await getContentCount();
-    console.log("CC:", content_count); 
+    const updatedNews = await getUpdatedNews();
+
 
     return (
         <div className="h-full px-7 py-5 overflow-auto">
@@ -20,6 +20,20 @@ export default async function Page() {
                         <span className="absolute font-ginto font-light text-[8px] text-gray-400 tracking-wide right-[-57px] top-[3px]">TODAY STORY</span>
                     </div>
                     <hr className="border-gray-300" />
+                    {
+                        updatedNews.map((item: any) => (
+                            <Link key={item.id +'_'+ item.type} href={item.type === 'photo' ? '/cy/photo' : '/cy/visitor'} className="flex items-center gap-1">
+                                <div
+                                    className={`text-xs text-white rounded ${item.type === 'photo' ? 'bg-[#a4717a]' : 'bg-[#7a95b3]'
+                                        } px-[2px]`}
+                                >
+                                    {item.type === 'photo' ? '사진첩' : '방명록'}
+                                </div>
+                                <div className="text-sm">{item.content}</div>
+
+                            </Link>
+                        ))
+                    }
                 </div>
                 {/* 페이지 현황 */}
                 <div className="w-2/5 h-full">

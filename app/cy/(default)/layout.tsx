@@ -11,8 +11,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const profileImage = await getProfileImage({ userEmail: 'ingbox01@gmail.com' });
     const visitCount = await getVisitCount();
 
-    console.log(visitCount);
-
     return (
         <>
             <div
@@ -41,15 +39,15 @@ export default async function Layout({ children }: { children: React.ReactNode }
                         }}
                     >
                         <div className="flex justify-center items-end h-[40px] text-gray-600">
-                            <div className="flex items-start gap-1">
+                            <div className="flex items-start gap-1 mb-1">
 
                                 <span className="text-[10px] leading-[13px]">TODAY</span>
-                                <span className="text-sm leading-[16px]">{visitCount?.today_count}</span>
+                                <span className="text-sm leading-[11px]">{visitCount?.today_count}</span>
 
                                 <span className="text-md leading-[13px]">|</span>
 
                                 <span className="text-[10px] leading-[13px]">TOTAL</span>
-                                <span className="text-sm leading-[16px]">{visitCount?.total_count}</span>
+                                <span className="text-sm leading-[11px]">{visitCount?.total_count}</span>
 
                             </div>
                         </div>

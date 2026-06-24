@@ -86,7 +86,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                                 }}
                                             />
                                         </div>
-                                        <div className="w-[12px] h-[12px] bg-gray-100 border border-gray-400 flex justify-center items-center">
+                                        <div className="w-[12px] h-[12px] bg-gray-100 border border-gray-300 flex justify-center items-center">
                                             <Image src={Number(stats[key]?.diff) > 0 ? '/images/common/arrow-up.svg' : '/images/common/minus.svg'} width={10} height={10} alt="" />
                                         </div>
 

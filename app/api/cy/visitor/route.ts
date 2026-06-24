@@ -38,7 +38,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const ip = rawIp.split(',')[0].trim();
   const normalizedIp = ip === '::1' ? '127.0.0.1' : ip;
 
-
   console.log("@@@data", data);
   console.log("@@@normalizedIp", normalizedIp);
 

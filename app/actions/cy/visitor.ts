@@ -83,8 +83,6 @@ export async function editVisitor(visitorId: string, content: string) {
 export async function deleteVisitor({ visitorId }: { visitorId: string }) {
   const url = getBaseUrl();
 
-  console.log("@@@visitorId", visitorId);
-
   const response = await fetch(`${url}/api/cy/visitor/${visitorId}`, {
     method: 'DELETE',
   });
