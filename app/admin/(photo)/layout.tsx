@@ -40,7 +40,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2">
                                 <Image src="/images/profile.jpg" style={{ objectFit: "cover" }} fill alt="" />
                             </div>
-                            <hr className="border-dashed border-[#c7e9f1] mb-1" />
 
                             {/* TODAY IS.. */}
                             <div className="w-full h-[26px] border-2 border-gray-200 rounded-sm shadow-xs px-2 mb-2">
