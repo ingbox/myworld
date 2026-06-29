@@ -120,7 +120,7 @@ export default function Jukebox() {
         <>
             {/* 오디오 플레이어 */}
             <audio src={queue[currentIndex]?.download_url} ref={audioRef}></audio>
-            <div className="w-full bg-[#eeeeee] mt-2 rounded-sm p-1">
+            <div className="w-full bg-[#eeeeee] mt-4 rounded-sm p-1">
                 <div
                     onClick={() => setIsOpen(prev => !prev)}
                     className="flex items-center h-4 bg-white rounded-xs px-1 py-2 cursor-pointer mb-1"

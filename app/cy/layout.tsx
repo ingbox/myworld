@@ -4,6 +4,7 @@ import Jukebox from "@/components/layout/Jukebox";
 import Image from "next/image";
 import Link from "next/link";
 import { getUserStats } from "../actions/common/home";
+import ChatButton from "@/components/cy/common/ChatButton";
 
 type StatKey = "erotic" | "famous" | "friendly" | "karma" | "kind";
 
@@ -68,7 +69,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             <Link href="/cy/home">GO BACK HOME</Link>
                         </div>
                         {/* 능력치 */}
-                        <div className="bg-white px-4 py-4">
+                        <div className="bg-white px-4 py-4 relative">
                             <div className="mb-2">
                                 {statList.map(({ key, label, color }) => (
                                     <div key={key} className="flex items-center gap-2">
@@ -105,8 +106,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             </div>
                             <hr className="border-gray-200" />
 
-                            <div className="w-full bg-white">
+                            {/* <div className="w-full bg-white">
                                 <span className="w-1/2 text-[12px] text-gray-600">후원하기</span>
+                            </div> */}
+
+                            <div className="flex absolute w-[100%] bottom-[-10px]">
+                                <ChatButton />
+                                <button className="w-[27%] text-gray-700 bg-[#fed452] text-xs border border-[#b3a75f] rounded-xs">로그인</button>
                             </div>
                         </div>
 
