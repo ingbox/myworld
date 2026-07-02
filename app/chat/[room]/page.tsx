@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function Page() {
+export default function Page() { 
   useEffect(() => {
     const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/ws`);
 
