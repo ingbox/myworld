@@ -32,6 +32,16 @@ export async function proxy(request: NextRequest) {
 
     let response = NextResponse.next();
 
+    // /chat 접근 시 로그인 체크
+    if (pathname.startsWith('/chat')) {
+        const sessionToken =
+            request.cookies.get('authjs.session-token')?.value ??
+            request.cookies.get('__Secure-authjs.session-token')?.value;
+        if (!sessionToken) {
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+    }
+
     // 리다이렉트
     if (pathname === '/' || pathname === '/cy') {
         response = NextResponse.redirect(new URL('/cy/home', request.url));

@@ -79,7 +79,7 @@ export default async function Page({
                 </div>
                 <Link href={`/cy/photo/1`} className={`text-[15px] ${type == 0 ? 'font-bold' : ''}`}>전체보기</Link>
               </div>
-              <hr className="border-1 border-gray-200" />
+              <hr className="border border-gray-200" />
               <div className="mt-1">
                 {
                   typeList.map((list: any) => (

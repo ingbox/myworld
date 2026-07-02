@@ -73,7 +73,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             <div className="mb-2">
                                 {statList.map(({ key, label, color }) => (
                                     <div key={key} className="flex items-center gap-2">
-                                        <span className="w-[44px] text-[12px] text-gray-600 tracking-[-0.05em]">
+                                        <span className="w-[44px] text-[12px] text-gray-600 tracking-tighter">
                                             {label}
                                         </span>
                                         <div
@@ -110,8 +110,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <span className="w-1/2 text-[12px] text-gray-600">후원하기</span>
                             </div> */}
 
-                            <div className="flex absolute w-[100%] bottom-[-10px]">
-                                <ChatButton />
+                            <div className="flex absolute w-full bottom-[-10px]">
+                                <ChatButton user_email={user?.email}/>
                                 <button className="w-[27%] text-gray-700 bg-[#fed452] text-xs border border-[#b3a75f] rounded-xs">로그인</button>
                             </div>
                         </div>
