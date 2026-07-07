@@ -27,7 +27,13 @@ export default async function Page({
   });
 
   if (!res.ok) {
-    throw new Error("메시지 조회 실패");
+    return (
+      <ChatRoom
+        roomId={room}
+        myEmail={session?.user?.email ?? ""}
+        initialMessages={[]}
+      />
+    );
   }
 
   const messages: ChatMessage[] = await res.json();
