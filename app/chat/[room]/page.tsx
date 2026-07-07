@@ -1,31 +1,43 @@
-"use client";
+import { auth } from '@/app/auth';
 
-import { useEffect } from "react";
+import ChatRoom from "@/components/chat/ChatRoom";
 
-export default function Page() { 
-  useEffect(() => {
-    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/ws`);
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-    ws.onopen = () => {
-      console.log("OPEN");
+interface ChatMessage {
+  id: string;
+  room_id: string;
+  sender: string;
+  message: string;
+  created_at: string;
+}
 
-      ws.send("hello");
-    };
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ room: string }>;
+}) {
 
-    ws.onmessage = (e) => {
-      console.log(e.data);
-    };
+  const { room } = await params;
 
-    ws.onclose = (e) => {
-      console.log("CLOSE", e.code);
-    };
+  const session = await auth();
 
-    ws.onerror = (e) => {
-      console.log("ERROR", e);
-    };
+  const res = await fetch(`${API_URL}/messages/${room}`, {
+    cache: "no-store",
+  });
 
-    return () => ws.close();
-  }, []);
+  if (!res.ok) {
+    throw new Error("메시지 조회 실패");
+  }
 
-  return <div>test</div>;
+  const messages: ChatMessage[] = await res.json();
+
+  return (
+    <ChatRoom
+      roomId={room}
+      myEmail={session?.user?.email ?? ""}
+      initialMessages={messages}
+    />
+  );
+
 }
