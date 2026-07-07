@@ -1,8 +1,7 @@
+import { getMessages } from '@/app/actions/chat';
 import { auth } from '@/app/auth';
 
 import ChatRoom from "@/components/chat/ChatRoom";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface ChatMessage {
   id: string;
@@ -22,13 +21,9 @@ export default async function Page({
 
   const session = await auth();
 
-  const res = await fetch(`${API_URL}/messages/${room}`, {
-    cache: "no-store",
-  });
+  const messages = await getMessages(room);
 
-  console.log("res:", res);
-
-  const messages: ChatMessage[] = await res.json();
+  console.log("messages:", messages);
 
   return (
     <ChatRoom

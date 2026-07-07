@@ -2,6 +2,14 @@
 'use server';
 import { getBaseUrl } from '@/app/actions/url';
 
+interface ChatMessage {
+  id: string;
+  room_id: string;
+  sender: string;
+  message: string;
+  created_at: string;
+}
+
 // ====== 채팅창 만들기 ======
 export async function createRoom(user_email: string) {
     const url = getBaseUrl();
@@ -21,4 +29,15 @@ export async function createRoom(user_email: string) {
       }
 
       return JSON.parse(text);
+  }
+
+  // ====== 채팅 메시지 조회 ======
+  export async function getMessages(room_id: string) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/messages/${room_id}`, {
+      method: "GET",
+    });
+
+    const messages: ChatMessage[] = await res.json();
+
+    return messages;
   }
