@@ -11,15 +11,13 @@ export default function ChatButton({user_email}: {user_email?: string}) {
         }
         const response = await createRoom(user_email);
 
+        console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
+
         if(response) {
             window.open(`/chat/${response.result.id}`, "_blank", "width=420,height=700");
         }
         
-     
     }
-
- 
-    
       
       return (
         <button
