@@ -1,7 +1,7 @@
-import { getMessages } from '@/app/actions/chat';
-import { auth } from '@/app/auth';
+// import { getMessages } from '@/app/actions/chat';
+// import { auth } from '@/app/auth';
 
-import ChatRoom from "@/components/chat/ChatRoom";
+// import ChatRoom from "@/components/chat/ChatRoom";
 
 export default async function Page({
   params,
@@ -9,22 +9,23 @@ export default async function Page({
   params: Promise<{ room: string }>;
 }) {
 
-  const { room } = await params;
+  // const { room } = await params;
 
-  const session = await auth();
-  const user = session?.user;
+  // const session = await auth();
+  // const user = session?.user;
 
-  const rawMessages = await getMessages(room);
-  const messages = JSON.parse(JSON.stringify(rawMessages));
+  // const rawMessages = await getMessages(room);
+  // const messages = JSON.parse(JSON.stringify(rawMessages));
 
-  console.log("@@@@@@@@@@@@@@@@ messages: @@@@@@@@@@@@@", messages);
+  // console.log("@@@@@@@@@@@@@@@@ messages: @@@@@@@@@@@@@", messages);
 
   return (
-    <ChatRoom
-      roomId={room}
-      myEmail={user?.email ?? ""}
-      initialMessages={messages}
-    />
+    // <ChatRoom
+    //   roomId={room}
+    //   myEmail={user?.email ?? ""}
+    //   initialMessages={messages}
+    // />
+    <></>
   );
 
 }
