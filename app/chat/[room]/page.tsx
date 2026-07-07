@@ -14,7 +14,10 @@ export default async function Page({
   const session = await auth();
   const user = session?.user;
 
-  const messages = await getMessages(room);
+  const rawMessages = await getMessages(room);
+  const messages = JSON.parse(JSON.stringify(rawMessages));
+
+  console.log("@@@@@@@@@@@@@@@@ messages: @@@@@@@@@@@@@", messages);
 
   return (
     <ChatRoom

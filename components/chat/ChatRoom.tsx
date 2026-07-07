@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import MessageList from "./MessageList";
-import ChatInput from "./ChatInput";
+// import MessageList from "./MessageList";
+// import ChatInput from "./ChatInput";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL!;
@@ -85,7 +85,7 @@ export default function ChatRoom({
         </div>
       </header>
 
-      <MessageList
+      {/* <MessageList
         messages={messages}
         myEmail={myEmail}
       />
@@ -93,7 +93,7 @@ export default function ChatRoom({
       <ChatInput
         disabled={!isConnected || isPending}
         onSend={mutate}
-      />
+      /> */}
     </main>
   );
 }
