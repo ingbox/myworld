@@ -4,9 +4,9 @@
 // import ChatRoom from "@/components/chat/ChatRoom";
 
 export default async function Page({
-  params,
+  // params,
 }: {
-  params: Promise<{ room: string }>;
+  // params: Promise<{ room: string }>;
 }) {
   // const { room } = await params;
 
