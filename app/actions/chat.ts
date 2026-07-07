@@ -15,27 +15,18 @@ export async function createRoom(user_email: string) {
 
   const url = getBaseUrl();
 
-  console.log("url:", `${url}/api/chat/room`);
+  // console.log("url:", `${url}/api/chat/room`);
 
   const response = await fetch(`${url}/api/chat/room`, {
-
     method: "POST",
-
     headers: {
-
       "Content-Type": "application/json",
-
     },
-
     body: JSON.stringify({ user_email }),
-
   });
 
   console.log("status:", response.status);
-
-  const text = await response.text();
-
-  console.log("body:", text);
+  console.log("body:", response.body);
 
   // if (!response.ok) {
 
@@ -43,7 +34,7 @@ export async function createRoom(user_email: string) {
 
   // }
 
-  return JSON.parse(text);
+  return "success"
 
 }
 

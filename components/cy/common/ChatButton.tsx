@@ -11,7 +11,8 @@ export default function ChatButton({user_email}: {user_email?: string}) {
         }
         const response = await createRoom(user_email);
 
-        // console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
+
+        console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
 
         // if(response) {
             window.open(`/chat/e2303af3-893a-4dc5-8630-e1d42828b43b`, "_blank", "width=420,height=700");
