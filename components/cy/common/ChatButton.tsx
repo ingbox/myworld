@@ -1,6 +1,6 @@
 "use client"
 
-import { createRoom } from "@/app/actions/chat";
+// import { createRoom } from "@/app/actions/chat";
 
 export default function ChatButton({user_email}: {user_email?: string}) {
 
@@ -9,13 +9,13 @@ export default function ChatButton({user_email}: {user_email?: string}) {
             alert("로그인 후에 이용 가능합니다.")
             return
         }
-        const response = await createRoom(user_email);
+        // const response = await createRoom(user_email);
 
-        console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
+        // console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
 
-        if(response) {
-            window.open(`/chat/${response.result.id}`, "_blank", "width=420,height=700");
-        }
+        // if(response) {
+            window.open(`/chat/e2303af3-893a-4dc5-8630-e1d42828b43b`, "_blank", "width=420,height=700");
+        // }
         
     }
       
