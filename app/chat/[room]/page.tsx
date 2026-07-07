@@ -20,15 +20,14 @@ export default async function Page({
   const { room } = await params;
 
   const session = await auth();
+  const user = session?.user;
 
   const messages = await getMessages(room);
-
-  console.log("messages:", messages);
 
   return (
     <ChatRoom
       roomId={room}
-      myEmail={session?.user?.email ?? ""}
+      myEmail={user?.email ?? ""}
       initialMessages={messages}
     />
   );
