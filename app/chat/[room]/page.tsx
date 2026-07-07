@@ -8,7 +8,6 @@ export default async function Page({
 }: {
   params: Promise<{ room: string }>;
 }) {
-
   // const { room } = await params;
 
   // const session = await auth();
