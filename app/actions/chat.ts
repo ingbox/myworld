@@ -37,11 +37,11 @@ export async function createRoom(user_email: string) {
 
   console.log("body:", text);
 
-  if (!response.ok) {
+  // if (!response.ok) {
 
-    throw new Error(text);
+  //   throw new Error(text);
 
-  }
+  // }
 
   return JSON.parse(text);
 
