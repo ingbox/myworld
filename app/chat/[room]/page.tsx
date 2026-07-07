@@ -26,15 +26,7 @@ export default async function Page({
     cache: "no-store",
   });
 
-  if (!res.ok) {
-    return (
-      <ChatRoom
-        roomId={room}
-        myEmail={session?.user?.email ?? ""}
-        initialMessages={[]}
-      />
-    );
-  }
+  console.log("res:", res);
 
   const messages: ChatMessage[] = await res.json();
 
