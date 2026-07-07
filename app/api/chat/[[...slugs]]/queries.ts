@@ -23,9 +23,3 @@ SELECT * FROM updated
 UNION ALL
 SELECT * FROM inserted;
 `
-
-export const INSERT_MESSAGE = `
-  INSERT INTO chats (room_id, message, sender, created_at, updated_at)
-  VALUES ($1, $2, $3, NOW(), NOW())
-  RETURNING *;
-`;
