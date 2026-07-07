@@ -12,32 +12,48 @@ interface ChatMessage {
 
 // ====== 채팅창 만들기 ======
 export async function createRoom(user_email: string) {
-    const url = getBaseUrl();
 
-    const response = await fetch(`${url}/api/chat/room`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_email }),
-      });
-      
-      const text = await response.text();
-  
-      if (!response.ok) {
-        throw new Error(text);
-      }
+  const url = getBaseUrl();
 
-      return JSON.parse(text);
+  console.log("url:", `${url}/api/chat/room`);
+
+  const response = await fetch(`${url}/api/chat/room`, {
+
+    method: "POST",
+
+    headers: {
+
+      "Content-Type": "application/json",
+
+    },
+
+    body: JSON.stringify({ user_email }),
+
+  });
+
+  console.log("status:", response.status);
+
+  const text = await response.text();
+
+  console.log("body:", text);
+
+  if (!response.ok) {
+
+    throw new Error(text);
+
   }
 
-  // ====== 채팅 메시지 조회 ======
-  export async function getMessages(room_id: string) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/messages/${room_id}`, {
-      method: "GET",
-    });
+  return JSON.parse(text);
 
-    const messages: ChatMessage[] = await res.json();
+}
 
-    return messages;
-  }
+// ====== 채팅 메시지 조회 ======
+export async function getMessages(room_id: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/messages/${room_id}`, {
+    method: "GET",
+  });
+
+  const messages: ChatMessage[] = await res.json();
+
+  return messages;
+}

@@ -1,6 +1,6 @@
 "use client"
 
-// import { createRoom } from "@/app/actions/chat";
+import { createRoom } from "@/app/actions/chat";
 
 export default function ChatButton({user_email}: {user_email?: string}) {
 
@@ -9,7 +9,7 @@ export default function ChatButton({user_email}: {user_email?: string}) {
             alert("로그인 후에 이용 가능합니다.")
             return
         }
-        // const response = await createRoom(user_email);
+        const response = await createRoom(user_email);
 
         // console.log("@@@@@@@@@@@@@@@@ response: @@@@@@@@@@@@@", response);
 
