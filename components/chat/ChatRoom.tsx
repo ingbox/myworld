@@ -67,10 +67,9 @@ export default function ChatRoom({
           message,
         }),
       });
-
-      if (!res.ok) {
-        throw new Error("메시지 전송 실패");
-      }
+      // if (!res.ok) {
+      //   throw new Error("메시지 전송 실패");
+      // }
 
       return res.json();
     },
