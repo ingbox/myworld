@@ -15,8 +15,6 @@ export async function createRoom(user_email: string) {
 
   const url = getBaseUrl();
 
-  // console.log("url:", `${url}/api/chat/room`);
-
   const response = await fetch(`${url}/api/chat/room`, {
     method: "POST",
     headers: {
@@ -27,12 +25,6 @@ export async function createRoom(user_email: string) {
 
   console.log("status:", response.status);
   console.log("body:", response.body);
-
-  // if (!response.ok) {
-
-  //   throw new Error(text);
-
-  // }
 
   return "success"
 

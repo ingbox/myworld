@@ -49,8 +49,8 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
             <tr 
             key={track.id}
             className="text-[#3e4b64] leading-[1.1]
-                          [background-image:linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
-                          [background-size:3px_1px] [background-repeat:repeat-x] [background-position:bottom]
+                          bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
+                          bg-size-[3px_1px] bg-repeat-x bg-bottom
                          
                           ">
               <td className="py-1 px-2">

@@ -13,7 +13,7 @@ export default function ChatInput({
 }: Props) {
   const [input, setInput] = useState("");
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -22,31 +22,49 @@ export default function ChatInput({
 
     setInput("");
 
-    inputRef.current?.focus();
+    textareaRef.current?.focus();
   };
 
   return (
-    <div className="border-t border-zinc-800 p-4 flex gap-2">
-      <input
-        ref={inputRef}
+    <div className="relative">
+      <textarea
+        ref={textareaRef}
         value={input}
         disabled={disabled}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
             handleSend();
           }
         }}
-        className="flex-1 bg-black border border-zinc-700 rounded px-4 py-2"
-        placeholder="메시지를 입력하세요"
+        className="
+        w-full
+        h-20
+        max-h-20
+        min-h-20
+        resize-none
+        p-3
+        pr-28
+        shadow-[inset_0_2px_6px_rgba(0,0,0,0.05)]
+        focus:outline-none"
       />
-
       <button
         disabled={disabled || !input.trim()}
         onClick={handleSend}
-        className="bg-green-600 px-5 rounded disabled:opacity-40"
+        className="
+        absolute
+        right-3
+        top-1/2
+        -translate-y-1/2
+        p-1
+        text-gray-400
+        text-sm
+        font-extrabold
+        border
+        shadow-inner"
       >
-        전송
+        보내기
       </button>
     </div>
   );

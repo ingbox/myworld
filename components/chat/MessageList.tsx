@@ -10,29 +10,29 @@ export default function MessageList({
   myEmail,
 }: Props) {
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-3">
+    <div className="overflow-y-auto p-4 space-y-2 bg-white">
       {messages.map((msg) => {
         const isMe = msg.sender === myEmail;
 
         return (
           <div
             key={msg.id}
-            className={`flex ${
-              isMe
-                ? "justify-end"
-                : "justify-start"
-            }`}
+            // className={`flex ${
+            //   isMe
+            //     ? "justify-end"
+            //     : "justify-start"
+            // }`}
           >
             <div>
-              <div className="text-[10px] text-zinc-500">
-                {msg.sender}
+              <div className="text-sm text-zinc-500">
+                {msg.name}님의 말:
               </div>
 
               <div
-                className={`rounded-lg px-3 py-2 max-w-sm ${
+                className={`text-sm max-w-sm ${
                   isMe
-                    ? "bg-green-600"
-                    : "bg-zinc-800"
+                    ? "text-gray-700"
+                    : "text-[#649b61]"
                 }`}
               >
                 {msg.message}

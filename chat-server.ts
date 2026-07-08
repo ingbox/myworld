@@ -20,6 +20,7 @@ INSERT INTO chats (
     room_id,
     message,
     sender,
+    name,
     created_at,
     updated_at
 )
@@ -27,6 +28,7 @@ VALUES (
     $1,
     $2,
     $3,
+    $4,
     NOW(),
     NOW()
 )
@@ -70,6 +72,7 @@ const app = new Elysia()
         body.roomId,
         body.message,
         body.sender,
+        body.name,
       ]);
 
       const saved = result.rows[0];
@@ -80,6 +83,7 @@ const app = new Elysia()
       body: t.Object({
         roomId: t.String(),
         sender: t.String(),
+        name: t.String(),
         message: t.String(),
       }),
     }

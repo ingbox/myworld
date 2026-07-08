@@ -20,6 +20,7 @@ export default async function Page({
     <ChatRoom
       roomId={room}
       myEmail={user?.email ?? ""}
+      myName={user?.name ?? ""}
       initialMessages={messages}
     />
   );
