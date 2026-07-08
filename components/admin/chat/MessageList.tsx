@@ -13,7 +13,7 @@ export default function MessageList({
     <div className="h-[413px] overflow-y-auto p-4 space-y-2 bg-white">
       {messages.map((msg) => {
         const isMe = msg.sender === myEmail;
-
+ 
         return (
           <div
             key={msg.id}
