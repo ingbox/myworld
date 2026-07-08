@@ -40,3 +40,21 @@ export async function getMessages(room_id: string) {
 
   return messages;
 }
+
+// ====== 방 목록 조회(어드민) =======
+export async function getRoomList() {
+  const url = getBaseUrl();
+
+  const response = await fetch(`${url}/api/chat/room`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' },
+    next: { tags: ['adminRoom'] },
+  });
+
+  if (!response.ok) {
+    throw new Error('방 목록 가져오기 실패');
+  }
+  
+  return response.json();
+
+}

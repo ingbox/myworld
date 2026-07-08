@@ -38,6 +38,10 @@ export default function AdminNavigation() {
             name: '방명록',
             href: '/admin/visitor',
         },
+        {
+            name: '채팅',
+            href: '/admin/chat',
+        },
     ]
 
     return (
@@ -50,7 +54,7 @@ export default function AdminNavigation() {
                     <Link href={item.href} key={item.href}>
                         <div
                             className={
-                                `w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] 
+                                `w-[58px] h-[32px] rounded-r-sm border border-[#787c84] text-center text-[13px] leading-[32px] 
                                 ${isActive ? "bg-white text-black relative" : "bg-[#ff6b6b] text-white"}`
                             }
                             style={{

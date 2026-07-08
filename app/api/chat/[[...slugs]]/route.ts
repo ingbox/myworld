@@ -1,9 +1,16 @@
 import pool from "@/lib/db";
 import { Elysia, t } from "elysia";
-import { CREATE_ROOM } from "./queries";
+import { GET_ROOM_LIST, CREATE_ROOM } from "./queries";
 
 const app = new Elysia({ prefix: "/api/chat" })
-  // 💡 방 생성 API만 깔끔하게 남겨둡니다.
+  // 방 목록 조회
+  .get("/room", async () => {
+    const result = await pool.query(GET_ROOM_LIST);
+    return {
+      result: result.rows,
+    };
+  })
+  // 방 생성
   .post("/room", async ({ body }) => {
     const { user_email } = body;
     const result = await pool.query(CREATE_ROOM, [user_email]);

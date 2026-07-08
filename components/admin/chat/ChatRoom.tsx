@@ -78,7 +78,7 @@ export default function ChatRoom({
   });
 
   return (
-    <div className="flex h-[calc(100vh-56px)] text-white">
+    <div className="flex text-white">
       {/* <header className="border-b border-zinc-800 p-4">
         <div className="font-bold text-green-400">{roomId}</div>
 
@@ -91,13 +91,10 @@ export default function ChatRoom({
           messages={messages}
           myEmail={myEmail}
         />
-
-        <div className="fixed bottom-0 left-0 right-0">
         <ChatInput
           disabled={!isConnected || isPending}
           onSend={mutate}
         />
-        </div>
       </div>
       <div className="w-40 pt-1">
         <div className="w-30 h-32 border-2 border-gray-300 relative mx-auto">
