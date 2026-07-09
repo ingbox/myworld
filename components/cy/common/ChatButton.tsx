@@ -23,7 +23,7 @@ export default function ChatButton({user_email}: {user_email?: string}) {
       return (
         <button
           onClick={() => handleClick()}
-          className="w-[58%] text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] px-2 rounded-xs"
+          className="flex-1 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs"
         >
           채팅하기
         </button>

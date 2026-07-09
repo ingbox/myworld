@@ -1,15 +1,7 @@
 // app/actions/visitor.ts
 'use server';
-
-import { signIn } from '@/app/auth';
 import { getBaseUrl } from '@/app/actions/url';
 import { updateTag } from 'next/cache';
-
-// ====== Google 로그인 처리 ======
-export async function GoogleSignIn() {
-  // Google OAuth 로그인 요청
-  await signIn('google');
-}
 
 type PaginationParams = {
   page: number;

@@ -1,7 +1,7 @@
 'use server';
 import { getBaseUrl } from '@/app/actions/url';
 
-export async function getTypeList() {
+export async function getPhotoTypeList() {
     const url = getBaseUrl();
     const response = await fetch(
         `${url}/api/common/photo/type`,

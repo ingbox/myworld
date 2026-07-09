@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getUserStats } from "../actions/common/home";
 import ChatButton from "@/components/cy/common/ChatButton";
+import { GoogleSignIn } from "@/app/actions/cy/auth";
 
 type StatKey = "erotic" | "famous" | "friendly" | "karma" | "kind";
 
@@ -110,9 +111,15 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <span className="w-1/2 text-[12px] text-gray-600">후원하기</span>
                             </div> */}
 
-                            <div className="flex absolute w-full bottom-[-10px]">
-                                <ChatButton user_email={user?.email}/>
-                                <button className="w-[27%] text-gray-700 bg-[#fed452] text-xs border border-[#b3a75f] rounded-xs">로그인</button>
+                            <div className="flex w-full absolute left-0 bottom-[-10px] max-h-[18px] justify-center items-center px-4">
+                                <ChatButton user_email={user?.email} />
+                                {!user && (
+                                    <form className="flex-1" action={GoogleSignIn}>
+                                        <button className="w-full h-7 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs">
+                                            로그인
+                                        </button>
+                                    </form>
+                                )}
                             </div>
                         </div>
 

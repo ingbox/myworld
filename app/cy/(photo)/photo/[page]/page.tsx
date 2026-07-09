@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPhotoList } from "@/app/actions/cy/photo";
 import ReadOnlyEditor from "@/components/tiptap-templates/simple/read-only-editor";
-import { getTypeList } from "@/app/actions/common/photo";
+import { getPhotoTypeList } from "@/app/actions/common/photo";
 
 export default async function Page({
   params,
@@ -19,7 +19,7 @@ export default async function Page({
   const type = searchParam.type ?? 0;
   const photoList = await getPhotoList(Number(page), type);
   // 카테고리 가져오기
-  const typeList = await getTypeList();
+  const typeList = await getPhotoTypeList();
 
 
   const limitPage = 10;
