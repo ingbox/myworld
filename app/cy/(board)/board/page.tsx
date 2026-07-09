@@ -54,7 +54,11 @@ export default async function Page({
                 <td className="text-center py-[4px]">
                   {Number(boardList.totalCount) - index}
                 </td>
-                <td>{board.title}</td>
+                <td>
+                  <Link href={`/cy/board/${board.id}`}>
+                    {board.title}
+                  </Link>
+                </td>
                 <td className="text-center">
                   임지섭
                 </td>

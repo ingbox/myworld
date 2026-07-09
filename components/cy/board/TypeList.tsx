@@ -1,24 +1,34 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
-import { getBoardTypeList } from "@/app/actions/common/board";
+import { useSearchParams } from "next/navigation";
 
-export default async function TypeList(searchParams: { type?: number; }) {
+interface Type {
+    id: number;
+    name: string;
+}
 
-    const searchParam = await searchParams;
-    const type = searchParam.type ?? 0;
+interface Props {
+    typeList: Type[];
+}
 
-    const typeList = await getBoardTypeList();
+export default function TypeList({ typeList }: Props) {
+
+    const searchParams = useSearchParams();
+    const type = Number(searchParams.get("type") ?? 0);
 
     return (
         <>
             <div className="mb-4">
+                <p className="font-ginto font-light text-[8px] text-gray-400 tracking-wide">FREE TALK</p>
                 <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">FREE BOARD</p>
             </div>
             <div className="flex gap-2 mb-1 text-[15px]">
                 <div>
                     <Image src="/images/photo/file.png" width={16} height={14} alt="" />
                 </div>
-                <Link href={`/cy/photo/1`} className={`text-[15px] ${type == 0 ? 'font-bold' : ''}`}>전체보기</Link>
+                <Link href={`/cy/board`} className={`text-[15px] ${type == 0 ? 'font-bold' : ''}`}>전체보기</Link>
             </div>
 
             <hr className="border border-gray-200" />
@@ -31,7 +41,7 @@ export default async function TypeList(searchParams: { type?: number; }) {
                                 <Image src="/images/photo/file.png" width={16} height={14} alt="" />
                             </div>
                             <Link
-                                href={`/cy/photo/1?type=${list.id}`}
+                                href={`/cy/board?type=${list.id}`}
                                 className={`text-[15px] ${type == list.id ? 'font-bold' : ''}`}
                             >
                                 {list.name}

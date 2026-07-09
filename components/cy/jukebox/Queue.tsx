@@ -51,7 +51,6 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
             className="text-[#3e4b64] leading-[1.1]
                           bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
                           bg-size-[3px_1px] bg-repeat-x bg-bottom
-                         
                           ">
               <td className="py-1 px-2">
                 <input

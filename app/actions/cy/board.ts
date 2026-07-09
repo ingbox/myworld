@@ -25,3 +25,28 @@ export async function getBoardList(page: number, type?: number) {
   }
   return response.json();
 }
+
+// ====== 게시글 상세 조회 ======
+
+export async function getBoardContent(id: number) {
+
+  console.log("@@@@:", id);
+  const url = getBaseUrl();
+
+  const response = await fetch(
+    `${url}/api/cy/board/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      next: { tags: [`boardContent-${id}`] },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('게시판 게시글 조회 실패');
+  }
+
+  return response.json();
+}
