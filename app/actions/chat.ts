@@ -23,8 +23,7 @@ export async function createRoom(user_email: string) {
     body: JSON.stringify({ user_email }),
   });
 
-  console.log("status:", response.status);
-  console.log("body:", response.body);
+  console.log("response:", response);
 
   return "success"
 

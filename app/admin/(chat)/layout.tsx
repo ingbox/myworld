@@ -6,8 +6,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
     const rooms = await getRoomList();
 
-    console.log("rooms:", rooms.result);
-
     return (
         <>
             <div

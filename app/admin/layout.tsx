@@ -1,8 +1,12 @@
+import { auth } from '@/app/auth';
 import UserStats from '@/components/admin/home/UserStats';
 import { getUserStats } from '../actions/common/home';
 import Clip from '@/components/layout/item/Clip';
 
+
 export default async function Layout({ children }: { children: React.ReactNode }) {
+    const session = await auth();
+
     const initStats = await getUserStats();
 
     return (
@@ -16,11 +20,14 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 <div className="w-7xl flex border-blue-500 mx-auto pt-10">
 
                     <div className="relative pr-8 flex">
+                        {/* 프로필 컨텐츠 사이 클립 버튼 */}
                         <Clip />
+
                         {children}
+
                     </div>
 
-                    <UserStats initStats={initStats} />
+                <UserStats initStats={initStats}/>
                 </div>
             </div>
         </div>

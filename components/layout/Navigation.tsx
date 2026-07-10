@@ -50,7 +50,7 @@ export default function Navigation({ user }: { user: any }) {
                     <Link href={item.href} key={item.href}>
                         <div
                             className={
-                                `w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] 
+                                `w-[58px] h-[32px] rounded-r-sm border border-[#787c84] text-center text-[13px] leading-[32px] 
                                 ${isActive ? "bg-white text-black relative" : "bg-[#2a8dac] text-white"}`
                             }
                             style={{
@@ -70,7 +70,7 @@ export default function Navigation({ user }: { user: any }) {
             })}
             {
                 user?.role === "ADMIN" &&
-                <Link href="/admin/home" className="w-[58px] h-[32px] rounded-r-sm border-1 border-[#787c84] text-center text-[13px] leading-[32px] bg-[#2a8dac] text-white">
+                <Link href="/admin/home" className="w-[58px] h-[32px] rounded-r-sm border border-[#787c84] text-center text-[13px] leading-[32px] bg-[#2a8dac] text-white">
                     <span className="text-white font-bold">관리</span>
                 </Link>
             }

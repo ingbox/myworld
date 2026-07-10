@@ -38,7 +38,7 @@ export default function Jukebox() {
         }
 
         const handleEnded = () => {
-            if(queue[currentIndex + 1] == undefined) {
+            if (queue[currentIndex + 1] == undefined) {
                 setIsPlaying(false);
             } else {
                 playNext();
@@ -128,8 +128,8 @@ export default function Jukebox() {
                     <Image src="/images/jukebox/cd.png" width={12} height={12} alt="" />
                     <div className="ml-2 w-42 overflow-hidden">
                         <div
-                        key={queue[currentIndex]?.id}
-                        className="text-xs text-gray-500 marquee whitespace-nowrap">
+                            key={queue[currentIndex]?.id}
+                            className="text-xs text-gray-500 marquee whitespace-nowrap">
                             {queue[currentIndex]?.title}
                         </div>
                     </div>
