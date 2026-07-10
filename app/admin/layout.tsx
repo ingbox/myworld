@@ -1,11 +1,8 @@
-import { auth } from '@/app/auth';
 import UserStats from '@/components/admin/home/UserStats';
 import { getUserStats } from '../actions/common/home';
-
+import Clip from '@/components/layout/item/Clip';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-    const session = await auth();
-
     const initStats = await getUserStats();
 
     return (
@@ -19,35 +16,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 <div className="w-7xl flex border-blue-500 mx-auto pt-10">
 
                     <div className="relative pr-8 flex">
-                        {/* 프로필 컨텐츠 사이 클립 버튼 */}
-                        <>
-                            <div className="absolute top-[150px] left-[308px] w-[24px] h-[10px] border-2 border-[#c9c9c9] rounded-3xl bg-white shadow-sm"
-                                style={{
-                                    boxShadow: 'inset 11px 0 8px -8px rgba(0,0,0,0.4)'
-                                }}
-                            ></div>
-                            <div className="absolute top-[185px] left-[308px] w-[24px] h-[10px] border-2 border-[#c9c9c9] rounded-3xl bg-white shadow-sm"
-                                style={{
-                                    boxShadow: 'inset 11px 0 8px -8px rgba(0,0,0,0.4)'
-                                }}
-                            ></div>
-                            <div className="absolute bottom-[185px] left-[308px] w-[24px] h-[10px] border-2 border-[#c9c9c9] rounded-3xl bg-white shadow-sm"
-                                style={{
-                                    boxShadow: 'inset 11px 0 8px -8px rgba(0,0,0,0.4)'
-                                }}
-                            ></div>
-                            <div className="absolute bottom-[150px] left-[308px] w-[24px] h-[10px] border-2 border-[#c9c9c9] rounded-3xl bg-white shadow-sm"
-                                style={{
-                                    boxShadow: 'inset 11px 0 8px -8px rgba(0,0,0,0.4)'
-                                }}
-                            ></div>
-                        </>
-
+                        <Clip />
                         {children}
-
                     </div>
 
-                <UserStats initStats={initStats}/>
+                    <UserStats initStats={initStats} />
                 </div>
             </div>
         </div>

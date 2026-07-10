@@ -22,7 +22,7 @@ export default async function Page() {
                     <hr className="border-gray-300" />
                     {
                         updatedNews.map((item: any) => (
-                            <Link key={item.id +'_'+ item.type} href={item.type === 'photo' ? '/cy/photo' : '/cy/visitor'} className="flex items-center gap-1">
+                            <Link key={item.id + '_' + item.type} href={item.type === 'photo' ? '/cy/photo' : '/cy/visitor'} className="flex items-center gap-1">
                                 <div
                                     className={`text-xs text-white rounded ${item.type === 'photo' ? 'bg-[#a4717a]' : 'bg-[#7a95b3]'
                                         } px-[2px]`}
@@ -64,7 +64,15 @@ export default async function Page() {
                                 </td>
                             </tr>
                             <tr>
-                                <td className="border border-gray-300 px-1">게시판 {0}/{0}</td>
+                                <td className="border border-gray-300 px-1">
+                                    <Link href="/cy/board" className="inline-block mr-1">게시판 {content_count.board.today}/{content_count.board.total}</Link>
+                                    {
+                                        content_count.board.today > 0 ?
+                                            <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
+                                            :
+                                            <></>
+                                    }
+                                </td>
                                 <td className="border border-gray-300 px-1">
                                     <Link href="/cy/visitor" className="inline-block mr-1">방명록 {content_count.visitor.today}/{content_count.visitor.total}</Link>
                                     {
@@ -94,7 +102,7 @@ export default async function Page() {
                 <div className="inline-block relative font-ginto font-semibold text-xs text-[#459ebe] tracking-wide">
                     <span>What friends say</span>
                     <span className="absolute font-diary text-[10px] text-gray-500 right-[-73px] top-[3px]">한마디로 표현해</span>
-                    <span className="absolute font-diary text-[10px] text-gray-500 right-[-83px] top-[1px]">봐</span>
+                    <span className="absolute font-diary text-[10px] text-gray-500 right-[-83px] top-px">봐</span>
                     <span className="absolute font-dotum text-[15px] text-gray-500 right-[-91px] top-[-3px]">~</span>
                 </div>
                 <hr className="border-gray-300" />

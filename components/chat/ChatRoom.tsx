@@ -78,31 +78,25 @@ export default function ChatRoom({
   });
 
   return (
-    <div className="flex h-[calc(100vh-56px)] text-white">
-      {/* <header className="border-b border-zinc-800 p-4">
-        <div className="font-bold text-green-400">{roomId}</div>
-
-        <div className="text-xs">
-          {isConnected ? "🟢 연결됨" : "🔴 연결 안됨"}
-        </div>
-      </header> */}
-      <div className="flex-1">
+    <div className="flex flex-col h-[calc(100vh-56px)]">
+      <div className="flex flex-1 min-h-0">
         <MessageList
           messages={messages}
           myEmail={myEmail}
         />
 
-        <div className="fixed bottom-0 left-0 right-0">
+        <div className="w-40 shrink-0 pt-1 z-0 max-md:hidden">
+          <div className="w-30 h-32 border-2 border-gray-300 relative mx-auto">
+            <Image src="/images/chat/profile2.webp" alt="" className="object-cover" fill />
+          </div>
+        </div>
+      </div>
+
+      <div className="h-20 shrink-0 relative z-50 bg-white border-t border-gray-200">
         <ChatInput
           disabled={!isConnected || isPending}
           onSend={mutate}
         />
-        </div>
-      </div>
-      <div className="w-40 pt-1">
-        <div className="w-30 h-32 border-2 border-gray-300 relative mx-auto">
-          <Image src="/images/chat/profile2.webp" alt="" className="object-cover" fill />
-        </div>
       </div>
     </div>
   );

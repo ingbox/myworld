@@ -16,10 +16,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         total: Number(row.visitor_total ?? 0),
         today: Number(row.visitor_today ?? 0),
       },
-
       jukebox: {
         total: Number(row.jukebox_total ?? 0),
         today: Number(row.jukebox_today ?? 0),
+      },
+      board: {
+        total: Number(row.board_total ?? 0),
+        today: Number(row.board_today ?? 0),
       },
     };
 

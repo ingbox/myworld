@@ -10,9 +10,7 @@ export default async function Page({
   const { id } = await params;
 
   const content = await getBoardContent(Number(id));
-
-  console.log("@@@@:", content);
-
+  
   return (
     <div className="h-[540px] px-7 py-5 overflow-scroll">
       <div className="font-bold py-[6px]">

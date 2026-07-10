@@ -10,19 +10,12 @@ export default function MessageList({
   myEmail,
 }: Props) {
   return (
-    <div className="overflow-y-auto p-4 space-y-2 bg-white">
+    <div className="flex-1 overflow-y-scroll p-4 space-y-2 bg-white">
       {messages.map((msg) => {
         const isMe = msg.sender === myEmail;
 
         return (
-          <div
-            key={msg.id}
-            // className={`flex ${
-            //   isMe
-            //     ? "justify-end"
-            //     : "justify-start"
-            // }`}
-          >
+          <div key={msg.id}>
             <div>
               <div className="text-sm text-zinc-500">
                 {msg.name}님의 말:

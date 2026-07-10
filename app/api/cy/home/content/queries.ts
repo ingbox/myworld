@@ -28,7 +28,17 @@ SELECT
     WHERE deleted_at IS NULL 
     AND created_at >= CURRENT_DATE 
     AND created_at < CURRENT_DATE + INTERVAL '1 day'
-  ) AS jukebox_today;
+  ) AS jukebox_today,
+
+  -- board
+
+  (SELECT COUNT(*) FROM board WHERE deleted_at IS NULL) AS board_total,
+
+  (SELECT COUNT(*) FROM board
+    WHERE deleted_at IS NULL 
+    AND created_at >= CURRENT_DATE 
+    AND created_at < CURRENT_DATE + INTERVAL '1 day'
+  ) AS board_today;
 `;
 
 export const SELECT_JUKEBOX_TOTAL_COUNT = `

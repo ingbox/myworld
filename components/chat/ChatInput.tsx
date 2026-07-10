@@ -17,11 +17,8 @@ export default function ChatInput({
 
   const handleSend = () => {
     if (!input.trim()) return;
-
     onSend(input.trim());
-
     setInput("");
-
     textareaRef.current?.focus();
   };
 
