@@ -3,7 +3,7 @@ import { auth } from '@/app/auth';
 
 import ChatRoom from "@/components/admin/chat/ChatRoom";
 
-export default async function Page({
+export default async function Page({ 
   params,
 }: {
   params: Promise<{ room: string }>;
