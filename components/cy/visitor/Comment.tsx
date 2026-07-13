@@ -1,5 +1,5 @@
 'use client'
-import { deleteComment } from "@/app/actions/cy/visitor";
+import { deleteComment } from "@/lib/services/cy/visitor/action";
 
 export default function Comment({ user, comment }: { user: any, comment: any }) {
 

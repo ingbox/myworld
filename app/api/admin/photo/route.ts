@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {  INSERT_PHOTO } from './queries';
+import { INSERT_PHOTO } from './queries';
 import pool from '@/lib/db';
 
 // ====== POST Handler – 사진첩 생성 ======

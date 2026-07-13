@@ -1,6 +1,5 @@
 // app/actions/cy/auth.ts
 'use server';
-
 import { signIn } from '@/app/auth';
 
 // ====== Google 로그인 처리 ======

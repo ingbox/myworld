@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { getProfileImage } from "@/app/actions/common/home";
 import LeftWrapper from "@/components/layout/container/main/LeftWrapper";
 import RightWrapper from "@/components/layout/container/main/RightWrapper";
+import { getProfileImage } from "@/lib/services/common/home/profile/service";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
-    const profileImage = await getProfileImage({ userEmail: 'ingbox01@gmail.com' });
+    const profileImage = await getProfileImage('ingbox01@gmail.com');
 
     return (
         <div className="flex max-md:flex-col">

@@ -1,20 +1,40 @@
-import { getJukeboxList } from "@/app/actions/cy/jukebox";
+import { Suspense } from "react";
+import { getJukeboxList } from "@/lib/services/cy/jukebox/service";
 import Queue from "@/components/cy/jukebox/Queue";
+import QueueSkeleton from "@/components/cy/jukebox/QueueSkeleton.tsx";
 
-export default async function Page(props: { searchParams: { page: string } }) {
+// 1. 부모 Page 컴포넌트에서 Next.js가 넣어주는 searchParams(Promise 형태)를 받습니다.
+export default function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  return (
+    <Suspense fallback={<QueueSkeleton />}>
+      <JukeboxContent searchParams={searchParams} />
+    </Suspense>
+  );
+}
 
-  const param = await props.searchParams;
-  const page = param.page ? param.page : '1';
-  
-  const tempJukebox = await getJukeboxList(Number(page));
+// 3. 자식 컴포넌트는 넘겨받은 Promise를 내부(<Suspense> 안쪽)에서 안전하게 await 합니다.
+async function JukeboxContent({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const param = await searchParams;
+  const page = Number(param.page ?? "1");
+
+  const tempJukebox = await getJukeboxList(page);
   const jukeboxList = tempJukebox.jukebox;
 
   const limitPage = 10;
-  const totalPage = Math.ceil(jukeboxList.totalCount / limitPage);
-  const currentPage = Number(page);
-  // 현재 페이지가 속한 그룹의 시작/끝 계산
-  const pageGroupSize = 5; // 한 번에 보여줄 페이지네이션 버튼 개수
+  const totalPage = Math.ceil(tempJukebox.totalCount / limitPage);
+  const currentPage = page;
+
+  const pageGroupSize = 5;
   const currentGroup = Math.floor((currentPage - 1) / pageGroupSize);
+
   const startPage = currentGroup * pageGroupSize + 1;
   const endPage = Math.min(startPage + pageGroupSize - 1, totalPage);
 
@@ -24,8 +44,15 @@ export default async function Page(props: { searchParams: { page: string } }) {
   );
 
   return (
-    <div>
-      <Queue pageInfo={{startPage: startPage, endPage: endPage, totalPage: totalPage}} jukeboxList={jukeboxList} currentPageList={currentPageList} currentPage={currentPage}/>
-    </div>
+    <Queue
+      pageInfo={{
+        startPage,
+        endPage,
+        totalPage,
+      }}
+      jukeboxList={jukeboxList}
+      currentPageList={currentPageList}
+      currentPage={currentPage}
+    />
   );
 }

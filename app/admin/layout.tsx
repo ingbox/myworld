@@ -1,11 +1,8 @@
-import { auth } from '@/app/auth';
 import UserStats from '@/components/admin/home/UserStats';
-import { getUserStats } from '../actions/common/home';
 import Clip from '@/components/layout/item/Clip';
-
+import { getUserStats } from '@/lib/services/common/stats/service';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-    const session = await auth();
 
     const initStats = await getUserStats();
 

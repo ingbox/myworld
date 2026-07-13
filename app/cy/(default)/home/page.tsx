@@ -1,13 +1,15 @@
-import { getContentCount, getUpdatedNews } from "@/app/actions/cy/home";
+import { Suspense } from "react";
+import { getContentCount, getUpdatedNews } from "@/lib/services/cy/home/content/service";
 import ProfileComment from "@/components/cy/home/ProfileComment";
 import Image from "next/image";
 import Link from "next/link";
+import ProfileCommentFallback from "@/components/cy/home/ProfileCommentFallback";
+
 
 export default async function Page() {
 
-    const content_count = await getContentCount();
+    const contentCount = await getContentCount();
     const updatedNews = await getUpdatedNews();
-
 
     return (
         <div className="h-full px-7 py-5 overflow-auto">
@@ -45,18 +47,18 @@ export default async function Page() {
                         <tbody>
                             <tr>
                                 <td className="border border-gray-300 px-1">
-                                    <Link href="/cy/jukebox" className="inline-block mr-1">쥬크박스 {content_count.jukebox.today}/{content_count.jukebox.total}</Link>
+                                    <Link href="/cy/jukebox" className="inline-block mr-1">쥬크박스 {contentCount.jukebox.today}/{contentCount.jukebox.total}</Link>
                                     {
-                                        content_count.jukebox.today > 0 ?
+                                        contentCount.jukebox.today > 0 ?
                                             <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
                                             :
                                             <></>
                                     }
                                 </td>
                                 <td className="border border-gray-300 px-1">
-                                    <Link href="/cy/photo" className="inline-block mr-1">사진첩 {content_count.photo.today}/{content_count.photo.total}</Link>
+                                    <Link href="/cy/photo" className="inline-block mr-1">사진첩 {contentCount.photo.today}/{contentCount.photo.total}</Link>
                                     {
-                                        content_count.photo.today > 0 ?
+                                        contentCount.photo.today > 0 ?
                                             <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
                                             :
                                             <></>
@@ -65,18 +67,18 @@ export default async function Page() {
                             </tr>
                             <tr>
                                 <td className="border border-gray-300 px-1">
-                                    <Link href="/cy/board" className="inline-block mr-1">게시판 {content_count.board.today}/{content_count.board.total}</Link>
+                                    <Link href="/cy/board" className="inline-block mr-1">게시판 {contentCount.board.today}/{contentCount.board.total}</Link>
                                     {
-                                        content_count.board.today > 0 ?
+                                        contentCount.board.today > 0 ?
                                             <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
                                             :
                                             <></>
                                     }
                                 </td>
                                 <td className="border border-gray-300 px-1">
-                                    <Link href="/cy/visitor" className="inline-block mr-1">방명록 {content_count.visitor.today}/{content_count.visitor.total}</Link>
+                                    <Link href="/cy/visitor" className="inline-block mr-1">방명록 {contentCount.visitor.today}/{contentCount.visitor.total}</Link>
                                     {
-                                        content_count.visitor.today > 0 ?
+                                        contentCount.visitor.today > 0 ?
                                             <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />
                                             :
                                             <></>
@@ -106,7 +108,9 @@ export default async function Page() {
                     <span className="absolute font-dotum text-[15px] text-gray-500 right-[-91px] top-[-3px]">~</span>
                 </div>
                 <hr className="border-gray-300" />
-                <ProfileComment />
+                <Suspense fallback={<ProfileCommentFallback/>}>
+                    <ProfileComment />
+                </Suspense>
             </div>
         </div >
     );

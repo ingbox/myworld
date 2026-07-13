@@ -1,8 +1,8 @@
 'use client'
-import { saveUserStats } from "@/app/actions/admin/home";
-import Link from "next/link";
 
 import { useState } from "react";
+import { saveUserStats } from "@/lib/services/common/stats/action";
+import Link from "next/link";
 
 type StatKey = "erotic" | "famous" | "friendly" | "karma" | "kind";
 
@@ -52,7 +52,7 @@ export default function UserStats({ initStats }: any) {
                 <div className="mb-2">
                     {statList.map(({ key, label, color }) => (
                         <div key={key} className="flex items-center gap-4">
-                            <span className="w-[44px] text-[12px] text-gray-600 tracking-[-0.05em]">
+                            <span className="w-[44px] text-[12px] text-gray-600 tracking-tighter">
                                 {label}
                             </span>
                             <div

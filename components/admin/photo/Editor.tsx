@@ -26,8 +26,8 @@ export default function Page({typeList}: {
             {/* Tiptap Editor */}
             <form onSubmit={handleSubmit}>
                 <div className="flex gap-2">
-                    <input className="w-full p-2 border border-gray-300 rounded-sm border" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    <select className="border-1 border-gray-300 rounded-sm" name="photoType" id="photoType" defaultValue={0}>
+                    <input className="w-full p-2 border-gray-300 rounded-sm border" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <select className="border border-gray-300 rounded-sm" name="photoType" id="photoType" defaultValue={0}>
                         <option value="0">선택 안함</option>
                         {
                             typeList.map((list: any) => (

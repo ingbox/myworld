@@ -79,13 +79,6 @@ export default function ChatRoom({
 
   return (
     <div className="flex text-white">
-      {/* <header className="border-b border-zinc-800 p-4">
-        <div className="font-bold text-green-400">{roomId}</div>
-
-        <div className="text-xs">
-          {isConnected ? "🟢 연결됨" : "🔴 연결 안됨"}
-        </div>
-      </header> */}
       <div className="flex-1">
         <MessageList
           messages={messages}

@@ -1,6 +1,5 @@
 'use client'
-
-import { deleteVisitor, editVisitor, reportVisitor, secretVisitor } from "@/app/actions/cy/visitor";
+import { deleteVisitor, editVisitor, reportVisitor, secretVisitor } from "@/lib/services/cy/visitor/action";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -10,11 +9,15 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
   const [editValue, setEditValue] = useState(visitor.content);
 
   const handleSecret = async () => {
-    const confirm = window.confirm('정말 비밀로 하시겠습니까?');
+    const confirm = window.confirm("정말 비밀로 하시겠습니까?");
     if (!confirm) return;
-
-    const response = await secretVisitor(visitor.id)
-  }
+    const response = await secretVisitor(visitor.id);
+  
+    if (!response.success) {
+      alert(response.message);
+      return;
+    }
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -26,16 +29,17 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
   }
 
   const handleEditSave = async () => {
-    const confirm = window.confirm('정말 수정하시겠습니까?');
+    const confirm = window.confirm("정말 수정하시겠습니까?");
     if (!confirm) return;
-    const response = await editVisitor(visitor.id, editValue);
-    if (!response.success) {
-      alert(response.message);
-    } else {
+    try {
+      await editVisitor(visitor.id, editValue);
       setIsEditing(false);
-      // 필요하다면 새로고침 또는 상위 상태 갱신
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
-  }
+  };
 
   const handleDelete = async () => {
     const confirm = window.confirm('정말 삭제하시겠습니까?');
@@ -46,12 +50,11 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
   const handleReport = async () => {
     const confirm = window.confirm('정말 신고하시겠습니까?');
     if (!confirm) return;
-    const response = await reportVisitor({ visitorId: visitor.id, userEmail: user.email });
+    const response = await reportVisitor({ visitorId: visitor.id });
     if (!response.success) {
       alert(response.message);
     }
   }
-
 
   return (
     <>

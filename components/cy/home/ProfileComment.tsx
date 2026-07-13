@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Form from 'next/form';
-import { createProfileComment, getProfileComment } from "@/app/actions/cy/home";
+import { getProfileComment } from "@/lib/services/cy/home/comment/service";
+import { createProfileComment } from "@/lib/services/cy/home/comment/action";
 import { auth } from "@/app/auth";
 
 export default async function ProfileComment() {
@@ -38,10 +39,7 @@ export default async function ProfileComment() {
                         <hr/>
                     </div>
                 ))
-
             }
-
-
         </>
     );
 }

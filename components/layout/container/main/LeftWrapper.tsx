@@ -1,4 +1,4 @@
-import { getVisitCount } from "@/app/actions/common/visit";
+import { getVisitCount } from "@/lib/services/cy/common/visit/service";
 
 export default async function LeftWrapper({ children }: { children: React.ReactNode }) {
 
