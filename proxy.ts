@@ -55,7 +55,7 @@ export async function proxy(request: NextRequest) {
     const visited = request.cookies.get('today')?.value;
 
     if (visited !== today) {
-        await fetch(`${request.nextUrl.origin}/api/common/visit`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/common/visit`, {
             method: 'POST',
         });
 
