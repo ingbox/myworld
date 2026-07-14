@@ -49,14 +49,25 @@ SELECT
     'visitor' AS type
 FROM visitor
 WHERE parent_id IS NULL
+
 UNION ALL
+
 SELECT 
     id,
     title AS content,
     created_at,
     'photo' AS type
 FROM photo
+
+UNION ALL
+
+SELECT
+    id,
+    title AS content,
+    created_at,
+    'board' AS type
+FROM board
 ORDER BY created_at DESC
-LIMIT 4
+LIMIT 4;
 ;
 `;

@@ -24,14 +24,35 @@ export default async function Page() {
                     <hr className="border-gray-300" />
                     {
                         updatedNews.map((item: any) => (
-                            <Link key={item.id + '_' + item.type} href={item.type === 'photo' ? '/cy/photo' : '/cy/visitor'} className="flex items-center gap-1">
+                            <Link
+                                key={item.id + '_' + item.type}
+                                href={
+                                    item.type === 'photo'
+                                        ? '/cy/photo'
+                                        : item.type === 'board'
+                                            ? `/cy/board/${item.id}`
+                                            : '/cy/visitor'
+                                }
+                                className="flex items-center gap-1"
+                            >
                                 <div
-                                    className={`text-xs text-white rounded ${item.type === 'photo' ? 'bg-[#a4717a]' : 'bg-[#7a95b3]'
-                                        } px-[2px] shrink-0`}
+                                    className={`text-xs text-white rounded px-[2px] shrink-0 ${item.type === 'photo'
+                                            ? 'bg-[#a4717a]'
+                                            : item.type === 'board'
+                                                ? 'bg-[#6b9b6d]'
+                                                : 'bg-[#7a95b3]'
+                                        }`}
                                 >
-                                    {item.type === 'photo' ? '사진첩' : '방명록'}
+                                    {item.type === 'photo'
+                                        ? '사진첩'
+                                        : item.type === 'board'
+                                            ? '게시판'
+                                            : '방명록'}
                                 </div>
-                                <div className="min-w-[83px] truncate text-sm">{item.content}</div>
+
+                                <div className="min-w-[83px] truncate text-sm">
+                                    {item.content}
+                                </div>
                             </Link>
                         ))
                     }

@@ -51,21 +51,20 @@ export default async function Layout({ searchParams }: Props) {
                 <>
                     {
                         user ?
-                            <div className="px-7 py-5">
+                            <div className="px-7 py-5 max-md:px-2 max-md:py-2">
                                 <div className='flex gap-2 bg-gray-50 border-y-2 border-gray-200 pt-4 pb-2 px-4'>
-                                    <div className="w-30 h-30 bg-white flex items-center justify-center overflow-hidden rounded">
+                                    <div className="relative w-30 h-30 max-md:w-15 max-md:h-15 bg-white flex items-center justify-center overflow-hidden rounded">
                                         <Image
                                             src={user?.image || '/images/cy/noimage.jpg'}
                                             alt="preview"
-                                            width={120}
-                                            height={120}
+                                            fill
                                             className="object-contain w-full h-full"
                                             unoptimized
                                         />
                                     </div>
                                     <Form className="flex-1 flex flex-col" action={createVisitor}>
                                         <textarea
-                                            className="w-full h-30 text-[15px] text-gray-600 bg-white border border-gray-300 p-1"
+                                            className="w-full h-30 text-[15px] text-gray-600 bg-white border border-gray-300 p-1 max-md:h-15"
                                             name="content"
                                             minLength={1}
                                             maxLength={1000}
@@ -93,7 +92,7 @@ export default async function Layout({ searchParams }: Props) {
                 </>
 
                 {/* 방명록 */}
-                <div className="px-7" >
+                <div className="px-7 max-md:px-2" >
                     {
                         visitorList.visitors.map((visitor: any, index: number) => (
                             <div className='w-full min-h-[180px] border-t border-gray-200 mb-8' key={visitor.id}>
@@ -106,7 +105,7 @@ export default async function Layout({ searchParams }: Props) {
                                         {
                                             visitor.comments.map((comment: any) => (
                                                 <div key={comment.id} className="w-full">
-                                                    <span className="break-all text-[15px] text-gray-500 font-ginto leading-6 align-middle">
+                                                    <span className="break-all text-sm text-gray-500 font-ginto leading-6 align-middle">
                                                         {comment.user_name} : {comment.content}
                                                         <span className="text-[11px] text-gray-400 font-ginto align-middle"> ({comment.created_at_formatted})</span>
                                                         {/* 댓글 삭제 버튼 */}

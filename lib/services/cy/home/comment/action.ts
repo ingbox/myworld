@@ -2,7 +2,7 @@
 
 import pool from "@/lib/db";
 import { updateTag } from "next/cache";
-import { INSERT_PROFILE_COMMENT } from "./queries";
+import { INSERT_PROFILE_COMMENT, DELETE_PROFILE_COMMENT } from "./queries";
 
 export async function createProfileComment(formData: FormData) {
   const data = {
@@ -22,4 +22,17 @@ export async function createProfileComment(formData: FormData) {
   
   updateTag("profileComment");
   return result.rows[0];
+}
+
+export async function deleteProfileComment(commentId: string) {
+  try {
+    await pool.query(
+      DELETE_PROFILE_COMMENT,
+      [commentId]
+    );
+    updateTag("profileComment");
+  } catch (error) {
+    console.error("deleteComment error:", error);
+    throw new Error("댓글 삭제 실패");
+  }
 }

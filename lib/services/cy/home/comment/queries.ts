@@ -39,3 +39,8 @@ export const INSERT_PROFILE_COMMENT = `
   ) VALUES ($1, $2, $3)
   RETURNING *;
 `;
+
+// -------- 일촌평 삭제하기 ----------
+export const DELETE_PROFILE_COMMENT = `
+  UPDATE profile_comment SET deleted_at = NOW() WHERE id = $1;
+`;

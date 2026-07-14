@@ -67,10 +67,10 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
           <span className="text-[12px] text-[#4a60ab] leading-8 mr-2">
             {getPostNumber}
           </span>
-          <span className="text-[15px] text-[#4a60ab] mr-2">
+          <span className="text-[15px] text-[#4a60ab] mr-2 max-sm:text-[10px]">
             {visitor.user_name}
           </span>
-          <span className="text-[13px] text-gray-400 font-ginto leading-8">
+          <span className="text-[13px] text-gray-400 font-ginto leading-8 max-sm:text-[10px]">
             ({visitor.created_at_formatted})
           </span>
         </div>
@@ -80,18 +80,18 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
             {
               (user?.email === visitor.user_email && !visitor.is_secret) &&
               <>
-                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer" onClick={handleSecret}>
+                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleSecret}>
                   비밀로 하기
                 </span>
                 <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
               </>
             }
           </div>
-
+            
           {
             (user?.email === visitor.user_email) &&
             <>
-              <span className="text-[14px] text-gray-500 leading-8 cursor-pointer" onClick={handleEdit}>
+              <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleEdit}>
                 수정
               </span>
               <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
@@ -102,7 +102,7 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
             {
               user?.email === visitor.user_email &&
               <>
-                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer" onClick={handleDelete}>
+                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleDelete}>
                   삭제
                 </span>
                 <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
@@ -112,14 +112,14 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
 
           {
             user &&
-            <span className="text-[14px] text-gray-500 leading-8 cursor-pointer" onClick={handleReport}>
+            <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleReport}>
               신고
             </span>
           }
         </div>
       </div>
       <div className="pt-4 px-4 flex mb-8">
-        <div className="w-30 h-30 bg-white flex items-center justify-center overflow-hidden rounded mr-4">
+        <div className="w-30 h-30 max-md:w-15 max-md:h-15 bg-white flex items-center justify-center overflow-hidden rounded mr-4">
           <Image
             src={visitor.profile_image_url || '/images/cy/noimage.jpg'}
             alt=""
@@ -132,7 +132,7 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
         <div className="flex-1">
           {
             (visitor.is_secret && !isEditing) &&
-            <div className="flex items-center h-6 gap-1 ">
+            <div className="flex items-center gap-1">
               <Image src="/images/visitor/lock2.png" width={12} height={12} alt=""></Image>
               <p className="text-[13px] text-[#b5b18c] leading-5">비밀이야(이 글은 홈주인과 작성자만 볼 수 있어요)</p>
             </div>
@@ -156,7 +156,7 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
               </div>
             </form>
           ) : (
-            <p className="text-[15px] text-gray-600 pl-1">{visitor.content}</p>
+            <p className="text-gray-600 pl-1 text-sm">{visitor.content}</p>
           )}
         </div>
       </div>
