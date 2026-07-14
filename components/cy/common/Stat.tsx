@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { getUserStats } from '@/lib/services/common/stats/service';
+import StatMob from './StatMob';
 
 type StatKey = "erotic" | "famous" | "friendly" | "karma" | "kind";
 
@@ -20,32 +21,37 @@ export default async function Stat() {
     ];
 
     return (
-        <div className="mb-2">
-            {statList.map(({ key, label, color }) => (
-                <div key={key} className="flex items-center gap-2">
-                    <span className="w-[44px] text-[12px] text-gray-600 tracking-tighter">
-                        {label}
-                    </span>
-                    <div
-                        className="relative w-20 h-[5px] bg-gray-200"
-                    >
+        <div className="mb-2 max-md:mb-0">
+            <div className="hidden md:block">
+                {statList.map(({ key, label, color }) => (
+                    <div key={key} className="flex items-center gap-2">
+                        <span className="w-[44px] text-[12px] text-gray-600 tracking-tighter">
+                            {label}
+                        </span>
                         <div
-                            className="absolute top-0 left-0 h-[5px]"
-                            style={{
-                                width: `${Number(stats[key]?.value)}%`,
-                                backgroundColor: color,
-                            }}
-                        />
-                    </div>
-                    <div className="w-[12px] h-[12px] bg-gray-100 border border-gray-300 flex justify-center items-center">
-                        <Image src={Number(stats[key]?.diff) > 0 ? '/images/common/arrow-up.svg' : '/images/common/minus.svg'} width={10} height={10} alt="" />
-                    </div>
+                            className="relative w-20 h-[5px] bg-gray-200"
+                        >
+                            <div
+                                className="absolute top-0 left-0 h-[5px]"
+                                style={{
+                                    width: `${Number(stats[key]?.value)}%`,
+                                    backgroundColor: color,
+                                }}
+                            />
+                        </div>
+                        <div className="w-[12px] h-[12px] bg-gray-100 border border-gray-300 flex justify-center items-center">
+                            <Image src={Number(stats[key]?.diff) > 0 ? '/images/common/arrow-up.svg' : '/images/common/minus.svg'} width={10} height={10} alt="" />
+                        </div>
 
-                    <div className="min-w-[18px] text-[12px] text-gray-600">
-                        {Number(stats[key]?.value)}
+                        <div className="min-w-[18px] text-[12px] text-gray-600">
+                            {Number(stats[key]?.value)}
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            <div className="block md:hidden">
+                <StatMob stats={stats} />
+            </div>
         </div>
     );
 }

@@ -41,7 +41,9 @@ export default function Navigation() {
     ]
 
     return (
-        <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]">
+        <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]
+        max-md:fixed max-md:top-[160px]
+        ">
             {navigation.map((item) => {
                 const isActive =
                     pathname === item.href ||

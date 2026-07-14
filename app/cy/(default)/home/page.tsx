@@ -12,7 +12,7 @@ export default async function Page() {
     const updatedNews = await getUpdatedNews();
 
     return (
-        <div className="h-full px-7 py-5 overflow-auto">
+        <div className="h-full px-7 py-5 overflow-auto max-md:px-2 max-md:py-2">
             {/* 상단 */}
             <div className="flex w-full mb-3 gap-2">
                 {/* 최근 게시물 */}
@@ -27,12 +27,11 @@ export default async function Page() {
                             <Link key={item.id + '_' + item.type} href={item.type === 'photo' ? '/cy/photo' : '/cy/visitor'} className="flex items-center gap-1">
                                 <div
                                     className={`text-xs text-white rounded ${item.type === 'photo' ? 'bg-[#a4717a]' : 'bg-[#7a95b3]'
-                                        } px-[2px]`}
+                                        } px-[2px] shrink-0`}
                                 >
                                     {item.type === 'photo' ? '사진첩' : '방명록'}
                                 </div>
-                                <div className="text-sm">{item.content}</div>
-
+                                <div className="min-w-[83px] truncate text-sm">{item.content}</div>
                             </Link>
                         ))
                     }
@@ -43,7 +42,7 @@ export default async function Page() {
                     <div className="h-[22px]">
                     </div>
 
-                    <table className="w-full table-fixed border-collapse bg-[#f8f8f8] text-[12px] text-[#697ea8] leading-5">
+                    <table className="w-full table-fixed border-collapse bg-[#f8f8f8] text-[12px] text-[#697ea8] leading-5 max-sm:text-[9px]">
                         <tbody>
                             <tr>
                                 <td className="border border-gray-300 px-1">
@@ -96,11 +95,18 @@ export default async function Page() {
                     <span>Mini Room</span>
                     <span className="absolute font-ginto font-light text-[8px] text-gray-400 tracking-wide right-[-80px] top-[3px]">EXPRESS YOURSELF</span>
                 </div>
-                <Image src="/images/miniroom.png" width="616" height="300" alt="" />
+                <div className="relative w-full max-w-[616px] aspect-616/300">
+                    <Image
+                        src="/images/miniroom.png"
+                        alt=""
+                        fill
+                        className="object-fill md:object-fill max-md:object-contain"
+                    />
+                </div>
             </div>
 
             {/* 하단 */}
-            <div className="w-full h-[300px]">
+            <div className="w-full h-[300px] max-md:h-auto">
                 <div className="inline-block relative font-ginto font-semibold text-xs text-[#459ebe] tracking-wide">
                     <span>What friends say</span>
                     <span className="absolute font-diary text-[10px] text-gray-500 right-[-73px] top-[3px]">한마디로 표현해</span>
@@ -108,7 +114,7 @@ export default async function Page() {
                     <span className="absolute font-dotum text-[15px] text-gray-500 right-[-91px] top-[-3px]">~</span>
                 </div>
                 <hr className="border-gray-300" />
-                <Suspense fallback={<ProfileCommentFallback/>}>
+                <Suspense fallback={<ProfileCommentFallback />}>
                     <ProfileComment />
                 </Suspense>
             </div>

@@ -12,31 +12,35 @@ export default async function Layout({ children }: { children: React.ReactNode }
             <LeftWrapper>
                 {/* 프로필 */}
                 <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5
-                max-md:flex max-md:h-auto
+                max-md:flex max-md:h-auto max-md:gap-2 max-md:p-2
                 ">
                     {/* 프사 */}
-                    <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2">
+                    <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2
+                    max-md:w-[30%] max-md:h-auto
+                    ">
                         <Image src={profileImage} style={{ objectFit: "cover" }} fill alt="" />
                     </div>
 
                     {/* TODAY IS.. */}
-                    <div className="w-full h-[26px] border-2 border-gray-200 rounded-sm shadow-xs px-2 mb-2">
-                        <span className="font-ginto font-bold text-[10px] text-[#459ebe] leading-6 tracking-wide">TODAY IS..</span>
-                        <Image className="inline ml-2" src="/images/common/happy.png" width={13} height={13} alt="" />
-                    </div>
+                    <div className="max-md:flex max-md:flex-col max-md:flex-1">
+                        <div className="w-full h-[26px] border-2 border-gray-200 rounded-sm shadow-xs px-2 mb-2 max-md:mb-1">
+                            <span className="font-ginto font-bold text-[10px] text-[#459ebe] leading-6 tracking-wide">TODAY IS..</span>
+                            <Image className="inline ml-2" src="/images/common/happy.png" width={13} height={13} alt="" />
+                        </div>
 
-                    {/* 상태 메시지 */}
-                    <div className="h-[150px]">
-                        <p className="text-sm text-blue-400">안녕하세요!</p>
-                        <p className="text-sm text-blue-400">여기는 이름의 미니홈피 입니다</p>
-                        <p className="text-sm text-blue-400">만나서 반갑습니다 ♡.(*⌒⌒*)~♡</p>
-                    </div>
+                        {/* 상태 메시지 */}
+                        <div className="h-[150px] max-md:h-auto max-md:mb-1">
+                            <p className="text-sm text-blue-400 max-sm:text-xs">안녕하세요!</p>
+                            <p className="text-sm text-blue-400 max-sm:text-xs">여기는 이름의 미니홈피 입니다</p>
+                            <p className="text-sm text-blue-400 max-sm:text-xs">만나서 반갑습니다 ♡.(*⌒⌒*)~♡</p>
+                        </div>
 
-                    <div className="mt-auto">
-                        <p className="text-[10px]">▸ HISTORY</p>
-                        <hr />
-                        <p className="font-bold text-[#4a60ab] mt-2">임지섭</p>
-                        <p className="text-sm text-[#f4a562]">ingbox01@gmail.com</p>
+                        <div className="mt-auto">
+                            <p className="text-[10px]">▸ HISTORY</p>
+                            <hr />
+                            <p className="font-bold text-[#4a60ab] mt-2 max-sm:text-sm max-md:mt-0">임지섭</p>
+                            <p className="text-sm text-[#f4a562] max-sm:text-xs">ingbox01@gmail.com</p>
+                        </div>
                     </div>
                 </div>
             </LeftWrapper>

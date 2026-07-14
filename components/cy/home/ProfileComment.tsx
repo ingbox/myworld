@@ -20,7 +20,9 @@ export default async function ProfileComment() {
                     <input type="hidden" name="user_email" value={user?.email || ''} />
                     <span className="text-[13px] text-[#459ebe] font-bold tracking-wide">Friends say</span>
                     <Image src="/images/cy/home/sun.svg" className="inline-block" width={16} height={16} alt="" />
-                    <input type="text" name="content" className="inline-block w-[450px] h-[26px] bg-white border border-gray-300 px-1" placeholder="일촌과 나누고 싶은 이야기를 남겨보세요~!" />
+                    <input type="text" name="content" className="inline-block w-[450px] h-[26px] bg-white border border-gray-300 px-1
+                    max-md:w-full
+                    " placeholder="일촌과 나누고 싶은 이야기를 남겨보세요~!" />
                     <button type="submit" className="w-[40px] h-[26px] bg-white border border-gray-300 shadow">확인</button>
                 </Form>
             }
