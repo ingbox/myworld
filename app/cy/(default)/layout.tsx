@@ -16,7 +16,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 ">
                     {/* 프사 */}
                     <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2
-                    max-md:w-[30%] max-md:h-auto
+                    max-md:w-[30%] max-md:h-auto 
                     ">
                         <Image src={profileImage} style={{ objectFit: "cover" }} fill alt="" />
                     </div>
