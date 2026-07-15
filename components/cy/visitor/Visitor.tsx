@@ -12,7 +12,7 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
     const confirm = window.confirm("정말 비밀로 하시겠습니까?");
     if (!confirm) return;
     const response = await secretVisitor(visitor.id);
-  
+
     if (!response.success) {
       alert(response.message);
       return;
@@ -79,42 +79,90 @@ export default function Visitor({ user, visitor, getPostNumber }: { user: any, v
           <div>
             {
               (user?.email === visitor.user_email && !visitor.is_secret) &&
-              <>
-                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleSecret}>
+              <div className="flex">
+                <span
+                  className="block max-md:hidden text-[14px] text-gray-500 leading-8 cursor-pointer"
+                  onClick={handleSecret}
+                >
                   비밀로 하기
                 </span>
+                <Image
+                  src="/images/visitor/secret.svg"
+                  alt=""
+                  width={15}
+                  height={15}
+                  className="hidden max-md:block cursor-pointer"
+                  onClick={handleSecret}
+                />
                 <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
-              </>
+              </div>
             }
           </div>
-            
+
           {
             (user?.email === visitor.user_email) &&
-            <>
-              <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleEdit}>
+            <div className="flex">
+              {/* 데스크톱 */}
+              <span
+                className="block max-md:hidden text-[14px] text-gray-500 leading-8 cursor-pointer"
+                onClick={handleEdit}
+              >
                 수정
               </span>
+              <Image
+                src="/images/visitor/edit.svg"
+                alt=""
+                width={15}
+                height={15}
+                className="hidden max-md:block cursor-pointer"
+                onClick={handleEdit}
+              />
               <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
-            </>
+              {/* 모바일 */}
+            </div>
           }
 
           <div>
             {
               user?.email === visitor.user_email &&
-              <>
-                <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleDelete}>
+              <div className="flex">
+                <span
+                  className="block max-md:hidden text-[14px] text-gray-500 leading-8 cursor-pointer"
+                  onClick={handleDelete}
+                >
                   삭제
                 </span>
+                <Image
+                  src="/images/visitor/delete.svg"
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="hidden max-md:block cursor-pointer"
+                  onClick={handleDelete}
+                />
                 <span className="text-[14px] text-gray-500 leading-8 px-1">|</span>
-              </>
+              </div>
             }
           </div>
 
           {
             user &&
-            <span className="text-[14px] text-gray-500 leading-8 cursor-pointer max-sm:text-[10px]" onClick={handleReport}>
-              신고
-            </span>
+            <div className="flex">
+              <span
+                className="block max-md:hidden text-[14px] text-gray-500 leading-8 cursor-pointer"
+                onClick={handleReport}
+              >
+                신고
+              </span>
+              <Image
+                src="/images/visitor/report.svg"
+                alt=""
+                width={14}
+                height={14}
+                className="hidden max-md:block cursor-pointer"
+                onClick={handleReport}
+              />
+            </div>
           }
         </div>
       </div>

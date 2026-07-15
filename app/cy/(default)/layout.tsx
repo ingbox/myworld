@@ -8,7 +8,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const profileImage = await getProfileImage('ingbox01@gmail.com');
 
     return (
-        <div className="flex max-md:flex-col">
+        <div className="flex w-full max-md:flex-col">
             <LeftWrapper>
                 {/* 프로필 */}
                 <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5

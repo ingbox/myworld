@@ -6,9 +6,9 @@ import RightWrapper from "@/components/layout/container/main/RightWrapper";
 export default function Layout({ children }: { children: React.ReactNode }) {
 
     return (
-        <>
+        <div className="flex w-full max-md:flex-col">
             <LeftWrapper>
-                <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
+                <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5 max-md:h-auto">
                     <div>
                         <span className="text-gray-600 pl-[20px] pb-1 block">Profile</span>
                         <hr className="border-dashed border-gray-200 mt-1" />
@@ -21,6 +21,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <RightWrapper >
                 {children}
             </RightWrapper >
-        </>
+        </div>
     )
 }
