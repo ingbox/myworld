@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import ProfileCommentFallback from "@/components/cy/home/ProfileCommentFallback";
 
-
 export default async function Page() {
 
     const contentCount = await getContentCount();
