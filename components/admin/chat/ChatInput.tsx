@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   disabled: boolean;
@@ -14,14 +14,21 @@ export default function ChatInput({
   const [input, setInput] = useState("");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isSendingRef = useRef(false);
+
+  useEffect(() => {
+    if (!disabled) {
+      isSendingRef.current = false;
+    }
+  }, [disabled]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || disabled || isSendingRef.current) return;
 
-    onSend(input.trim());
-
+    isSendingRef.current = true;
+    const message = input.trim();
     setInput("");
-
+    onSend(message);
     textareaRef.current?.focus();
   };
 
@@ -33,6 +40,11 @@ export default function ChatInput({
         disabled={disabled}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
+          // 한글 IME 조합 중 Enter → 전송하지 않음 (조합 확정용 Enter)
+          if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+          // Enter 키 꾹 누름 반복 방지
+          if (e.repeat) return;
+
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleSend();
@@ -54,6 +66,7 @@ export default function ChatInput({
         }}
       />
       <button
+        type="button"
         disabled={disabled || !input.trim()}
         onClick={handleSend}
         className="
