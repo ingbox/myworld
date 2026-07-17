@@ -1,28 +1,30 @@
 "use client"
 
-import { createRoom } from "@/app/actions/chat";
+import { createRoom } from "@/lib/services/chat/action";
+import { useSession } from "next-auth/react"
 
-export default function ChatButton({user_email}: {user_email?: string}) {
+export default function ChatButton() {
 
-    const handleClick = async() => {
-        if(!user_email) {
-            alert("로그인 후에 이용 가능합니다.")
-            return
-        }
-        const response = await createRoom(user_email);
+  const { data: session, status } = useSession()
 
-        // if(response) {
-            window.open(`/chat/e2303af3-893a-4dc5-8630-e1d42828b43b`, "_blank", "width=420,height=700");
-        // }
-        
+  const handleClick = async () => {
+    if (!session?.user?.email) {
+      alert("로그인 후에 이용 가능합니다.")
+      return
     }
-      
-      return (
-        <button
-          onClick={() => handleClick()}
-          className="flex-1 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs"
-        >
-          채팅하기
-        </button>
-      );
+    const response = await createRoom(session?.user?.email ?? "");
+
+    if (response) {
+      window.open(`/chat/${response.id}`, "_blank", "width=420,height=700");
+    }
+  }
+
+  return (
+    <button
+      onClick={() => handleClick()}
+      className="flex-1 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs"
+    >
+      채팅하기
+    </button>
+  );
 }

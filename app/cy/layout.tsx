@@ -4,11 +4,13 @@ import Jukebox from "@/components/layout/Jukebox";
 import Link from "next/link";
 // import { GoogleSignIn } from "@/app/actions/cy/auth";
 
-// import ChatButton from "@/components/cy/common/ChatButton";
 import Clip from "@/components/layout/item/Clip";
 
 import Stat from "@/components/cy/common/Stat";
 import NavigationFallback from "@/components/layout/item/Navigation/FallbackNavigation";
+import ChatButton from "@/components/cy/common/ChatButton";
+import LoginButton from "@/components/cy/common/LoginButton";
+import { SessionProvider } from "next-auth/react";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     return (
@@ -36,7 +38,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                 </div>
 
-                <div className="w-[240px] max-md:w-full max-md:flex max-sm:flex-col max-md:order-first max-md:mb-1 max-sm:mb-0 max-md:gap-1 max-sm:gap-0">
+                <div className="w-[240px] max-md:w-full max-md:flex max-sm:flex-col max-md:order-first max-md:mb-3 max-sm:mb-0 max-md:gap-1 max-sm:gap-2">
                     <div>
                         <div className="h-6 font-ginto text-[11px] text-white leading-6 bg-[#676566] text-center tracking-wide rounded-md">
                             <Link href="/cy/home">GO BACK HOME</Link>
@@ -53,16 +55,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             </div>
                             <hr className="border-gray-200 max-md:hidden" />
 
-                            {/* <div className="flex w-full absolute left-0 bottom-[-10px] max-h-[18px] justify-center items-center px-4">
-                            <ChatButton user_email={user?.email} />
-                            {!user && (
-                                <form className="flex-1" action={GoogleSignIn}>
-                                    <button className="w-full h-7 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs">
-                                        로그인
-                                    </button>
-                                </form>
-                            )}
-                        </div> */}
+                            <div className="flex w-full absolute left-0 bottom-[-10px] max-h-[18px] justify-center items-center px-4">
+                                <SessionProvider>
+                                    <ChatButton />
+                                    <LoginButton />
+                                </SessionProvider>
+                            </div>
                         </div>
                     </div>
 

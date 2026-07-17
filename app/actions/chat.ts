@@ -1,29 +1,11 @@
 // app/actions/admin/home.ts
 'use server';
-import { getBaseUrl } from '@/app/actions/url';
-
 interface ChatMessage {
   id: string;
   room_id: string;
   sender: string;
   message: string;
   created_at: string;
-}
-
-// ====== 채팅창 만들기 ======
-export async function createRoom(user_email: string) {
-
-  const url = getBaseUrl();
-
-  const response = await fetch(`${url}/api/chat/room`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user_email }),
-  });
-
-  return "success"
 }
 
 // ====== 채팅 메시지 조회 ======

@@ -10,17 +10,6 @@ const app = new Elysia({ prefix: "/api/chat" })
       result: result.rows,
     };
   })
-  // 방 생성
-  .post("/room", async ({ body }) => {
-    const { user_email } = body;
-    const result = await pool.query(CREATE_ROOM, [user_email]);
-    const room = result.rows[0];
-    return { result: room };
-  }, {
-    body: t.Object({
-      user_email: t.String()
-    })
-  });
 
 export const GET = app.fetch;
 export const POST = app.fetch;
