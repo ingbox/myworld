@@ -1,112 +1,234 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { NextReactP5Wrapper } from '@p5-wrapper/next';
-import { type Sketch, type SketchProps } from '@p5-wrapper/react';
+// NextReactP5Wrapper는 CSR 전용이므로 런타임에 직접 임포트하여 사용합니다.
+import type { Sketch, SketchProps } from '@p5-wrapper/react';
+import Matter from 'matter-js';
 
 type MySketchProps = SketchProps & {
+  width: number;
+  height: number;
+};
+
+// 1. 스케치 함수 정의 (p5 및 matter cleanup 내장)
+const createSketch = (): Sketch<MySketchProps> => (p5) => {
+  const BASE_WIDTH = 1000;
+  const BASE_HEIGHT = 600;
+  let currentWidth = BASE_WIDTH;
+  let currentHeight = BASE_HEIGHT;
+
+  // Matter.js 모듈 선언
+  const { Engine, World, Bodies, Mouse, MouseConstraint } = Matter;
+  let engine: Matter.Engine;
+  let world: Matter.World;
+  let mConstraint: Matter.MouseConstraint;
+
+  // 단어 클래스 정의 (수학적 크기 계산으로 p5 의존성 제거)
+  class WordBody {
+    text: string;
+    size: number;
+    color: string;
+    body: Matter.Body;
     width: number;
     height: number;
-};
 
-const sketch: Sketch<MySketchProps> = (p5) => {
-    // 1. 디자인 기준이 되는 가상의 원본 해상도 (예: 1000 x 500)
-    const BASE_WIDTH = 1000;
-    const BASE_HEIGHT = 500;
+    constructor(x: number, y: number, text: string, size: number, color: string) {
+      this.text = text;
+      this.size = size;
+      this.color = color;
 
-    // 현재 실제 캔버스 크기
-    let currentWidth = BASE_WIDTH;
-    let currentHeight = BASE_HEIGHT;
+      // 수학적으로 충돌 박스 크기 계산 (textSize 에러 방지)
+      this.width = this.text.length * (this.size * 0.72) + 15;
+      this.height = this.size * 1.0;
 
-    p5.setup = () => {
-        p5.createCanvas(currentWidth, currentHeight);
-    };
+      // Matter.js 사각형 물리 바디 생성
+      this.body = Bodies.rectangle(x, y, this.width, this.height, {
+        restitution: 0.4,
+        friction: 0.1,
+        density: 0.01,
+      });
 
-    p5.updateWithProps = (props) => {
-        if (!props) return;
+      // 물리 세계에 바디 추가
+      World.add(world, this.body);
+    }
 
-        if (props.width && props.height) {
-            currentWidth = props.width;
-            currentHeight = props.height;
-            p5.resizeCanvas(currentWidth, currentHeight);
-        }
-    };
+    show() {
+      const pos = this.body.position;
+      const angle = this.body.angle;
 
-    p5.draw = () => {
-        p5.background(245); // 이제 배경색이 캔버스 전체에 꽉 찹니다.
+      p5.push();
+      p5.translate(pos.x, pos.y);
+      p5.rotate(angle);
+      p5.fill(this.color);
+      p5.noStroke();
+      p5.textSize(this.size);
+      p5.text(this.text, 0, 0);
+      p5.pop();
+    }
+  }
 
-        const scaleX = currentWidth / BASE_WIDTH;
-        const scaleY = currentHeight / BASE_HEIGHT;
+  let words: WordBody[] = [];
+  const wordData = [
+    { text: "취업준비", size: 90, color: '#b8730e' },
+    { text: "재테크", size: 70, color: '#611612' },
+    { text: "음악", size: 60, color: '#611612' },
+    { text: "사랑", size: 55, color: '#333333' },
+    { text: "헬스", size: 50, color: '#b8730e' },
+    { text: "찬물샤워", size: 45, color: '#611612' },
+    { text: "코딩테스트준비", size: 40, color: '#b8730e' },
+    { text: "건강챙기기", size: 35, color: '#b8730e' },
+    { text: "드래그 해 주세요", size: 35, color: '#611612' },
+    { text: "맛집", size: 30, color: '#b8730e' },
+    { text: "옷", size: 30, color: '#b8730e' },
+  ];
 
-        p5.push();
-        // ⭐️ 중요: 하나의 고정 배율 대신 가로(scaleX), 세로(scaleY)를 각각 따로 적용합니다.
-        p5.scale(scaleX, scaleY);
+  // 물리 엔진 초기화 함수
+  const initPhysics = () => {
+    // 기존 물리 세성 정리 (중복 생성 방지 핵심)
+    if (engine) {
+      World.clear(world, false);
+      Engine.clear(engine);
+    }
 
-        // 마우스 좌표도 가로/세로 각각의 비율로 나누어 보정합니다.
-        const scaledMouseX = p5.mouseX / scaleX;
-        const scaledMouseY = p5.mouseY / scaleY;
+    engine = Engine.create();
+    world = engine.world;
+    world.gravity.y = 1.0;
 
-        p5.fill(0);
-        p5.circle(scaledMouseX, scaledMouseY, 40);
+    // 경계 생성
+    const ground = Bodies.rectangle(BASE_WIDTH / 2, BASE_HEIGHT + 30, BASE_WIDTH, 100, { isStatic: true });
+    const leftWall = Bodies.rectangle(-30, BASE_HEIGHT / 2, 100, BASE_HEIGHT, { isStatic: true });
+    const rightWall = Bodies.rectangle(BASE_WIDTH + 30, BASE_HEIGHT / 2, 100, BASE_HEIGHT, { isStatic: true });
+    World.add(world, [ground, leftWall, rightWall]);
 
-        p5.textSize(20);
-        p5.text(`Base: ${BASE_WIDTH} x ${BASE_HEIGHT}`, 20, 30);
-        p5.text(`Real: ${Math.round(currentWidth)} x ${Math.round(currentHeight)}`, 20, 60);
-        p5.text(`Scale: X(${(scaleX * 100).toFixed(0)}%) Y(${(scaleY * 100).toFixed(0)}%)`, 20, 90);
-
-        p5.pop();
-    };
-};
-
-export default function Page() {
-    const wrapperRef = useRef<HTMLDivElement>(null);
-
-    const [size, setSize] = useState({
-        width: 0,
-        height: 0,
+    // 단어 배치
+    words = wordData.map((item, idx) => {
+      const startX = p5.random(200, BASE_WIDTH - 200);
+      const startY = -100 - (idx * 80);
+      return new WordBody(startX, startY, item.text, item.size, item.color);
     });
 
-    useEffect(() => {
-        if (!wrapperRef.current) return;
+    // 마우스 제약 조건 설정 (타입 단언 추가)
+    const canvasElement = p5.canvas as HTMLCanvasElement;
+    if (canvasElement) {
+      const mouse = Mouse.create(canvasElement);
+      mConstraint = MouseConstraint.create(engine, {
+        mouse: mouse,
+        constraint: {
+          stiffness: 0.2,
+          render: { visible: false }
+        }
+      });
+      World.add(world, mConstraint);
+    }
+  };
 
-        const initialRect = wrapperRef.current.getBoundingClientRect();
+  p5.setup = () => {
+    p5.createCanvas(currentWidth, currentHeight);
+    p5.textAlign(p5.CENTER, p5.CENTER);
+    initPhysics();
+  };
+
+  p5.updateWithProps = (props) => {
+    if (!props) return;
+    if (props.width && props.height) {
+      if (currentWidth !== props.width || currentHeight !== props.height) {
+        currentWidth = props.width;
+        currentHeight = props.height;
+        p5.resizeCanvas(currentWidth, currentHeight);
+        initPhysics(); // 화면 크기 변경 시 물리 리셋
+      }
+    }
+  };
+
+  p5.draw = () => {
+    p5.background(255);
+
+    const scaleX = currentWidth / BASE_WIDTH;
+    const scaleY = currentHeight / BASE_HEIGHT;
+    const currentScale = Math.min(scaleX, scaleY);
+
+    p5.push();
+    p5.scale(currentScale);
+
+    const offsetX = (currentWidth / currentScale - BASE_WIDTH) / 2;
+    const offsetY = (currentHeight / currentScale - BASE_HEIGHT) / 2;
+    p5.translate(offsetX, offsetY);
+
+    // [해결] setPosition 에러 방지 - 마우스 좌표 직접 대입
+    if (mConstraint && mConstraint.mouse) {
+      const actualMouseX = p5.mouseX / currentScale - offsetX;
+      const actualMouseY = p5.mouseY / currentScale - offsetY;
+      
+      mConstraint.mouse.position.x = actualMouseX;
+      mConstraint.mouse.position.y = actualMouseY;
+    }
+
+    if (engine) {
+      Engine.update(engine);
+    }
+
+    for (const word of words) {
+      word.show();
+    }
+
+    p5.pop();
+  };
+
+  // ⭐️⭐️⭐️ [중복 캔버스 해결 핵심] p5 인스턴스 언마운트 시 클린업
+  (p5 as any).cleanup = () => {
+    if (engine) {
+      World.clear(world, false);
+      Engine.clear(engine);
+    }
+    p5.remove(); // DOM에서 캔버스 완벽 제거
+  };
+};
+
+// 2. 메인 컴포넌트
+export default function WordCloudPhysicsPage() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  // p5-wrapper 컴포넌트를 클라이언트 사이드에서만 로드하기 위한 상태
+  const [P5Wrapper, setP5Wrapper] = useState<any>(null);
+  const sketchRef = useRef<Sketch<MySketchProps>>(createSketch());
+
+  // [CSS 해결] 부모 크기 동적 감지
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const initialRect = wrapperRef.current.getBoundingClientRect();
+    setSize({ width: initialRect.width, height: initialRect.height });
+
+    const observer = new ResizeObserver(([entry]) => {
+      if (!entry) return;
+      requestAnimationFrame(() => {
         setSize({
-            width: initialRect.width,
-            height: initialRect.height,
+          width: entry.contentRect.width,
+          height: entry.contentRect.height,
         });
+      });
+    });
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-        const observer = new ResizeObserver(([entry]) => {
-            if (!entry) return;
-            requestAnimationFrame(() => {
-                setSize({
-                    width: entry.contentRect.width,
-                    height: entry.contentRect.height,
-                });
-            });
-        });
+  // ⭐️⭐️⭐️ [next/dynamic 없이 CSR 구현] 마운트 시점에만 p5-wrapper 임포트
+  useEffect(() => {
+    import('@p5-wrapper/next').then((mod) => {
+      setP5Wrapper(() => mod.NextReactP5Wrapper);
+    });
+  }, []);
 
-        observer.observe(wrapperRef.current);
-
-        return () => observer.disconnect();
-    }, []);
-
-    // Page 컴포넌트의 return 부분
-    return (
-        <div
-            ref={wrapperRef}
-            // 부모 배경색을 p5 캔버스 배경색과 같은 회색 계열(bg-[#f5f5f5])로 맞추고 
-            // flex-col, items-center, justify-center로 캔버스를 가운데 딱 붙입니다.
-            className="relative w-full h-full min-h-[500px] bg-[#f5f5f5] overflow-hidden flex items-center justify-center"
-        >
-            {size.width > 0 && size.height > 0 && (
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                    <NextReactP5Wrapper
-                        sketch={sketch}
-                        width={size.width}
-                        height={size.height}
-                    />
-                </div>
-            )}
+  return (
+    <div ref={wrapperRef} className="relative w-full h-full min-h-[500px] overflow-hidden bg-white">
+      {size.width > 0 && size.height > 0 && P5Wrapper && (
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+          <P5Wrapper
+            sketch={sketchRef.current}
+            width={size.width}
+            height={size.height}
+          />
         </div>
-    );
+      )}
+    </div>
+  );
 }

@@ -4,6 +4,7 @@ import ProfileComment from "@/components/cy/home/ProfileComment";
 import Image from "next/image";
 import Link from "next/link";
 import ProfileCommentFallback from "@/components/cy/home/ProfileCommentFallback";
+import MiniRoom from "@/components/cy/home/MiniRoom/MiniRoom";
 
 
 export default async function Page() {
@@ -116,14 +117,7 @@ export default async function Page() {
                     <span>Mini Room</span>
                     <span className="absolute font-ginto font-light text-[8px] text-gray-400 tracking-wide right-[-80px] top-[3px]">EXPRESS YOURSELF</span>
                 </div>
-                <div className="relative w-full max-w-[616px] aspect-616/300">
-                    <Image
-                        src="/images/miniroom.png"
-                        alt=""
-                        fill
-                        className="object-fill md:object-fill max-md:object-contain"
-                    />
-                </div>
+                <MiniRoom />
             </div>
 
             {/* 하단 */}

@@ -5,7 +5,7 @@ export default function Page() {
     <>
       <div className="w-full h-[350px] relative mb-4">
         <Image
-          src="/images/profile/my/banff.jpg"
+          src="/images/profile/my/banff.JPG"
           fill
           objectFit="cover"
           sizes="(max-width: 768px) 100%, (max-width: 1200px) 100%, 100% "
