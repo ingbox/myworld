@@ -8,11 +8,21 @@ const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-const GET_MESSAGES = `
+const GET_MESSAGES_LATEST = `
 SELECT *
 FROM chats
 WHERE room_id = $1
-ORDER BY created_at ASC;
+ORDER BY created_at DESC
+LIMIT $2;
+`;
+
+const GET_MESSAGES_BEFORE = `
+SELECT *
+FROM chats
+WHERE room_id = $1
+  AND created_at < $2::timestamptz
+ORDER BY created_at DESC
+LIMIT $3;
 `;
 
 const INSERT_MESSAGE = `
@@ -59,10 +69,29 @@ const app = new Elysia()
     },
   })
 
-  .get("/messages/:roomId", async ({ params }) => {
-    const result = await pool.query(GET_MESSAGES, [params.roomId]);
-    return result.rows;
-  })
+  .get(
+    "/messages/:roomId",
+    async ({ params, query }) => {
+      const limit = Math.min(Math.max(Number(query.limit) || 20, 1), 50);
+
+      const result = query.before
+        ? await pool.query(GET_MESSAGES_BEFORE, [
+            params.roomId,
+            query.before,
+            limit,
+          ])
+        : await pool.query(GET_MESSAGES_LATEST, [params.roomId, limit]);
+
+      // DB는 최신순(DESC)으로 가져온 뒤, 화면 표시용으로 시간순(ASC)으로 뒤집음
+      return result.rows.reverse();
+    },
+    {
+      query: t.Object({
+        limit: t.Optional(t.String()),
+        before: t.Optional(t.String()),
+      }),
+    },
+  )
 
   .post(
     "/message",
