@@ -1,7 +1,7 @@
 export type DayColor = 'default' | 'sunday' | 'saturday' | 'holiday';
 
 /** 월별 캘린더 한 칸 */
-export type CalendarCell = {
+export type CalendarCell = { 
   type: 'empty' | 'day';
   date: Date | null;
   day: number | null;
