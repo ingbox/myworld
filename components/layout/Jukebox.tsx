@@ -4,7 +4,7 @@ import Image from "next/image"
 import { usePlayerStore } from "@/stores/usePlayerStore"
 
 export default function Jukebox() {
-
+ 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
