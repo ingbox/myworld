@@ -12,10 +12,16 @@ export default function LoginButton() {
     }
 
     return (
-        <form className="flex-1" action={GoogleSignIn}>
-            <button className="w-full h-7 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs">
-                로그인
-            </button>
-        </form>
+        <>
+        {session?.user ? (
+            <></>
+        ) : (
+            <form className="flex-1" action={GoogleSignIn}> 
+                <button className="flex-1 w-full text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs">
+                    로그인
+                </button>
+            </form>
+        )}
+        </>
     );
 }

@@ -1,34 +1,65 @@
 import { create } from 'zustand'
 
-export type Track = {
+/** 주크박스 DB 곡 정보 */
+export type TrackSource = {
   id: string
   title: string
   artist: string
   download_url: string
 }
 
+/** 재생 큐에 올라간 항목 — 추가할 때마다 queueId 부여 */
+export type Track = TrackSource & {
+  queueId: string
+}
+
 type PlayerStore = {
   queue: Track[]
   currentIndex: number
-  addToQueue: (tracks: Track[]) => void
-  removeFromQueue: (id: string) => void
+  addToQueue: (tracks: TrackSource[]) => void
+  removeFromQueue: (queueId: string) => void
   clearQueue: () => void
   playNext: () => void
   playPrev: () => void
   setCurrentIndex: (index: number) => void
 }
 
-export const usePlayerStore = create<PlayerStore>((set, get) => ({
+function createQueueId() {
+  return crypto.randomUUID()
+}
+
+export const usePlayerStore = create<PlayerStore>((set) => ({
   queue: [],
   currentIndex: 0,
   addToQueue: (tracks) =>
     set((state) => ({
-      queue: [...state.queue, ...tracks],
+      queue: [
+        ...state.queue,
+        ...tracks.map((track) => ({
+          ...track,
+          queueId: createQueueId(),
+        })),
+      ],
     })),
-  removeFromQueue: (id) =>
-    set((state) => ({
-      queue: state.queue.filter((track) => track.id !== id),
-    })),
+  removeFromQueue: (queueId) =>
+    set((state) => {
+      const removeIndex = state.queue.findIndex((track) => track.queueId === queueId)
+      if (removeIndex === -1) return state
+
+      const queue = state.queue.filter((track) => track.queueId !== queueId)
+      let currentIndex = state.currentIndex
+
+      if (removeIndex < state.currentIndex) {
+        currentIndex = state.currentIndex - 1
+      } else if (removeIndex === state.currentIndex) {
+        currentIndex = Math.min(state.currentIndex, queue.length - 1)
+      }
+
+      return {
+        queue,
+        currentIndex: queue.length === 0 ? 0 : Math.max(0, currentIndex),
+      }
+    }),
   clearQueue: () => set({ queue: [], currentIndex: 0 }),
   playNext: () =>
     set((state) => ({

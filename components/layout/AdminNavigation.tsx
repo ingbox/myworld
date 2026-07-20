@@ -30,10 +30,10 @@ export default function AdminNavigation() {
             name: '게시판',
             href: '/admin/board',
         },
-        {
-            name: '동영상',
-            href: '/admin/video',
-        },
+        // {
+        //     name: '동영상',
+        //     href: '/admin/video',
+        // },
         {
             name: '방명록',
             href: '/admin/visitor',

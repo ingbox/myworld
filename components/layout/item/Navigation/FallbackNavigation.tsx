@@ -8,7 +8,6 @@ export default function NavigationFallback() {
         "쥬크박스",
         "사진첩",
         "게시판",
-        "동영상",
         "방명록",
     ];
 

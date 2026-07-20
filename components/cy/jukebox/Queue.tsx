@@ -25,58 +25,62 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
   };
 
   return (
-    <div className="p-4 space-y-3">
+    <div className="min-w-0 w-full p-4 space-y-3">
       <button
         onClick={handlePlay}
         className="px-3 py-[2px] text-gray-600 bg-[#fcfcfc] rounded-xs border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
         듣기
       </button>
-      {/* 리스트 */}
-      <table className="table-fixed text-left w-full mt-2 border-t border-gray-400">
-        <thead className="bg-[#f2f2f2]">
-          <tr key={"head"} className="text-[15px]">
-            <th className="font-light text-gray-600 w-10 px-2">
-              <Image src="/images/jukebox/checkbox.svg" width={15} height={15} alt="" />
-            </th>
-            <th className="font-light text-gray-600 w-7 text-center">번호</th>
-            <th className="w-8"></th>
-            <th className="font-light text-gray-600 ">곡명</th>
-            <th className="font-light text-gray-600">아티스트</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jukeboxList.map((track: any) => (
-            <tr 
-            key={track.id}
-            className="text-[#3e4b64] leading-[1.1]
-                          bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
-                          bg-size-[3px_1px] bg-repeat-x bg-bottom text-[15px]
-                          ">
-              <td className="py-1 px-2">
-                <input
-                  type="checkbox"
-                  checked={selected.has(track.id)}
-                  onChange={() => toggleSelect(track.id)}
-                />
-              </td>
-              <td className="py-1 text-xs text-center">{track.id}</td>
-              <td></td>
-              <td className="py-1">{track.title}</td>
-              <td className="py-1">{track.artist}</td>
+
+      <div className="mt-2 w-full overflow-x-auto">
+        <table className="w-full min-w-[280px] table-fixed text-left border-t border-gray-400">
+          <colgroup>
+            <col className="w-9" />
+            <col className="w-8 max-sm:hidden" />
+            <col />
+            <col className="" />
+          </colgroup>
+          <thead className="bg-[#f2f2f2]">
+            <tr key={"head"} className="text-sm">
+              <th className="px-2 font-light text-gray-600">
+                <Image src="/images/jukebox/checkbox.svg" width={15} height={15} alt="" />
+              </th>
+              <th className="text-center font-light text-gray-600 max-sm:hidden">번호</th>
+              <th className="font-light text-gray-600">곡명</th>
+              <th className="font-light text-gray-600">아티스트</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* 듣기 버튼 */}
+          </thead>
+          <tbody>
+            {jukeboxList.map((track: any) => (
+              <tr
+                key={track.id}
+                className="text-[#3e4b64] leading-[1.1]
+                          bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)]
+                          bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm
+                          ">
+                <td className="px-2 py-1">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(track.id)}
+                    onChange={() => toggleSelect(track.id)}
+                  />
+                </td>
+                <td className="py-1 text-center text-xs max-sm:hidden">{track.id}</td>
+                <td className="min-w-0 truncate py-1 pr-2">{track.title}</td>
+                <td className="min-w-0 truncate py-1 pr-2">{track.artist}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <button
         onClick={handlePlay}
         className="px-3 py-[2px] text-gray-600 rounded-xs bg-[#f8f8f8] border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
         듣기
       </button>
 
-
-
-      <div className="px-7">
+      <div className="px-2 sm:px-7">
           <div className="flex justify-center items-center py-6">
               <nav className="inline-flex" aria-label="Pagination">
                 {pageInfo.startPage > 1 && (

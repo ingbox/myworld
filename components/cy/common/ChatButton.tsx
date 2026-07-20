@@ -20,11 +20,17 @@ export default function ChatButton() {
   }
 
   return (
-    <button
-      onClick={() => handleClick()}
-      className="flex-1 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs"
-    >
-      채팅하기
-    </button>
+    <>
+      {session?.user ? (
+        <button
+          onClick={() => handleClick()}
+          className="flex-1 text-gray-700 text-xs bg-[#fed452] border border-[#b3a75f] rounded-xs"
+        >
+          채팅하기
+        </button>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

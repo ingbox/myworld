@@ -14,11 +14,13 @@ export default function Jukebox() {
     const [previousVolume, setPreviousVolume] = useState(0);
 
     const progress = duration ? (currentTime / duration) * 100 : 0;
+    const loadedQueueIdRef = useRef<string | null>(null);
 
-    const { queue, currentIndex, playNext, playPrev } = usePlayerStore()
+    const { queue, currentIndex, playNext, playPrev, removeFromQueue } = usePlayerStore()
+    const currentTrack = queue[currentIndex];
 
     const togglePlayButton = () => {
-        if (!audioRef.current) return;
+        if (!audioRef.current || queue.length === 0) return;
 
         if (isPlaying) {
             audioRef.current.pause();
@@ -38,11 +40,14 @@ export default function Jukebox() {
         }
 
         const handleEnded = () => {
-            if (queue[currentIndex + 1] == undefined) {
+            const { queue: latestQueue, currentIndex: latestIndex } = usePlayerStore.getState();
+
+            if (latestIndex >= latestQueue.length - 1) {
                 setIsPlaying(false);
-            } else {
-                playNext();
+                return;
             }
+
+            playNext();
         };
 
         audio.addEventListener("timeupdate", updateTime);
@@ -54,17 +59,35 @@ export default function Jukebox() {
             audio.removeEventListener("loadedmetadata", updateTime);
             audio.removeEventListener("ended", handleEnded);
         };
-    }, [queue, playNext]);
+    }, [playNext]);
 
     useEffect(() => {
-        if (!audioRef.current) return;
-        if (!queue[currentIndex]) return;
+        const audio = audioRef.current;
+        if (!audio) return;
 
-        audioRef.current.src = queue[currentIndex].download_url;
-        audioRef.current.play();
+        if (queue.length === 0) {
+            loadedQueueIdRef.current = null;
+            audio.pause();
+            audio.removeAttribute('src');
+            audio.load();
+            setIsPlaying(false);
+            setCurrentTime(0);
+            setDuration(0);
+            return;
+        }
 
+        if (!currentTrack) return;
+
+        // 큐에만 곡 추가된 경우 — 현재 재생 중인 트랙이면 src 재설정하지 않음
+        if (loadedQueueIdRef.current === currentTrack.queueId) {
+            return;
+        }
+
+        loadedQueueIdRef.current = currentTrack.queueId;
+        audio.src = currentTrack.download_url;
+        audio.play();
         setIsPlaying(true);
-    }, [currentIndex, queue]);
+    }, [queue.length, currentIndex, currentTrack?.queueId, currentTrack?.download_url]);
 
     const formatTime = (time: number) => {
         const minutes = Math.floor(time / 60);
@@ -91,6 +114,10 @@ export default function Jukebox() {
             playPrev();
         }
     };
+
+    const handleDelete = (queueId: string) => {
+        removeFromQueue(queueId);
+    }
 
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const vol = parseInt(e.target.value);
@@ -119,8 +146,8 @@ export default function Jukebox() {
     return (
         <>
             {/* 오디오 플레이어 */}
-            <audio src={queue[currentIndex]?.download_url} ref={audioRef}></audio>
-            <div className="w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1">
+            <audio ref={audioRef} />
+            <div className="md:max-w-[210px] w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1">
                 <div
                     onClick={() => setIsOpen(prev => !prev)}
                     className="flex items-center h-4 bg-white rounded-xs px-1 py-2 cursor-pointer mb-1"
@@ -128,15 +155,15 @@ export default function Jukebox() {
                     <Image src="/images/jukebox/cd.png" width={12} height={12} alt="" />
                     <div className="ml-2 w-42 overflow-hidden">
                         <div
-                            key={queue[currentIndex]?.id}
+                            key={currentTrack?.queueId}
                             className="text-xs text-gray-500 marquee whitespace-nowrap">
-                            {queue[currentIndex]?.title}
+                            {currentTrack?.title}
                         </div>
                     </div>
                 </div>
                 {
                     isOpen && (
-                        <div>
+                        <div className="max-md:hidden">
                             <div className="flex items-center justify-center gap-2">
                                 <span className="text-xs text-gray-400">{formatTime(currentTime)}</span>
                                 <input
@@ -155,12 +182,27 @@ export default function Jukebox() {
                             {queue.length === 0 ? (
                                 <div className="text-xs text-gray-400">재생 목록이 비어있음</div>
                             ) : (
-                                queue.map((item, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="text-xs text-gray-500 truncate"
-                                    >
-                                        {item.title ?? `track ${idx}`}
+                                queue.map((item) => (
+                                    <div key={item.queueId} className="flex items-center justify-between">
+                                        <div
+                                            className="text-xs text-gray-500 truncate"
+                                        >
+                                            {item.title ?? 'track'}
+                                        </div>
+
+                                        <svg
+                                            width="13"
+                                            height="13"
+                                            viewBox="0 0 100 100"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="inline align-middle ml-1 cursor-pointer shrink-0"
+                                            style={{ verticalAlign: 'middle' }}
+                                            onClick={() => handleDelete(item.queueId)}
+                                        >
+                                            <rect width="100" height="100" fill="transparent" stroke="#6B7280" strokeWidth="5" />
+                                            <line x1="20" y1="20" x2="80" y2="80" stroke="#6B7280" strokeWidth="5" />
+                                            <line x1="80" y1="20" x2="20" y2="80" stroke="#6B7280" strokeWidth="5" />
+                                        </svg>
                                     </div>
                                 ))
                             )}
