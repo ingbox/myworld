@@ -42,6 +42,7 @@ export default function MessageList({
 
   // 과거 메시지가 위에 prepend 됐을 때만 스크롤 위치 복원
   useLayoutEffect(() => {
+    
     const el = containerRef.current;
     const snapshot = scrollSnapshotRef.current;
     if (!el || !snapshot || messages.length === 0) return;

@@ -31,7 +31,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                         {/* 상태 메시지 */}
                         <div className="h-[150px] max-md:h-auto max-md:mb-1">
                             <p className="text-sm text-blue-400 max-sm:text-xs">안녕하세요!</p>
-                            <p className="text-sm text-blue-400 max-sm:text-xs">여기는 이름의 미니홈피 입니다</p>
+                            <p className="text-sm text-blue-400 max-sm:text-xs">여기는 임지섭님의 미니홈피 입니다</p>
                             <p className="text-sm text-blue-400 max-sm:text-xs">만나서 반갑습니다 ♡.(*⌒⌒*)~♡</p>
                         </div>
 

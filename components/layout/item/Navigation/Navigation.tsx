@@ -30,10 +30,10 @@ export default function Navigation() {
             name: '게시판',
             href: '/cy/board',
         },
-        {
-            name: '동영상',
-            href: '/cy/video',
-        },
+        // {
+        //     name: '동영상',
+        //     href: '/cy/video',
+        // },
         {
             name: '방명록',
             href: '/cy/visitor',

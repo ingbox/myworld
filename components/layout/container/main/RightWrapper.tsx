@@ -27,7 +27,7 @@ export default async function LeftWrapper({ children }: { children: React.ReactN
                         borderBottomLeftRadius: '15px 6px',
                     }}>
                     <div className="h-[40px] pt-3 px-2 max-md:h-auto max-md:pt-0">
-                        <p className="text-lg text-[#4a60ab] font-ginto font-bold">이름님의 미니홈피</p>
+                        <p className="text-lg text-[#4a60ab] font-ginto font-bold">임지섭의 미니홈피</p>
                     </div>
                     <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md max-md:h-auto">
                         {children}

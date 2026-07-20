@@ -16,7 +16,7 @@ export default function AdminNavigation() {
         },
         {
             name: '다이어리',
-            href: '/admin/diary',
+            href: '/admin/diary/calendar',
         },
         {
             name: '쥬크박스',
