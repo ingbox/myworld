@@ -242,7 +242,7 @@ export default function DayTimeline({ events, date }: DayTimelineProps) {
             ))}
           </div>
         )}
-      </div>
+      </div> 
 
       {/* max-sm : 세로 progress bar */}
       <div className="sm:hidden">
