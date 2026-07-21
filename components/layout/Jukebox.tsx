@@ -147,13 +147,13 @@ export default function Jukebox() {
         <>
             {/* 오디오 플레이어 */}
             <audio ref={audioRef} />
-            <div className="md:max-w-[210px] w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1">
+            <div className="md:max-w-[210px] w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1 max-md:max-w-auto">
                 <div
                     onClick={() => setIsOpen(prev => !prev)}
                     className="flex items-center h-4 bg-white rounded-xs px-1 py-2 cursor-pointer mb-1"
                 >
                     <Image src="/images/jukebox/cd.png" width={12} height={12} alt="" />
-                    <div className="ml-2 w-42 overflow-hidden">
+                    <div className="ml-2 w-42 overflow-hidden max-md:w-full">
                         <div
                             key={currentTrack?.queueId}
                             className="text-xs text-gray-500 marquee whitespace-nowrap">

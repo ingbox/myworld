@@ -1,6 +1,7 @@
 // app/actions/admin/photo.ts
 'use server';
 import { getBaseUrl } from '@/app/actions/url';
+import { updateTag } from 'next/cache';
 
 // ====== 사진첩 생성 ======
 export async function createPhoto({ title, content, type }: { title: string, content: string, type: number }) {
@@ -12,13 +13,14 @@ export async function createPhoto({ title, content, type }: { title: string, con
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content, type }),
-      next: { tags: ['photo'] },
     }
   );
 
   if (!response.ok) {
     throw new Error('사진첩 생성 실패');
   }
+
+  updateTag('photoList');
   return response.json();
 }
 

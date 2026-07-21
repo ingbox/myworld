@@ -47,24 +47,28 @@ body,
 
 .simple-editor-wrapper {
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .tiptap-toolbar {
+    flex-shrink: 0;
+  }
 }
 
 .simple-editor-content {
   max-width: 100%;
   width: 100%;
   margin: 0 auto;
-  min-height: 440px;
-  max-height: 440px;
-  display: flex;
-  flex-direction: column;
+  min-height: 0;
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
-  flex: 1;
-  // padding: 1rem 3rem 30vh;
-  min-height: 481px;
+  min-height: 100%;
+  outline: none;
 }
 
 @media screen and (max-width: 480px) {

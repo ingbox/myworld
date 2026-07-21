@@ -158,11 +158,12 @@ function HourTicks({
 }) {
   if (axis === 'horizontal') {
     return (
-      <div className="mb-1 grid grid-cols-24 gap-0">
+      <div className="relative mb-1 h-3">
         {ticks.map((tick) => (
           <span
             key={tick.hour}
-            className="text-center text-[8px] tabular-nums leading-none text-zinc-400 sm:text-[9px]"
+            className="absolute -translate-x-1/2 text-[8px] tabular-nums leading-none text-zinc-400 sm:text-[9px]"
+            style={{ left: `${(tick.hour / TIMELINE_HOUR_COUNT) * 100}%` }}
           >
             {tick.label.replace(':00', '')}
           </span>
@@ -173,31 +174,15 @@ function HourTicks({
 
   return (
     <div className="relative mr-1.5 min-h-[480px] w-9 shrink-0">
-      {ticks.map((tick) => {
-        const isFirst = tick.hour === 0;
-        const isLast = tick.hour === TIMELINE_HOUR_COUNT - 1;
-
-        return (
-          <span
-            key={tick.hour}
-            className={[
-              'absolute right-0 text-right text-[8px] tabular-nums leading-none text-zinc-400',
-              isFirst
-                ? 'top-0 translate-y-0'
-                : isLast
-                  ? 'bottom-0 translate-y-0'
-                  : '-translate-y-1/2',
-            ].join(' ')}
-            style={
-              isFirst || isLast
-                ? undefined
-                : { top: `${(tick.hour / TIMELINE_HOUR_COUNT) * 100}%` }
-            }
-          >
-            {tick.label}
-          </span>
-        );
-      })}
+      {ticks.map((tick) => (
+        <span
+          key={tick.hour}
+          className="absolute right-0 -translate-y-1/2 text-right text-[8px] tabular-nums leading-none text-zinc-400"
+          style={{ top: `${(tick.hour / TIMELINE_HOUR_COUNT) * 100}%` }}
+        >
+          {tick.label}
+        </span>
+      ))}
     </div>
   );
 }

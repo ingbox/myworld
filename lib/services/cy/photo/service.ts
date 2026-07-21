@@ -17,6 +17,7 @@ type PhotoPaginationResult = {
 
 export async function getPhotoList(page: number, type?: number) {
   "use cache";
+  cacheTag("photoList");
   cacheTag(`photoList-${page}-${type ?? 0}`);
 
   const pageNum = Math.max(1, page);
@@ -33,7 +34,6 @@ export async function getPhotoList(page: number, type?: number) {
     SELECT_PHOTO_TOTAL_COUNT,
     [type ?? 0]
   );
-
 
   const result: PhotoPaginationResult = {
     photos: list.rows,

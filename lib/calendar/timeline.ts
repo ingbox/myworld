@@ -59,13 +59,16 @@ export function isSameCalendarDay(a: Date, b: Date): boolean {
 }
 
 export function buildTimelineHours(): TimelineHourSlot[] {
-  return Array.from({ length: TIMELINE_HOUR_COUNT }, (_, hour) => ({
-    hour,
-    label: formatHourLabel(hour),
-  }));
+  return Array.from({ length: TIMELINE_HOUR_COUNT - 1 }, (_, index) => {
+    const hour = index + 1;
+    return {
+      hour,
+      label: formatHourLabel(hour),
+    };
+  });
 }
 
-/** 1시간 간격 tick (00:00 ~ 23:00) — buildTimelineHours() 와 동일 */
+/** 1시간 간격 tick (01:00 ~ 23:00) — buildTimelineHours() 와 동일 */
 export function buildTimelineTickHours(): TimelineHourSlot[] {
   return buildTimelineHours();
 }

@@ -11,10 +11,11 @@ const s3 = new S3Client({
   },
 });
 
-export async function getSignedURL(key: string) {
+export async function getSignedURL(key: string, contentType?: string) {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: key, // 예: 'uploads/filename.png'
+    ...(contentType ? { ContentType: contentType } : {}),
   };
 
   console.log("@@@params", params);
@@ -23,6 +24,7 @@ export async function getSignedURL(key: string) {
 
   const signedURL = await getSignedUrl(s3, command, {
     expiresIn: 60,
+    ...(contentType ? { signableHeaders: new Set(['content-type']) } : {}),
   })
 
   console.log("@@@signedURL", signedURL);

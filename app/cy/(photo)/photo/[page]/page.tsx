@@ -16,10 +16,10 @@ export default async function Page({
   searchParams: Promise<{ type?: number }>;
 }) {
   return (
-    <>
+    <div className="flex w-full max-md:flex-col">
       {/* 왼쪽 카테고리 영역 */}
       <LeftWrapper>
-        <Suspense fallback={<div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 animate-pulse p-5" />}>
+        <Suspense fallback={<div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 animate-pulse p-5 max-md:h-auto" />}>
           <PhotoCategoryContent searchParams={searchParams} />
         </Suspense>
       </LeftWrapper>
@@ -30,7 +30,7 @@ export default async function Page({
           <PhotoListContent params={params} searchParams={searchParams} />
         </Suspense>
       </RightWrapper>
-    </>
+    </div>
   );
 }
 
@@ -47,7 +47,7 @@ async function PhotoCategoryContent({
   const typeList = await getPhotoTypeList();
 
   return (
-    <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 p-5">
+    <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 p-5 max-md:h-auto">
       <div className="mb-4">
         <p className="font-ginto font-light text-[8px] text-gray-400 tracking-wide">SAVE MY MEMORY</p>
         <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">PHOTO ALBUM</p>

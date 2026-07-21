@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { resolveImageMeta } from '@/lib/image-meta';
 import { getSignedURL } from '@/lib/s3';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -8,19 +9,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
       if (!file) throw new Error('파일 없음');
   
-      const contentType = file.type;
-      const ext =
-        contentType.includes('png')
-          ? '.png'
-          : contentType.includes('jpeg')
-          ? '.jpg'
-          : contentType.includes('gif')
-          ? '.gif'
-          : '';
-  
+      const { contentType, ext } = resolveImageMeta(file);
       const key = `cy/photo/${Date.now()}-${file.name.replace(/\.[^/.]+$/, '')}${ext}`;
   
-      const signed = await getSignedURL(key);
+      const signed = await getSignedURL(key, contentType);
       const uploadUrl = signed.success?.url;
   
       if (!uploadUrl) throw new Error('Failed to get signed URL');
