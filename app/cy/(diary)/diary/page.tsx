@@ -1,16 +1,12 @@
-import Calendar from '@/components/cy/diary/Calendar';
-import { getDiaryEvents } from '@/lib/services/cy/diary/service';
-import { Suspense } from 'react';
+import DiaryCalendarView from '@/components/cy/diary/DiaryCalendarView';
+import { Providers } from '@/components/cy/common/Providers';
 
-export default async function Page() {
-
-  const diaryEvents = await getDiaryEvents();
-  
+export default function Page() {
   return (
-    <div className="h-full px-7 py-5 overflow-auto max-md:px-2 max-md:py-2">
-      <Suspense fallback={null}>
-        <Calendar diaryEvents={diaryEvents.events} />
-      </Suspense>
+    <div className="h-full overflow-auto px-7 py-5 max-md:px-2 max-md:py-2">
+      <Providers>
+        <DiaryCalendarView />
+      </Providers>
     </div>
   );
 }

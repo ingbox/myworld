@@ -49,6 +49,7 @@ SELECT
     'visitor' AS type
 FROM visitor
 WHERE parent_id IS NULL
+AND deleted_at IS NULL
 
 UNION ALL
 
@@ -58,6 +59,7 @@ SELECT
     created_at,
     'photo' AS type
 FROM photo
+WHERE deleted_at IS NULL
 
 UNION ALL
 
@@ -67,6 +69,7 @@ SELECT
     created_at,
     'board' AS type
 FROM board
+WHERE deleted_at IS NULL
 ORDER BY created_at DESC
 LIMIT 4;
 ;

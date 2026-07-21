@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createDiaryEvent from "@/lib/services/admin/diary/calendar/action";
+import { diaryKeys } from "@/lib/services/cy/diary/diaryKeys";
 
 const repeatOptions = [
   { value: "none", label: "반복 없음" },
@@ -36,7 +37,7 @@ export default function DiaryEventSettingPage() {
   const mutation = useMutation({
     mutationFn: createDiaryEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["diary-events"] });
+      queryClient.invalidateQueries({ queryKey: diaryKeys.all });
       // 초기화
       setTitle("");
       setAllDay(false);
