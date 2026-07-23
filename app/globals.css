@@ -57,9 +57,9 @@ body {
  *    without disabling user zoom
  * 3. Configurable defaults
  */
- html {
+html {
   -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   font-family: sans-serif;
   /* 1 */
   line-height: 1.4;
@@ -83,9 +83,11 @@ body {
  * Inheriting box-sizing
  * https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
  */
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -moz-box-sizing: inherit;
-       box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 /* ==========================================================================
@@ -251,7 +253,7 @@ figure {
  */
 hr {
   -moz-box-sizing: content-box;
-       box-sizing: content-box;
+  box-sizing: content-box;
   /* 1 */
   height: 0;
   /* 1 */
@@ -445,6 +447,7 @@ optgroup {
   background: #b3d4fc;
   text-shadow: none;
 }
+
 ::selection {
   background: #b3d4fc;
   text-shadow: none;
@@ -567,15 +570,15 @@ textarea {
   margin: 0.5rem 0;
 }
 
-.tiptap ul > li {
+.tiptap ul>li {
   list-style: disc;
 }
 
-.tiptap ul > li li {
+.tiptap ul>li li {
   list-style: circle;
 }
 
-.tiptap ol > li {
+.tiptap ol>li {
   list-style: decimal;
 }
 
@@ -689,7 +692,10 @@ textarea {
   z-index: 2;
   position: absolute;
   content: "";
-  left: 0; right: 0; top: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   background: rgba(200, 200, 255, 0.4);
   pointer-events: none;
 }
@@ -714,54 +720,95 @@ textarea {
    ========================================================================== */
 
 
-   /* 기본 트랙 */
-   .jukebox-range {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 2px;
-    background: #3f3f46;
-  }
-  
-  /* Chrome, Safari */
-  
-  .jukebox-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 8px;
-    background: #e5e7eb;
-    border: 1px solid #8b8b8d;
-    border-radius: 2px !important; /* 🔥 핵심: 완전 네모 */
-    box-shadow: none;
-    margin-top: 0px;
-    cursor: pointer;
-  }
-  
-  /* Firefox */
-  
-  .jukebox-range::-moz-range-thumb {
-    width: 16px;
-    height: 8px;
-    background: #e5e7eb;
-    border: 1px solid #8b8b8d;
-    border-radius: 2px !important; /* 🔥 */
-    box-shadow: none;
-    cursor: pointer;
+/* 기본 트랙 */
+.jukebox-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: #3f3f46;
+}
+
+/* Chrome, Safari */
+
+.jukebox-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 8px;
+  background: #e5e7eb;
+  border: 1px solid #8b8b8d;
+  border-radius: 2px !important;
+  /* 🔥 핵심: 완전 네모 */
+  box-shadow: none;
+  margin-top: 0px;
+  cursor: pointer;
+}
+
+/* Firefox */
+
+.jukebox-range::-moz-range-thumb {
+  width: 16px;
+  height: 8px;
+  background: #e5e7eb;
+  border: 1px solid #8b8b8d;
+  border-radius: 2px !important;
+  /* 🔥 */
+  box-shadow: none;
+  cursor: pointer;
+}
+
+/* 전광판 움직이는 효과 */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
   }
 
-  /* 전광판 움직이는 효과 */
-  @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-  
-    100% {
-      transform: translateX(-100%);
-    }
+  100% {
+    transform: translateX(-100%);
   }
-  
-  .marquee {
-    display: inline-block;
-    padding-left: 100%; /* 처음에 오른쪽에서 시작 */
-    animation: marquee 10s linear infinite;
+}
+
+.marquee {
+  display: inline-block;
+  padding-left: 100%;
+  /* 처음에 오른쪽에서 시작 */
+  animation: marquee 10s linear infinite;
+}
+
+@layer components {
+  .diary-paper {
+    --r: 5px;           /* 구름 반지름 — 4~6px */
+    --c: #b8dce8;       /* 바깥 하늘색 */
+    --line: #9ecfe0;    /* 안쪽 테두리 */
+
+    position: relative;
+    padding: calc(var(--r) + 3px);
+    background-color: #fff;
+
+    /* 네 변에 반원 scallop — 각 변 방향 맞게 따로 그림 */
+    background-image:
+      radial-gradient(circle at 50% 100%, var(--c) calc(var(--r) - 0.5px), transparent var(--r)),
+      radial-gradient(circle at 50% 0%,   var(--c) calc(var(--r) - 0.5px), transparent var(--r)),
+      radial-gradient(circle at 100% 50%,  var(--c) calc(var(--r) - 0.5px), transparent var(--r)),
+      radial-gradient(circle at 0% 50%,   var(--c) calc(var(--r) - 0.5px), transparent var(--r));
+
+    background-size:
+      calc(var(--r) * 2) var(--r),
+      calc(var(--r) * 2) var(--r),
+      var(--r) calc(var(--r) * 2),
+      var(--r) calc(var(--r) * 2);
+
+    background-position:
+      0 0,
+      0 100%,
+      0 0,
+      100% 0;
+
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   }
+
+  .diary-paper-inner {
+    background: #fff;
+    border: none
+  }
+}

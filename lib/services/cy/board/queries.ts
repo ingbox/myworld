@@ -2,7 +2,8 @@ export const GET_BOARD_LIST = `
 SELECT id, title,
   TO_CHAR(created_at AT TIME ZONE 'Asia/Seoul',
   'YYYY.MM.DD'
-  ) AS created_at_formatted
+  ) AS created_at_formatted,
+  view_count
   FROM board
   WHERE 
   deleted_at IS NULL
@@ -31,4 +32,11 @@ FROM board b
 WHERE b.id = $1
 AND deleted_at IS NULL
 LIMIT 1
+`;
+
+export const INCREMENT_BOARD_VIEW = `
+  UPDATE board
+  SET view_count = COALESCE(view_count, 0) + 1
+  WHERE id = $1 AND deleted_at IS NULL
+  RETURNING view_count;
 `;

@@ -1,4 +1,4 @@
-import Calendar from '@/components/cy/diary/Calendar';
+import Calendar from '@/components/admin/diary/Calendar';
 import { getDiaryEvents } from '@/lib/services/cy/diary/service';
 import { Suspense } from 'react';
 

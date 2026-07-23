@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Suspense, use } from "react"; // 💡 use를 추가로 import 합니다.
+import { Suspense } from "react";
 import { getBoardList } from "@/lib/services/cy/board/service";
 
 // 1. 부모 컴포넌트: searchParams를 직접 await하지 않고 자식에게 통째로 넘깁니다.
@@ -32,14 +32,14 @@ async function BoardListContent({
 
   const page = resolvedParams.page ? resolvedParams.page : 1;
   const type = resolvedSearchParams.type ?? 0;
-  
+
   const boardList = await getBoardList(Number(page), type);
 
   const limitPage = 10;
   const totalPage = Math.ceil(boardList.totalCount / limitPage);
   const currentPage = Number(page);
-  
-  const pageGroupSize = 5; 
+
+  const pageGroupSize = 5;
   const currentGroup = Math.floor((currentPage - 1) / pageGroupSize);
   const startPage = currentGroup * pageGroupSize + 1;
   const endPage = Math.min(startPage + pageGroupSize - 1, totalPage);
@@ -53,7 +53,7 @@ async function BoardListContent({
     <div className="h-[540px] px-7 py-5 overflow-scroll">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm bg-[#f2f2f2]">
+          <tr className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm bg-[#f2f2f2] max-md:hidden">
             <th className="w-16 py-[3px] font-normal">번호</th>
             <th className="font-normal">제목</th>
             <th className="w-24 font-normal">작성자</th>
@@ -64,17 +64,32 @@ async function BoardListContent({
         <tbody>
           {boardList?.boards?.map((board: any, index: number) => (
             <tr key={board.id} className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm">
-              <td className="text-center py-[4px]">
+              <td className="text-center py-[4px] max-md:hidden">
                 {Number(boardList.totalCount) - index}
               </td>
-              <td>
+              <td className="max-md:hidden">
                 <Link href={`/cy/board/${board.id}`}>
                   {board.title}
                 </Link>
               </td>
-              <td className="text-center">임지섭</td>
-              <td className="text-center">{board.created_at_formatted}</td>
-              <td className="text-center">{board.view_count ?? 0}</td>
+              <td className="text-center max-md:hidden">임지섭</td>
+              <td className="text-center max-md:hidden">{board.created_at_formatted}</td>
+              <td className="text-center max-md:hidden">{board.view_count ?? 0}</td>
+
+              <td className="md:hidden p-0" colSpan={5}>
+                <Link href={`/cy/board/${board.id}`}>
+                  <div className="flex flex-col w-full py-2">
+
+                    <span className="font-semibold text-[15px] text-gray-800">{board.title}</span>
+
+                    <div className="text-sm text-gray-500 flex justify-between mt-1">
+                      <span>임지섭</span>
+                      <span>{board.created_at_formatted}</span>
+                      <span>{board.view_count ?? 0} 조회</span>
+                    </div>
+                  </div>
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

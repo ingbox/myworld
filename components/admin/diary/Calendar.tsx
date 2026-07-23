@@ -11,8 +11,9 @@ import {
 } from '@/lib/calendar/monthCells';
 import { DiaryEvent } from '@/lib/calendar/types';
 import DayTimeline from '@/components/cy/diary/DayTimeline';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import DiaryList from './DiaryList';
+import Diary from './Diary';
 
 type CalendarProps = {
   diaryEvents: DiaryEvent[];
@@ -128,50 +129,56 @@ export default function Calendar({
 
   return (
     <>
-    <div className="w-full rounded-[10px] border border-zinc-300 bg-white p-4 shadow-sm mb-">
-      <div className="flex flex-col md:flex-row">
-        {/* 왼쪽: 선택 날짜 — 모바일은 상단 가운데, 웹은 왼쪽 세로 */}
-        <div className="flex flex-col items-center justify-center border-b border-dashed border-zinc-300 pb-4 md:w-[88px] md:shrink-0 md:border-b-0 md:border-r md:pr-4 md:pb-0 max-sm:hidden">
-          <div className="font-ginto text-3xl font-bold tracking-tight text-[#5a7f92]">
-            {formatLargeDate(displayDate)}
-          </div>
-          <div className="mt-1 text-sm text-zinc-400">
-            {formatDayLabel(displayDate)}
-          </div>
-        </div>
-
-        {/* 오른쪽: 월 네비 + 날짜 */}
-        <div className="min-w-0 flex-1 pt-4 md:pl-4 md:pt-0">
-          <div className="mb-3 flex justify-center md:justify-start">
-            <MonthNav
-              label={monthLabel}
-              onPrev={() => moveMonth(-1)}
-              onNext={() => moveMonth(1)}
-            />
+      <div className="w-full rounded-[10px] border border-zinc-300 bg-white p-4 shadow-sm mb-">
+        <div className="flex flex-col md:flex-row">
+          {/* 왼쪽: 선택 날짜 — 모바일은 상단 가운데, 웹은 왼쪽 세로 */}
+          <div className="flex flex-col items-center justify-center border-b border-dashed border-zinc-300 pb-4 md:w-[88px] md:shrink-0 md:border-b-0 md:border-r md:pr-4 md:pb-0 max-sm:hidden">
+            <div className="font-ginto text-3xl font-bold tracking-tight text-[#5a7f92]">
+              {formatLargeDate(displayDate)}
+            </div>
+            <div className="mt-1 text-sm text-zinc-400">
+              {formatDayLabel(displayDate)}
+            </div>
           </div>
 
-          {/* 모바일 7열 / 웹 13열 — 같은 cells, hidden 없이 grid만 반응형 */}
-          <div className="grid grid-cols-7 gap-x-1 gap-y-2 md:grid-cols-13 md:gap-y-1">
-            {cells.map((cell, index) => (
-              <DayButton
-                key={`${index}-${cell.day ?? 'empty'}`}
-                cell={cell}
-                selected={isSelected(cell)}
-                onSelect={handleSelect}
+          {/* 오른쪽: 월 네비 + 날짜 */}
+          <div className="min-w-0 flex-1 pt-4 md:pl-4 md:pt-0">
+            <div className="mb-3 flex justify-center md:justify-start">
+              <MonthNav
+                label={monthLabel}
+                onPrev={() => moveMonth(-1)}
+                onNext={() => moveMonth(1)}
               />
-            ))}
+            </div>
+
+            {/* 모바일 7열 / 웹 13열 — 같은 cells, hidden 없이 grid만 반응형 */}
+            <div className="grid grid-cols-7 gap-x-1 gap-y-2 md:grid-cols-13 md:gap-y-1">
+              {cells.map((cell, index) => (
+                <DayButton
+                  key={`${index}-${cell.day ?? 'empty'}`}
+                  cell={cell}
+                  selected={isSelected(cell)}
+                  onSelect={handleSelect}
+                />
+              ))}
+            </div>
+
+            <DayTimeline events={diaryEvents} date={selectedDate} />
+
+
+
           </div>
-
-          <DayTimeline events={diaryEvents} date={selectedDate} />
-
         </div>
+      </div >
+
+      <QueryClientProvider client={queryClient}>
+        <Diary diaryDate={selectedDate.toLocaleDateString('sv-SE')} />
+      </QueryClientProvider>
+
+      <div className="h-10">
+
+        ㅁㄴㅇㄴㅁㅁㄴㅇ
       </div>
-    </div >
-
-
-    <QueryClientProvider client={queryClient}>
-      <DiaryList diaryDate={selectedDate.toLocaleDateString('sv-SE')} />
-    </QueryClientProvider>
     </>
   );
 }

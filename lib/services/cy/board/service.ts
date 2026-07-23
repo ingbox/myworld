@@ -6,7 +6,7 @@ import pool from "@/lib/db";
 import {
   GET_BOARD_LIST,
   SELECT_BOARD_TOTAL_COUNT,
-  GET_BOARD_CONTENT
+  GET_BOARD_CONTENT,
 } from "./queries";
 
 type BoardPaginationResult = {
