@@ -36,7 +36,7 @@ export default function Accordion({ title, image ,items = [], depths = [] }: Acc
           open ? "max-h-96" : "max-h-0"
         }`}
       >
-        <ul className="flex flex-col gap-1 pl-[26px]">
+        <ul className="flex flex-col gap-1 pl-[25px]">
           {items.map((item, idx) => {
             const href = `/cy/profile/${depths[idx][0]}/${depths[idx][1]}`;
             const active = pathname === href;
