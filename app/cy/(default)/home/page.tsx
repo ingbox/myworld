@@ -27,7 +27,7 @@ export default async function Page() {
                                 key={item.id + '_' + item.type}
                                 href={
                                     item.type === 'photo'
-                                        ? '/cy/photo'
+                                        ? '/cy/photo/1'
                                         : item.type === 'board'
                                             ? `/cy/board/${item.id}`
                                             : '/cy/visitor'
@@ -75,7 +75,7 @@ export default async function Page() {
                                     }
                                 </td>
                                 <td className="border border-gray-300 px-1">
-                                    <Link href="/cy/photo" className="inline-block mr-1">사진첩 {contentCount.photo.today}/{contentCount.photo.total}</Link>
+                                    <Link href="/cy/photo/1" className="inline-block mr-1">사진첩 {contentCount.photo.today}/{contentCount.photo.total}</Link>
                                     {
                                         contentCount.photo.today > 0 ?
                                             <Image src="/images/cy/home/new.png" className="inline-block mb-[2px]" width={14} height={14} alt="" />

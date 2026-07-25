@@ -1,7 +1,5 @@
-import Sketch from "@/components/cy/profile/keyword/Sketch";
+import KeywordMaze from "@/components/cy/profile/keyword/KeywordMaze";
 
 export default function Page() {
-  return (
-      <Sketch />
-  );
+  return <KeywordMaze />;
 }

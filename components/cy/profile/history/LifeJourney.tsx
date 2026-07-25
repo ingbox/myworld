@@ -7,6 +7,7 @@ import {
   JOURNEY_STAGES,
   stageHeight,
   stageOpacity,
+  stagePosFromX,
 } from "@/lib/cy/profile/history/stages";
 
 const BG_SRC = "/images/profile/history/journey-bg-wide.png";
@@ -35,8 +36,8 @@ export default function LifeJourney() {
     return () => el.removeEventListener("scroll", updateProgress);
   }, [updateProgress]);
 
-  const stagePos = progress * (JOURNEY_STAGES.length - 1);
   const path = getPathPoint(progress);
+  const stagePos = stagePosFromX(path.x);
   const charLeft = path.x * bgWidth;
   const charBottom = (1 - path.y) * BG_HEIGHT;
   const charHeight = stageHeight(stagePos);

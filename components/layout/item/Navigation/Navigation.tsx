@@ -24,7 +24,7 @@ export default function Navigation() {
         },
         {
             name: '사진첩',
-            href: '/cy/photo',
+            href: '/cy/photo/1',
         },
         {
             name: '게시판',

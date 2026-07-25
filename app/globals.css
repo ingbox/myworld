@@ -875,3 +875,229 @@ textarea {
   pointer-events: none;
   box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
 }
+
+/* keyword maze + memo pad */
+.keyword-maze-root {
+  position: relative;
+  min-height: 480px;
+}
+
+.keyword-maze-quiz {
+  padding-bottom: 72px;
+}
+
+.keyword-maze-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #459ebe;
+}
+
+.keyword-maze-title {
+  margin: 4px 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.keyword-maze-desc {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.keyword-maze-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+}
+
+.keyword-maze-stage {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.keyword-maze-question {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.keyword-maze-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  background: #fff;
+}
+
+.keyword-maze-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.keyword-maze-submit {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #459ebe;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.keyword-maze-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.keyword-memo-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: #459ebe;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgb(69 158 190 / 0.35);
+  cursor: pointer;
+}
+
+.keyword-memo-panel {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: #fffdf5;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.12);
+}
+
+.keyword-memo-panel--closed {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@media (max-width: 767px) {
+  .keyword-memo-panel {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: min(58vh, 420px);
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .keyword-memo-panel {
+    top: 80px;
+    right: 24px;
+    width: min(360px, calc(100vw - 48px));
+    height: min(520px, calc(100vh - 120px));
+    border-radius: 12px;
+  }
+}
+
+.keyword-memo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.keyword-memo-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.keyword-memo-close {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.keyword-memo-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.keyword-memo-tools {
+  display: flex;
+  gap: 6px;
+}
+
+.keyword-memo-tools button,
+.keyword-memo-colors button {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.keyword-memo-tools button {
+  padding: 4px 10px;
+  color: #475569;
+}
+
+.keyword-memo-tools button.is-active {
+  border-color: #459ebe;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.keyword-memo-colors {
+  display: flex;
+  gap: 6px;
+}
+
+.keyword-memo-colors button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+}
+
+.keyword-memo-colors button.is-active {
+  outline: 2px solid #459ebe;
+  outline-offset: 2px;
+}
+
+.keyword-memo-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.keyword-memo-body canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
