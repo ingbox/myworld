@@ -76,6 +76,7 @@ jobs:
             echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
 
             echo "GOOGLE_VERIFICATION=${{ secrets.GOOGLE_VERIFICATION }}" >> .env
+            echo "NAVER_VERIFICATION=${{ secrets.NAVER_VERIFICATION }}" >> .env
 
             pnpm install --frozen-lockfile
             pnpm build

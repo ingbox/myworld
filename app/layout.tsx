@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.GOOGLE_VERIFICATION,
   },
+  other: {
+    'naver-site-verification': process.env.NAVER_VERIFICATION || "",
+  },
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
   icons: {
     icon: "/favicon.ico",
