@@ -75,8 +75,11 @@ jobs:
             echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
             echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
 
+            echo "GOOGLE_VERIFICATION=${{ secrets.GOOGLE_VERIFICATION }}" >> .env
 
             pnpm install --frozen-lockfile
             pnpm build
             pm2 restart next-app || pm2 start pnpm --name next-app -- start
+            pm2 restart chat-server || pm2 start bun --name chat-server -- chat-server.ts
             pm2 save
+  
