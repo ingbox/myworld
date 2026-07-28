@@ -57,8 +57,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                             <div className="flex w-full absolute left-0 -bottom-2.5 max-h-4.5 justify-center items-center px-4">
                                 <SessionProvider>
-                                    <ChatButton />
-                                    <LoginButton />
+                                  <div className="flex w-full items-center">
+                                        <ChatButton />
+                                        <LoginButton />
+                                  </div>
                                 </SessionProvider>
                             </div>
                         </div>
