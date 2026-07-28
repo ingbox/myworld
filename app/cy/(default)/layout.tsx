@@ -11,11 +11,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <div className="flex w-full max-md:flex-col">
             <LeftWrapper>
                 {/* 프로필 */}
-                <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5
+                <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5
                 max-md:flex max-md:h-auto max-md:gap-2 max-md:p-2
                 ">
                     {/* 프사 */}
-                    <div className="relative w-[247px] h-[200px] border-2 border-gray-300 mb-2
+                    <div className="relative w-61.75 h-50 border-2 border-gray-300 mb-2
                     max-md:w-[30%] max-md:h-auto 
                     ">
                         <Image src={profileImage} style={{ objectFit: "cover" }} fill alt="" />

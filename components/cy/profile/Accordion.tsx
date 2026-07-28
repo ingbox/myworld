@@ -12,8 +12,12 @@ type AccordionProps = {
 };
 
 export default function Accordion({ title, image ,items = [], depths = [] }: AccordionProps) {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  const pathSegments = pathname ? pathname.split('/') : [];
+  const [open, setOpen] = useState(
+    !!(depths && depths.length > 0 && depths[0] && pathSegments.length > 3 && depths[0][0] === pathSegments[3])
+  );
 
   return (
     <div>
@@ -36,7 +40,7 @@ export default function Accordion({ title, image ,items = [], depths = [] }: Acc
           open ? "max-h-96" : "max-h-0"
         }`}
       >
-        <ul className="flex flex-col gap-1 pl-[25px]">
+        <ul className="flex flex-col gap-1 pl-6.25">
           {items.map((item, idx) => {
             const href = `/cy/profile/${depths[idx][0]}/${depths[idx][1]}`;
             const active = pathname === href;

@@ -50,11 +50,11 @@ async function BoardListContent({
   );
 
   return (
-    <div className="h-[540px] px-7 py-5 overflow-scroll">
+    <div className="h-135 px-7 py-5 overflow-scroll">
       <table className="w-full border-collapse">
         <thead>
           <tr className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm bg-[#f2f2f2] max-md:hidden">
-            <th className="w-16 py-[3px] font-normal">번호</th>
+            <th className="w-16 py-0.75 font-normal">번호</th>
             <th className="font-normal">제목</th>
             <th className="w-24 font-normal">작성자</th>
             <th className="w-40 font-normal">작성일</th>
@@ -64,7 +64,7 @@ async function BoardListContent({
         <tbody>
           {boardList?.boards?.map((board: any, index: number) => (
             <tr key={board.id} className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm">
-              <td className="text-center py-[4px] max-md:hidden">
+              <td className="text-center py-1 max-md:hidden">
                 {Number(boardList.totalCount) - index}
               </td>
               <td className="max-md:hidden">

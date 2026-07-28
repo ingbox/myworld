@@ -10,5 +10,4 @@ export async function getVisitCount() {
 
   const result = await pool.query(SELECT_VISIT_COUNT);
   return result.rows[0] ?? null;
-
 }

@@ -147,7 +147,7 @@ export default function Jukebox() {
         <>
             {/* 오디오 플레이어 */}
             <audio ref={audioRef} />
-            <div className="md:max-w-[210px] w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1 max-md:max-w-auto">
+            <div className="md:max-w-52.5 w-full bg-[#eeeeee] mt-4 rounded-sm p-1 max-md:mt-1 max-sm:mb-1 max-md:max-w-auto">
                 <div
                     onClick={() => setIsOpen(prev => !prev)}
                     className="flex items-center h-4 bg-white rounded-xs px-1 py-2 cursor-pointer mb-1"
@@ -175,7 +175,7 @@ export default function Jukebox() {
                                     style={{
                                         background: `linear-gradient(to right, #2563eb ${progress}%, #cccccc ${progress}%)`
                                     }}
-                                    className="jukebox-range w-full outline-none h-[2px] bg-zinc-700 appearance-none"
+                                    className="jukebox-range w-full outline-none h-0.5 bg-zinc-700 appearance-none"
                                 />
                                 <span className="text-xs text-gray-400">{formatTime(duration)}</span>
                             </div>
@@ -253,7 +253,7 @@ export default function Jukebox() {
                             type="range"
                             min="0"
                             max="100"
-                            className="w-[50px] outline-none h-[2px] bg-zinc-700 accent-white appearance-none" />
+                            className="w-12.5 outline-none h-0.5 bg-zinc-700 accent-white appearance-none" />
                         {/* 주크박스 페이지 이동 */}
                         <div>
 

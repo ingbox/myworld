@@ -15,7 +15,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <>
             <LeftWrapper>
                 {/* 채팅방 리스트 */}
-                <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
+                <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
                     <ul className="space-y-2">
                         {rooms?.result?.map((item: any) => (
                             <li key={item.id}>

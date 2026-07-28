@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   createMemoSketch,
   type MemoTool,
-} from "@/lib/cy/profile/keyword/createMemoSketch";
+} from "@/lib/cy/profile/intro/keyword/createMemoSketch";
 
 const MEMO_SKETCH = createMemoSketch();
 const STORAGE_KEY = "cy-keyword-memo";

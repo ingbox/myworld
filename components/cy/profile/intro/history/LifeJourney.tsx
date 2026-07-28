@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getPathPoint } from "@/lib/cy/profile/history/path";
+import { getPathPoint } from "@/lib/cy/profile/intro/history/path";
 import {
   JOURNEY_STAGES,
   stageHeight,
   stageOpacity,
   stagePosFromX,
-} from "@/lib/cy/profile/history/stages";
+} from "@/lib/cy/profile/intro/history/stages";
 
 const BG_SRC = "/images/profile/history/journey-bg-wide.png";
 /** .history-bg-root 높이와 동일해야 함 */

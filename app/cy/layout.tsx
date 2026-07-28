@@ -14,7 +14,7 @@ import { SessionProvider } from "next-auth/react";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-w-[1340px] min-h-screen
+        <div className="min-w-335 min-h-screen
         max-md:min-w-0
         "
             style={{
@@ -38,7 +38,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                 </div>
 
-                <div className="w-[240px] max-md:w-full max-md:flex max-sm:flex-col max-md:order-first max-md:mb-3 max-sm:mb-0 max-md:gap-1 max-sm:gap-2">
+                <div className="w-60 max-md:w-full max-md:flex max-sm:flex-col max-md:order-first max-md:mb-3 max-sm:mb-0 max-md:gap-1 max-sm:gap-2">
                     <div>
                         <div className="h-6 font-ginto text-[11px] text-white leading-6 bg-[#676566] text-center tracking-wide rounded-md">
                             <Link href="/cy/home">GO BACK HOME</Link>
@@ -55,7 +55,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             </div>
                             <hr className="border-gray-200 max-md:hidden" />
 
-                            <div className="flex w-full absolute left-0 bottom-[-10px] max-h-[18px] justify-center items-center px-4">
+                            <div className="flex w-full absolute left-0 -bottom-2.5 max-h-4.5 justify-center items-center px-4">
                                 <SessionProvider>
                                     <ChatButton />
                                     <LoginButton />

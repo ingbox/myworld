@@ -95,7 +95,7 @@ export default async function Layout({ searchParams }: Props) {
                 <div className="px-7 max-md:px-2" >
                     {
                         visitorList.visitors.map((visitor: any, index: number) => (
-                            <div className='w-full min-h-[180px] border-t border-gray-200 mb-8' key={visitor.id}>
+                            <div className='w-full min-h-45 border-t border-gray-200 mb-8' key={visitor.id}>
 
                                 {/* 방명록 번호, 이름, 날짜, 수정, 삭제, 비밀, 댓글 */}
                                 <Visitor user={user} visitor={visitor} getPostNumber={getPostNumber(index)} />

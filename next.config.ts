@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
     "192.168.0.15",
   ],
   images: {
-    domains: ['gieokbucket.s3.ap-northeast-2.amazonaws.com'],
+    domains: [
+      'gieokbucket.s3.ap-northeast-2.amazonaws.com',
+      'lh3.googleusercontent.com',
+    ],
   },
   experimental: {
     serverActions: {

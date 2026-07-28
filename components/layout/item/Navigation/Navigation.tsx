@@ -13,6 +13,7 @@ export default function Navigation() {
         {
             name: '프로필',
             href: '/cy/profile',
+            path: '/cy/profile/intro/my'
         },
         {
             name: '다이어리',
@@ -41,18 +42,18 @@ export default function Navigation() {
     ]
 
     return (
-        <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]
-        max-md:fixed max-md:top-[160px]
+        <div className="absolute top-25 right-0.5 flex flex-col gap-0.75
+        max-md:fixed max-md:top-40
         ">
             {navigation.map((item) => {
                 const isActive =
                     pathname === item.href ||
                     pathname.startsWith(`${item.href}/`);
                 return (
-                    <Link href={item.href} key={item.href}>
+                    <Link href={item.path || item.href} key={item.href}>
                         <div
                             className={
-                                `w-[58px] h-[32px] rounded-r-sm border border-[#787c84] text-center text-[13px] leading-[32px] 
+                                `w-14.5 h-8 rounded-r-sm border border-[#787c84] text-center text-[13px] leading-8 
                                 ${isActive ? "bg-white text-black relative" : "bg-[#2a8dac] text-white"}`
                             }
                             style={{
@@ -62,7 +63,7 @@ export default function Navigation() {
                             {item.name}
                             {isActive && (
                                 <span
-                                    className="absolute left-[-2px] top-0 h-full w-[2px] bg-white"
+                                    className="absolute -left-0.5 top-0 h-full w-0.5 bg-white"
                                     style={{ content: "''" }}
                                 />
                             )}

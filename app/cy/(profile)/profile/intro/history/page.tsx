@@ -1,4 +1,4 @@
-import LifeJourney from "@/components/cy/profile/history/LifeJourney";
+import LifeJourney from "@/components/cy/profile/intro/history/LifeJourney";
 
 export default function Page() {
   return <LifeJourney />;

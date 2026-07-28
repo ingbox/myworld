@@ -20,20 +20,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           image: profile.picture, // ← 이미지 필드 포함!
           role: getRoleFromEmail(profile.email),
           accessToken: profile.accessToken,
-        };  
+        };
       },
     }),
   ],
   callbacks: {
-    // 로그인 정보 DB에 기록
     async signIn({ user }) {
-      await db.query(`
-        INSERT INTO users (email, created_at, last_login_at)
-        VALUES ($1, NOW(), NOW())
-        ON CONFLICT (email)
-        DO UPDATE SET last_login_at = NOW()
-      `, [user.email]);
-      return true;
+      try {
+        await db.query(`
+          INSERT INTO users (
+            email,
+            name,
+            image_url,
+            created_at,
+            last_login_at
+          )
+          VALUES ($1, $2, $3, NOW(), NOW())
+          ON CONFLICT (email)
+          DO UPDATE SET
+            name = EXCLUDED.name,
+            image_url = EXCLUDED.image_url,
+            last_login_at = NOW()
+        `, [user.email, user.name, user.image]);
+        return true;
+      } catch (error) {
+        console.error("로그인 실패", error);
+        return false;
+      }
+
     },
     async jwt({ token, user }) {
       if (user) {

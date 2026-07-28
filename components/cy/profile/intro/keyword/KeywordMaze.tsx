@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import MemoPad from "@/components/cy/profile/keyword/MemoPad";
+import MemoPad from "@/components/cy/profile/intro/keyword/MemoPad";
 
 /** API 연동 전 퀴즈 영역 플레이스홀더 */
 export default function KeywordMaze() {

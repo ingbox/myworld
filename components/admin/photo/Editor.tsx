@@ -67,7 +67,7 @@ export default function PhotoEditor({
           </select>
         </div>
 
-        <div className="h-[432px] shrink-0 overflow-hidden rounded border border-gray-300">
+        <div className="h-108 shrink-0 overflow-hidden rounded border border-gray-300">
           <SimpleEditor onEditorReady={setEditor} />
         </div>
 
@@ -75,7 +75,7 @@ export default function PhotoEditor({
           <button
             type="submit"
             disabled={isSubmitting || !title.trim()}
-            className="h-9 min-w-[88px] rounded bg-[#459ebe] px-5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+            className="h-9 min-w-22 rounded bg-[#459ebe] px-5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {isSubmitting ? "저장 중..." : "확인"}
           </button>

@@ -41,8 +41,6 @@ export async function createDiary(data: any) {
 
 export async function getDiaryList(diaryDate: string) {
     try {
-
-        console.log(diaryDate);
         const result = await pool.query(GET_DIARY_LIST, [diaryDate]);
         return result.rows;
     } catch (error) {

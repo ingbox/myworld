@@ -81,6 +81,6 @@ jobs:
             pnpm install --frozen-lockfile
             pnpm build
             pm2 restart next-app || pm2 start pnpm --name next-app -- start
-            pm2 restart chat-server || pm2 start bun --name chat-server -- chat-server.ts
+            pm2 restart chat-server || pm2 start chat-server.ts --name chat-server --interpreter "$HOME/.bun/bin/bun"
             pm2 save
   
