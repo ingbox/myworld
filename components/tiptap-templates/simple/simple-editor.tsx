@@ -227,7 +227,13 @@ export function SimpleEditor({ onEditorReady }: SimpleEditorProps) {
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
+        onError: (error) => {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "이미지 업로드에 실패했습니다.";
+          alert(message);
+        },
       }),
     ],
     content: "",

@@ -1,6 +1,6 @@
 'use client';
 
-import { createPhoto } from "@/app/actions/admin/photo";
+import { createPhoto } from "@/lib/services/admin/photo/action";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import type { Editor } from "@tiptap/react";
 import { useRouter } from "next/navigation";

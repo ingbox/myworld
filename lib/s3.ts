@@ -1,6 +1,5 @@
 // lib/uploadToS3.ts
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-// import { Upload } from "@aws-sdk/lib-storage";
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const s3 = new S3Client({
@@ -10,6 +9,23 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
+
+export async function uploadObjectToS3(
+  key: string,
+  body: Buffer,
+  contentType: string,
+) {
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    }),
+  );
+
+  return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`;
+}
 
 export async function getSignedURL(key: string, contentType?: string) {
   const params = {
@@ -32,28 +48,3 @@ export async function getSignedURL(key: string, contentType?: string) {
   // 업로드된 파일의 URL 반환
   return { success: { url: signedURL } }
 }
-
-
-// export async function uploadFileToS3(file: File, onProgress?: (event: { progress: number }) => void) {
-
-//   const upload = new Upload({
-//     client: s3,
-//     params: {
-//       Bucket: process.env.AWS_BUCKET_NAME,
-//       Key: `cy/photo/${Date.now()}-${file.name}`,
-//       Body: file,
-//     },
-//   });
-
-//   try {
-//     upload.on("httpUploadProgress", (progress) => {
-//       const percent = ((progress.loaded ?? 0) / (progress.total ?? 0)) * 100;
-//       onProgress?.({ progress: percent });
-//     });
-//   } catch (error) {
-//     console.error("@@@error", error);
-//     throw error;
-//   }
-
-//   await upload.done();
-// }

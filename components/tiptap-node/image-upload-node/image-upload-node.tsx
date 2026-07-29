@@ -141,13 +141,7 @@ function useFileUpload(options: UploadOptions) {
       return null
     } catch (error) {
       if (!abortController.signal.aborted) {
-        setFileItems((prev) =>
-          prev.map((item) =>
-            item.id === fileId
-              ? { ...item, status: "error", progress: 0 }
-              : item
-          )
-        )
+        setFileItems((prev) => prev.filter((item) => item.id !== fileId))
         options.onError?.(
           error instanceof Error ? error : new Error("Upload failed")
         )
@@ -453,34 +447,45 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
   const handleUpload = async (files: File[]) => {
     const urls = await uploadFiles(files)
 
-    if (urls.length > 0) {
-      const pos = props.getPos()
-
-      if (isValidPosition(pos)) {
-        const imageNodes = urls.map((url, index) => {
-          const filename =
-            files[index]?.name.replace(/\.[^/.]+$/, "") || "unknown"
-          return {
-            type: extension.options.type,
-            attrs: {
-              ...extension.options,
-              src: url,
-              alt: filename,
-              title: filename,
-            },
-          }
-        })
-
-        props.editor
-          .chain()
-          .focus()
-          .deleteRange({ from: pos, to: pos + props.node.nodeSize })
-          .insertContentAt(pos, imageNodes)
-          .run()
-
-        focusNextNode(props.editor)
-      }
+    const pos = props.getPos()
+    if (!isValidPosition(pos)) {
+      clearAllFiles()
+      return
     }
+
+    if (urls.length > 0) {
+      const imageNodes = urls.map((url, index) => {
+        const filename =
+          files[index]?.name.replace(/\.[^/.]+$/, "") || "unknown"
+        return {
+          type: extension.options.type,
+          attrs: {
+            ...extension.options,
+            src: url,
+            alt: filename,
+            title: filename,
+          },
+        }
+      })
+
+      props.editor
+        .chain()
+        .focus()
+        .deleteRange({ from: pos, to: pos + props.node.nodeSize })
+        .insertContentAt(pos, imageNodes)
+        .run()
+
+      focusNextNode(props.editor)
+      clearAllFiles()
+      return
+    }
+
+    clearAllFiles()
+    props.editor
+      .chain()
+      .focus()
+      .deleteRange({ from: pos, to: pos + props.node.nodeSize })
+      .run()
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -19,14 +19,14 @@ export default async function Page({
     <div className="flex w-full max-md:flex-col">
       {/* 왼쪽 카테고리 영역 */}
       <LeftWrapper>
-        <Suspense fallback={<div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 animate-pulse p-5 max-md:h-auto" />}>
+        <Suspense fallback={<div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 animate-pulse p-5 max-md:h-auto" />}>
           <PhotoCategoryContent searchParams={searchParams} />
         </Suspense>
       </LeftWrapper>
 
       {/* 오른쪽 사진 리스트 영역 */}
       <RightWrapper>
-        <Suspense fallback={<div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 animate-pulse" />}>
+        <Suspense fallback={<div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 animate-pulse" />}>
           <PhotoListContent params={params} searchParams={searchParams} />
         </Suspense>
       </RightWrapper>
@@ -47,7 +47,7 @@ async function PhotoCategoryContent({
   const typeList = await getPhotoTypeList();
 
   return (
-    <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 p-5 max-md:h-auto">
+    <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 p-5 max-md:h-auto">
       <div className="mb-4">
         <p className="font-ginto font-light text-[8px] text-gray-400 tracking-wide">SAVE MY MEMORY</p>
         <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">PHOTO ALBUM</p>
@@ -109,8 +109,8 @@ async function PhotoListContent({
   );
 
   return (
-    <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300">
-      <div className="h-[540px] px-7 py-5 overflow-scroll">
+    <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300">
+      <div className="h-135 px-7 py-5 overflow-scroll">
         {photoList.photos.map((list: any) => (
           <div key={list.id}>
             <hr className="border-[#c7e9f1]" />

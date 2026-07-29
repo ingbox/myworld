@@ -13,26 +13,10 @@ import {
   type Editor,
   type NodeWithPos,
 } from "@tiptap/react"
-import { uploadImage } from "@/app/actions/admin/photo"
+import { uploadImage } from "@/lib/services/admin/photo/action"
 import { isHeicFile } from "@/lib/image-meta"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-
-async function ensureWebImage(file: File): Promise<File> {
-  if (!isHeicFile(file)) return file
-
-  const heic2any = (await import("heic2any")).default
-  const result = await heic2any({
-    blob: file,
-    toType: "image/jpeg",
-    quality: 0.9,
-  })
-
-  const blob = Array.isArray(result) ? result[0] : result
-  const baseName = file.name.replace(/\.(heic|heif)$/i, "")
-
-  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" })
-}
 
 export const MAC_SYMBOLS: Record<string, string> = {
   mod: "⌘",
@@ -395,18 +379,16 @@ export const handleImageUpload = async (
 
   if (abortSignal?.aborted) throw new Error("업로드가 취소되었습니다.");
 
+  if (isHeicFile(file)) {
+    throw new Error(
+      "HEIC/HEIF 파일은 웹에서 표시할 수 없습니다. JPG로 변환한 뒤 다시 업로드해 주세요."
+    );
+  }
+
   try {
-    const uploadFile = await ensureWebImage(file)
-
-    if (uploadFile.size > MAX_FILE_SIZE) {
-      throw new Error(
-        `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
-      )
-    }
-
     if (abortSignal?.aborted) throw new Error("업로드가 취소되었습니다.");
 
-    const uploaded = await uploadImage({ file: uploadFile });
+    const uploaded = await uploadImage({ file });
     onProgress?.({ progress: 100 });
     return uploaded.url ?? ""
 
