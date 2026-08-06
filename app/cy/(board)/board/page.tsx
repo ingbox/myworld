@@ -4,33 +4,28 @@ import { getBoardList } from "@/lib/services/cy/board/service";
 
 // 1. 부모 컴포넌트: searchParams를 직접 await하지 않고 자식에게 통째로 넘깁니다.
 export default async function Page({
-  params,
   searchParams,
 }: {
-  params: Promise<{ page?: number }>;
-  searchParams: Promise<{ type?: number }>;
+  searchParams: Promise<{ type?: number, page?: number }>;
 }) {
   return (
     // 데이터가 로드되는 동안 깜빡임(화면 꺼짐)을 최소화하기 위해 fallback을 비워두거나 스켈레톤을 넣습니다.
     <Suspense fallback={null}>
-      <BoardListContent params={params} searchParams={searchParams} />
+      <BoardListContent searchParams={searchParams} />
     </Suspense>
   );
 }
 
 // 2. 실제 비동기 데이터 패칭과 테이블 UI를 담당하는 자식 컴포넌트
 async function BoardListContent({
-  params,
   searchParams,
 }: {
-  params: Promise<{ page?: number }>;
-  searchParams: Promise<{ type?: number }>;
+  searchParams: Promise<{ type?: number, page?: number }>;
 }) {
   // 💡 부모가 아닌, 오직 이 <Suspense> 내부에서만 런타임 데이터를 해제(await)합니다.
-  const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
 
-  const page = resolvedParams.page ? resolvedParams.page : 1;
+  const page = resolvedSearchParams.page ? resolvedSearchParams.page : 1;
   const type = resolvedSearchParams.type ?? 0;
 
   const boardList = await getBoardList(Number(page), type);
@@ -63,25 +58,25 @@ async function BoardListContent({
         </thead>
         <tbody>
           {boardList?.boards?.map((board: any, index: number) => (
-            <tr key={board.id} className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm">
-              <td className="text-center py-1 max-md:hidden">
-                {Number(boardList.totalCount) - index}
+            <tr
+              key={board.id}
+              className="leading-[1.1] bg-[linear-gradient(to_right,#cfcfcf_50%,transparent_0)] bg-size-[3px_1px] bg-repeat-x bg-bottom text-sm"
+            >
+              <td className="text-center py-1.5 max-md:hidden">
+                {Number(boardList.totalCount) - ((currentPage - 1) * limitPage + index + 1) + 1}
               </td>
-              <td className="max-md:hidden">
+              <td className="py-1.5 max-md:hidden">
                 <Link href={`/cy/board/${board.id}`}>
                   {board.title}
                 </Link>
               </td>
-              <td className="text-center max-md:hidden">임지섭</td>
-              <td className="text-center max-md:hidden">{board.created_at_formatted}</td>
-              <td className="text-center max-md:hidden">{board.view_count ?? 0}</td>
-
+              <td className="text-center py-1.5 max-md:hidden">임지섭</td>
+              <td className="text-center py-1.5 max-md:hidden">{board.created_at_formatted}</td>
+              <td className="text-center py-1.5 max-md:hidden">{board.view_count ?? 0}</td>
               <td className="md:hidden p-0" colSpan={5}>
                 <Link href={`/cy/board/${board.id}`}>
-                  <div className="flex flex-col w-full py-2">
-
+                  <div className="flex flex-col w-full py-3">
                     <span className="font-semibold text-[15px] text-gray-800">{board.title}</span>
-
                     <div className="text-sm text-gray-500 flex justify-between mt-1">
                       <span>임지섭</span>
                       <span>{board.created_at_formatted}</span>
@@ -91,6 +86,7 @@ async function BoardListContent({
                 </Link>
               </td>
             </tr>
+       
           ))}
         </tbody>
       </table>
@@ -100,7 +96,7 @@ async function BoardListContent({
         <div className="flex justify-center items-center py-6">
           <nav className="inline-flex" aria-label="Pagination">
             {startPage > 1 && (
-              <Link href={`/cy/photo/${startPage - 1}${type !== undefined ? `?type=${type}` : ''}`}>
+              <Link href={`/cy/board?page=${startPage - 1}${type !== undefined ? `&type=${type}` : ''}`}>
                 <button>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="#4a60ab" viewBox="0 0 20 20" className="size-5 mr-1">
                     <polygon points="13,5 6,10 13,15" fill="#9ca3af" />
@@ -110,7 +106,7 @@ async function BoardListContent({
             )}
 
             {currentPageList.map((page, idx) => (
-              <Link href={`/cy/photo/${page}${type !== undefined ? `?type=${type}` : ''}`} key={page}>
+              <Link href={`/cy/board?page=${page}${type !== undefined ? `&type=${type}` : ''}`} key={page}>
                 <span
                   className={`h-5 px-2 mr-0 border-l border-gray-300 font-semibold ${idx === currentPageList.length - 1 ? 'border-r border-gray-300' : ''
                     } ${page === currentPage ? 'text-orange-500' : 'text-gray-500'}`}
@@ -121,7 +117,7 @@ async function BoardListContent({
             ))}
 
             {endPage < totalPage && (
-              <Link href={`/cy/visitor/${endPage + 1}${type !== undefined ? `?type=${type}` : ''}`}>
+              <Link href={`/cy/board?page=${endPage + 1}${type !== undefined ? `&type=${type}` : ''}`}>
                 <button>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="#4a60ab" viewBox="0 0 20 20" className="size-5">
                     <polygon points="7,5 14,10 7,15" fill="#9ca3af" />
