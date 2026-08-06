@@ -76,7 +76,7 @@ function MonthNav({
       >
         ←
       </button>
-      <span className="min-w-[72px] text-center tracking-wide">{label}</span>
+      <span className="min-w-18 text-center tracking-wide">{label}</span>
       <button
         type="button"
         onClick={onNext}
@@ -132,7 +132,7 @@ export default function Calendar({
       <div className="w-full rounded-[10px] border border-zinc-300 bg-white p-4 shadow-sm mb-">
         <div className="flex flex-col md:flex-row">
           {/* 왼쪽: 선택 날짜 — 모바일은 상단 가운데, 웹은 왼쪽 세로 */}
-          <div className="flex flex-col items-center justify-center border-b border-dashed border-zinc-300 pb-4 md:w-[88px] md:shrink-0 md:border-b-0 md:border-r md:pr-4 md:pb-0 max-sm:hidden">
+          <div className="flex flex-col items-center justify-center border-b border-dashed border-zinc-300 pb-4 md:w-22 md:shrink-0 md:border-b-0 md:border-r md:pr-4 md:pb-0 max-sm:hidden">
             <div className="font-ginto text-3xl font-bold tracking-tight text-[#5a7f92]">
               {formatLargeDate(displayDate)}
             </div>
@@ -177,7 +177,6 @@ export default function Calendar({
 
       <div className="h-10">
 
-        ㅁㄴㅇㄴㅁㅁㄴㅇ
       </div>
     </>
   );

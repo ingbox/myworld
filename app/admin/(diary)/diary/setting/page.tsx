@@ -178,7 +178,7 @@ export default function DiaryEventSettingPage() {
         <div>
           <label className="block text-sm font-medium mb-1">메모</label>
           <textarea
-            className="w-full border rounded px-3 py-2 min-h-[80px] resize-y"
+            className="w-full border rounded px-3 py-2 min-h-20 resize-y"
             value={memo}
             onChange={e => setMemo(e.target.value)}
           />

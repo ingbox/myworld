@@ -9,9 +9,16 @@ type AccordionProps = {
   image: string;
   items: string[];
   depths: string[][];
+  hrefPrefix?: string;
 };
 
-export default function Accordion({ title, image ,items = [], depths = [] }: AccordionProps) {
+export default function Accordion({
+  title,
+  image,
+  items = [],
+  depths = [],
+  hrefPrefix = "/cy/profile",
+}: AccordionProps) {
   const pathname = usePathname();
 
   const pathSegments = pathname ? pathname.split('/') : [];
@@ -42,7 +49,7 @@ export default function Accordion({ title, image ,items = [], depths = [] }: Acc
       >
         <ul className="flex flex-col gap-1 pl-6.25">
           {items.map((item, idx) => {
-            const href = `/cy/profile/${depths[idx][0]}/${depths[idx][1]}`;
+            const href = `${hrefPrefix}/${depths[idx][0]}/${depths[idx][1]}`;
             const active = pathname === href;
             return (
               <Link

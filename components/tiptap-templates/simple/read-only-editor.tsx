@@ -1,4 +1,5 @@
 "use client"
+import { useEffect } from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
@@ -40,6 +41,12 @@ export default function ReadOnlyEditor({ content }: { content: string }) {
         ],
         content: content,
     })
+
+    useEffect(() => {
+        if (!editor || editor.isDestroyed) return
+        if (editor.getHTML() === content) return
+        editor.commands.setContent(content, { emitUpdate: false })
+    }, [editor, content])
 
     return (
         <EditorContent

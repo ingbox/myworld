@@ -2,6 +2,9 @@ import type { P5CanvasInstance, Sketch, SketchProps } from "@p5-wrapper/react";
 
 export type MemoTool = "pen" | "eraser";
 
+/** globals.css `--keyword-memo-paper` 와 동일하게 유지 */
+const MEMO_PAPER = [255, 253, 245] as const;
+
 export type MemoSketchProps = SketchProps & {
   tool: MemoTool;
   penColor: string;
@@ -25,28 +28,6 @@ function saveCanvas(p5: MemoP5, storageKey: string) {
   }
 }
 
-function loadCanvas(p5: MemoP5, storageKey: string) {
-  if (typeof localStorage === "undefined" || p5.width <= 0) return;
-  const data = localStorage.getItem(storageKey);
-  if (!data || !data.startsWith("data:image/")) {
-    if (data) localStorage.removeItem(storageKey);
-    return;
-  }
-
-  p5.loadImage(
-    data,
-    (img) => {
-      if (!img || p5.width <= 0) return;
-      p5.background(255, 252, 235);
-      p5.image(img, 0, 0, p5.width, p5.height);
-      p5.redraw();
-    },
-    () => {
-      localStorage.removeItem(storageKey);
-    },
-  );
-}
-
 function pointerInside(p5: MemoP5) {
   return p5.mouseX >= 0 && p5.mouseX <= p5.width && p5.mouseY >= 0 && p5.mouseY <= p5.height;
 }
@@ -64,12 +45,54 @@ export const createMemoSketch = (): Sketch<MemoSketchProps> => (p5) => {
 
   let drawing = false;
   let lastClearToken = props.clearToken;
+  let loadGeneration = 0;
+
+  const clearCanvas = () => {
+    loadGeneration++;
+    p5.noErase();
+    p5.background(...MEMO_PAPER);
+    p5.redraw();
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem(props.storageKey);
+    }
+  };
+
+  const loadCanvas = () => {
+    if (typeof localStorage === "undefined" || p5.width <= 0) return;
+
+    const data = localStorage.getItem(props.storageKey);
+    if (!data || !data.startsWith("data:image/")) {
+      if (data) localStorage.removeItem(props.storageKey);
+      return;
+    }
+
+    const generation = ++loadGeneration;
+
+    p5.loadImage(
+      data,
+      (img) => {
+        if (generation !== loadGeneration || !img || p5.width <= 0) return;
+        p5.noErase();
+        p5.background(...MEMO_PAPER);
+        p5.image(img, 0, 0, p5.width, p5.height);
+        p5.redraw();
+      },
+      () => {
+        if (generation !== loadGeneration) return;
+        localStorage.removeItem(props.storageKey);
+      },
+    );
+  };
 
   const applyStroke = () => {
+    p5.strokeCap("round");
+    p5.strokeJoin("round");
+
     if (props.tool === "eraser") {
-      p5.stroke(255, 252, 235);
+      p5.erase();
       p5.strokeWeight(props.penWeight * 3);
     } else {
+      p5.noErase();
       const hex = props.penColor.replace("#", "");
       const r = parseInt(hex.slice(0, 2), 16);
       const g = parseInt(hex.slice(2, 4), 16);
@@ -77,8 +100,6 @@ export const createMemoSketch = (): Sketch<MemoSketchProps> => (p5) => {
       p5.stroke(r, g, b);
       p5.strokeWeight(props.penWeight);
     }
-    p5.strokeCap("round");
-    p5.strokeJoin("round");
   };
 
   const startDraw = () => {
@@ -103,6 +124,7 @@ export const createMemoSketch = (): Sketch<MemoSketchProps> => (p5) => {
     if (!drawing) return;
     drawing = false;
     p5.endShape();
+    p5.noErase();
     saveCanvas(p5 as MemoP5, props.storageKey);
   };
 
@@ -113,23 +135,21 @@ export const createMemoSketch = (): Sketch<MemoSketchProps> => (p5) => {
 
     if (p5.width <= 0) return;
 
-    if (prevW !== props.canvasWidth || prevH !== props.canvasHeight) {
-      p5.resizeCanvas(props.canvasWidth, props.canvasHeight);
-      loadCanvas(p5 as MemoP5, props.storageKey);
-    }
-
     if (props.clearToken !== lastClearToken) {
       lastClearToken = props.clearToken;
-      p5.background(255, 252, 235);
-      if (typeof localStorage !== "undefined") {
-        localStorage.removeItem(props.storageKey);
-      }
+      clearCanvas();
+      return;
+    }
+
+    if (prevW !== props.canvasWidth || prevH !== props.canvasHeight) {
+      p5.resizeCanvas(props.canvasWidth, props.canvasHeight);
+      loadCanvas();
     }
   };
 
   p5.setup = () => {
     p5.createCanvas(props.canvasWidth, props.canvasHeight);
-    p5.background(255, 252, 235);
+    p5.background(...MEMO_PAPER);
 
     if (props.clearToken !== lastClearToken) {
       lastClearToken = props.clearToken;
@@ -137,7 +157,7 @@ export const createMemoSketch = (): Sketch<MemoSketchProps> => (p5) => {
         localStorage.removeItem(props.storageKey);
       }
     } else {
-      loadCanvas(p5 as MemoP5, props.storageKey);
+      loadCanvas();
     }
 
     p5.noLoop();
