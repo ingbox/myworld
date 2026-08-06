@@ -28,12 +28,12 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
     <div className="min-w-0 w-full p-4 space-y-3">
       <button
         onClick={handlePlay}
-        className="px-3 py-[2px] text-gray-600 bg-[#fcfcfc] rounded-xs border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
+        className="px-3 py-0.5 text-gray-600 bg-[#fcfcfc] rounded-xs border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
         듣기
       </button>
 
       <div className="mt-2 w-full overflow-x-auto">
-        <table className="w-full min-w-[280px] table-fixed text-left border-t border-gray-400">
+        <table className="w-full min-w-70 table-fixed text-left border-t border-gray-400">
           <colgroup>
             <col className="w-9" />
             <col className="w-8 max-sm:hidden" />
@@ -42,7 +42,7 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
           </colgroup>
           <thead className="bg-[#f2f2f2]">
             <tr key={"head"} className="text-sm">
-              <th className="px-[6px] font-light text-gray-600">
+              <th className="px-1.5 font-light text-gray-600">
                 <Image src="/images/jukebox/checkbox.png" width={17} height={17} alt="" />
               </th>
               <th className="text-center font-light text-gray-600 max-sm:hidden">번호</th>
@@ -76,7 +76,7 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
 
       <button
         onClick={handlePlay}
-        className="px-3 py-[2px] text-gray-600 rounded-xs bg-[#f8f8f8] border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
+        className="px-3 py-0.5 text-gray-600 rounded-xs bg-[#f8f8f8] border border-[#9a9a9a] shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#bfbfbf] text-sm">
         듣기
       </button>
 

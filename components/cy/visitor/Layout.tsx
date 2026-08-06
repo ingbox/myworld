@@ -8,7 +8,7 @@ import { createVisitor, createVisitorComment } from '@/lib/services/cy/visitor/a
 import Link from 'next/link';
 import Visitor from '@/components/cy/visitor/Visitor';
 import Comment from '@/components/cy/visitor/Comment';
-import GoogleButton from '@/components/auth/GoogleButton';
+import GoogleButton from '@/components/layout/auth/GoogleButton';
 
 interface Props {
     searchParams: Promise<{ page?: string }>;

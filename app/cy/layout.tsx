@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Navigation from "@/components/layout/item/Navigation/Navigation"
-import Jukebox from "@/components/layout/Jukebox";
+import Jukebox from "@/components/jukebox/Jukebox";
 import Link from "next/link";
 // import { GoogleSignIn } from "@/app/actions/cy/auth";
 
