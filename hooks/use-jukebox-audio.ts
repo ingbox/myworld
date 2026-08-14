@@ -32,6 +32,7 @@ export function useJukeboxAudio() {
       }
     };
 
+    // local storage에서 데이터 복원이 끝났는지 확인 후 자동 재생 제한
     if (usePlayerStore.persist.hasHydrated()) {
       markRestoredQueue();
       return;

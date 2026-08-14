@@ -1,3 +1,5 @@
+import CommentListLoader from "@/components/cy/board/CommentListLoader";
+import CommentForm from "@/components/cy/board/CommentForm";
 import TrackBoardView from "@/components/cy/board/TrackBoardView";
 import ReadOnlyEditor from "@/components/tiptap-templates/simple/read-only-editor";
 import { getBoardContent } from "@/lib/services/cy/board/service";
@@ -9,9 +11,17 @@ export default function Page({
   params: Promise<{ id: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="p-7">로딩 중...</div>}>
-      <ContentWrapper params={params} />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <ContentWrapper params={params} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <CommentForm params={params} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <CommentListLoader params={params} />
+      </Suspense>
+    </>
   );
 }
 
@@ -26,7 +36,7 @@ async function ContentWrapper({
   return (
     <>
       <TrackBoardView id={Number(id)} />
-      <div className="h-135 px-7 py-5 overflow-scroll">
+      <div className="h-auto px-7 py-5">
         <div className="font-bold py-1.5">
           {content.title}
         </div>
