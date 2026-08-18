@@ -1,8 +1,13 @@
 import { Elysia, t } from "elysia";
-
 import { cors } from "@elysia/cors";
-
+import Redis from "ioredis";
 import pg from "pg";
+
+const redis = new Redis(process.env.REDIS_URL as string);
+
+function recentKey(roomId: string) {
+  return `chat:recent:${roomId}`;
+}
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -74,16 +79,31 @@ const app = new Elysia()
     async ({ params, query }) => {
       const limit = Math.min(Math.max(Number(query.limit) || 20, 1), 50);
 
-      const result = query.before
-        ? await pool.query(GET_MESSAGES_BEFORE, [
-            params.roomId,
-            query.before,
-            limit,
-          ])
-        : await pool.query(GET_MESSAGES_LATEST, [params.roomId, limit]);
+      if (query.before) {
+        const result = await pool.query(GET_MESSAGES_BEFORE, [
+          params.roomId,
+          query.before,
+          limit,
+        ]);
+        return result.rows.reverse();
+      }
 
-      // DB는 최신순(DESC)으로 가져온 뒤, 화면 표시용으로 시간순(ASC)으로 뒤집음
-      return result.rows.reverse();
+      const cached = await redis.get(recentKey(params.roomId));
+      if (cached) {
+        console.log("Redis HIT", params.roomId);
+        return JSON.parse(cached);
+      }
+
+      console.log("Redis MISS", params.roomId);
+      const result = await pool.query(GET_MESSAGES_LATEST, [
+        params.roomId,
+        limit,
+      ]);
+
+      const messages = result.rows.reverse();
+      await redis.set(recentKey(params.roomId), JSON.stringify(messages), "EX", 300);
+      return messages;
+
     },
     {
       query: t.Object({
@@ -105,6 +125,7 @@ const app = new Elysia()
       ]);
 
       const saved = result.rows[0];
+      await redis.del(recentKey(body.roomId));
       app.server?.publish(body.roomId, JSON.stringify(saved));
       return saved;
     },
