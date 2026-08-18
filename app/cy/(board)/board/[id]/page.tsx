@@ -11,7 +11,7 @@ export default function Page({
   params: Promise<{ id: string }>;
 }) {
   return (
-    <>
+    <div className="overflow-scroll h-full">
       <Suspense fallback={null}>
         <ContentWrapper params={params} />
       </Suspense>
@@ -21,7 +21,7 @@ export default function Page({
       <Suspense fallback={null}>
         <CommentListLoader params={params} />
       </Suspense>
-    </>
+    </div>
   );
 }
 
