@@ -8,11 +8,6 @@ export const GET_BOARD_COMMENT_LIST = `
   ORDER BY created_at ASC
 `;
 
-export const GET_BOARD_COMMENT_COUNT = `
-  SELECT COUNT(*) FROM board_comment
-  WHERE board_id = $1
-`;
-
 export const INSERT_BOARD_COMMENT = `
   INSERT INTO board_comment (board_id, parent_id, content, user_email, user_name, created_at)
   VALUES ($1, $2, $3, $4, $5, $6)
@@ -27,12 +22,6 @@ export const GET_BOARD_COMMENT_BY_ID = `
 export const DELETE_BOARD_COMMENT_REPLIES = `
   DELETE FROM board_comment
   WHERE parent_id = $1
-`;
-
-export const UPDATE_BOARD_COMMENT = `
-  UPDATE board_comment
-  SET content = $2
-  WHERE id = $1
 `;
 
 export const DELETE_BOARD_COMMENT = `

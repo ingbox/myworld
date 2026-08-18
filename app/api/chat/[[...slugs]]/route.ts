@@ -1,6 +1,6 @@
 import pool from "@/lib/db";
-import { Elysia, t } from "elysia";
-import { GET_ROOM_LIST, CREATE_ROOM } from "./queries";
+import { Elysia } from "elysia";
+import { GET_ROOM_LIST } from "./queries";
 
 const app = new Elysia({ prefix: "/api/chat" })
   // 방 목록 조회

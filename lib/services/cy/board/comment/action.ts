@@ -8,7 +8,6 @@ import {
     DELETE_BOARD_COMMENT_REPLIES,
     GET_BOARD_COMMENT_BY_ID,
     INSERT_BOARD_COMMENT,
-    UPDATE_BOARD_COMMENT,
 } from "./queries";
 
 export async function createBoardComment(formData: FormData) {
@@ -36,11 +35,6 @@ export async function createBoardComment(formData: FormData) {
     ]);
 
     updateTag(`boardCommentList:${boardId}`);
-}
-
-export async function updateBoardComment(id: number, content: string) {
-    const result = await pool.query(UPDATE_BOARD_COMMENT, [id, content]);
-    return result.rows[0];
 }
 
 export async function deleteBoardComment(id: number, boardId: number) {
