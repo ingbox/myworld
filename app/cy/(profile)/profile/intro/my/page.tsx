@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Page() {
   return (
     <>
-      <div className="w-full h-[350px] relative mb-4">
+      <div className="w-full h-87.5 relative mb-4">
         <Image
           src="/images/profile/my/banff.JPG"
           fill
