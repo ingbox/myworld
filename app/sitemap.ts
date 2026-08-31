@@ -6,7 +6,6 @@ const staticRoutes = [
   "/cy/board",
   "/cy/diary",
   "/cy/profile",
-  "/cy/profile/intro/general",
   "/cy/profile/intro/my",
   "/cy/profile/intro/keyword",
   "/cy/profile/intro/history",

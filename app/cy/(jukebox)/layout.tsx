@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex w-full max-md:flex-col">
             <LeftWrapper>
                 {/* 프로필 */}
-                <div className="w-full h-[560px] bg-white rounded-[10px] border-2 border-gray-300 p-5 max-md:h-auto">
+                <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 p-5 max-md:h-auto">
                     <div className="mb-2">
                         <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">JUKE BOX</p>
                     </div>
