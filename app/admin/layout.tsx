@@ -1,6 +1,6 @@
 import UserStats from '@/components/admin/home/UserStats';
 import Clip from '@/components/layout/item/Clip';
-import { getUserStats } from '@/lib/services/common/stats/service';
+import { getUserStats } from '@/src/lib/api/shared/stats/service';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 

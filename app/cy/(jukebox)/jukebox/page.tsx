@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { getJukeboxList } from "@/lib/services/cy/jukebox/service";
-import Queue from "@/components/jukebox/Queue";
-import QueueSkeleton from "@/components/jukebox/QueueSkeleton";
+import { getJukeboxList } from "@/src/lib/api/cy/jukebox/service";
+import Queue from "@/components/shared/jukebox/Queue";
+import QueueSkeleton from "@/components/shared/jukebox/QueueSkeleton";
 
 // 1. 부모 Page 컴포넌트에서 Next.js가 넣어주는 searchParams(Promise 형태)를 받습니다.
 export default function Page({

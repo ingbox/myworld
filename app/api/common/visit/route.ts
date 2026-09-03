@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { INSERT_VISIT_COUNT } from './queries';
-import pool from '@/lib/db';
+import pool from '@/src/lib/db';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {

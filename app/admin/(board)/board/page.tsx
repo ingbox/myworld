@@ -1,6 +1,6 @@
 import BoardEditor from "@/components/admin/board/Editor";
 import AdminNavigation from "@/components/layout/AdminNavigation";
-import { getBoardTypeList } from "@/lib/services/common/board/service";
+import { getBoardTypeList } from "@/src/lib/api/shared/board/service";
 import { Suspense } from "react";
 
 function BoardEditorFallback() {

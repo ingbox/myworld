@@ -1,7 +1,7 @@
 import Form from "next/form";
 import Image from "next/image";
-import { getFriends } from "@/lib/services/cy/profile/favor/friends/service";
-import { searchFriends } from "@/lib/services/cy/profile/favor/friends/action";
+import { getFriends } from "@/src/lib/api/cy/profile/favor/friends/service";
+import { searchFriends } from "@/src/lib/api/cy/profile/favor/friends/action";
 
 export default async function Page({
     searchParams,
@@ -23,7 +23,7 @@ export default async function Page({
                 <Form action={searchFriends} className="relative">
                     <input name="search" className="text-sm w-full h-6 rounded-md border border-gray-300 px-1" type="text" placeholder="일촌 검색" defaultValue={search} />
                     <button type="submit">
-                        <Image className="absolute top-1 right-1" src="/images/profile/search.svg" alt="search" width={16} height={16} />
+                        <Image className="absolute top-1 right-1" src="/images/cy/profile/favor/search.svg" alt="search" width={16} height={16} />
                     </button>
                 </Form>
             </div>
@@ -31,7 +31,7 @@ export default async function Page({
             <div className="grid grid-cols-5 grid-rows-3 h-100">
                 {friends.map((friend) => (
                     <div key={friend.email} className="relative w-full h-full">
-                        <Image src={friend.image_url} className="w-full h-full object-cover" fill alt="" />
+                        <Image src={friend.image_url ?? "/images/cy/common/noimage.jpg"} className="w-full h-full object-cover" fill alt="" />
                         <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center bg-black/50 text-white h-6 overflow-hidden">
                             <span className="text-sm truncate">{friend.name}</span>
                         </div>

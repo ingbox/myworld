@@ -13,8 +13,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         <p className="text-[14px] text-[#459ebe] font-bold tracking-wide">PROFILE</p>
                     </div>
                     <hr className="border-dashed border-gray-200 mt-1" />
-                    <Accordion title="내 소개" image="/images/profile/intro.svg" items={["소개", "키워드", "히스토리", "42문답"]} depths={[["intro", "my"], ["intro", "keyword"], ["intro", "history"], ["intro", "42"]]} />
-                    <Accordion title="내 관심" image="/images/profile/friends.svg" items={["나의 일촌"]}  depths={[["favor","friend"]]} />
+                    <Accordion title="내 소개" image="/images/shared/profile/intro.svg" items={["소개", "키워드", "히스토리", "42문답"]} depths={[["intro", "my"], ["intro", "keyword"], ["intro", "history"], ["intro", "42"]]} />
+                    <Accordion title="내 관심" image="/images/shared/profile/friends.svg" items={["나의 일촌"]}  depths={[["favor","friend"]]} />
                 </div>
             </LeftWrapper >
             <RightWrapper >

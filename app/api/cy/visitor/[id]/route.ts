@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import pool from "@/lib/db";
+import pool from "@/src/lib/db";
 import { UPDATE_VISITOR, DELETE_VISITOR } from "./queries";
 
 

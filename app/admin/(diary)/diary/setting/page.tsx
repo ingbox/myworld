@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createDiaryEvent from "@/lib/services/admin/diary/calendar/action";
-import { diaryKeys } from "@/lib/services/cy/diary/diaryKeys";
+import createDiaryEvent from "@/src/lib/api/admin/diary/calendar/actions";
+import { diaryEventKeys } from "@/src/hooks/cy/diary/use-diary-events";
+import type { DiaryRepeat } from "@/src/lib/api/admin/diary/calendar/types";
 
 const repeatOptions = [
   { value: "none", label: "반복 없음" },
@@ -29,7 +30,7 @@ export default function DiaryEventSettingPage() {
   const [allDay, setAllDay] = useState(false);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [repeat, setRepeat] = useState("none");
+  const [repeat, setRepeat] = useState<DiaryRepeat>("none");
   const [color, setColor] = useState(colorOptions[0]);
   const [memo, setMemo] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export default function DiaryEventSettingPage() {
   const mutation = useMutation({
     mutationFn: createDiaryEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: diaryKeys.all });
+      queryClient.invalidateQueries({ queryKey: diaryEventKeys.all });
       // 초기화
       setTitle("");
       setAllDay(false);
@@ -153,7 +154,7 @@ export default function DiaryEventSettingPage() {
           <select
             className="w-full border rounded px-2 py-2"
             value={repeat}
-            onChange={e => setRepeat(e.target.value)}
+            onChange={e => setRepeat(e.target.value as DiaryRepeat)}
           >
             {repeatOptions.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>

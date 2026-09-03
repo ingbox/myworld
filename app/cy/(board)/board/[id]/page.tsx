@@ -1,8 +1,8 @@
 import CommentListLoader from "@/components/cy/board/CommentListLoader";
 import CommentForm from "@/components/cy/board/CommentForm";
 import TrackBoardView from "@/components/cy/board/TrackBoardView";
-import ReadOnlyEditor from "@/components/tiptap-templates/simple/read-only-editor";
-import { getBoardContent } from "@/lib/services/cy/board/service";
+import ReadOnlyEditor from "@/components/shared/tiptap/templates/simple/read-only-editor";
+import { getBoardContent } from "@/src/lib/api/cy/board/service";
 import { Suspense } from "react";
 
 export default function Page({

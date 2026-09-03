@@ -1,6 +1,6 @@
 import { auth } from '@/app/auth';
 
-import ChatRoom from "@/components/chat/ChatRoom";
+import ChatRoom from "@/components/shared/chat/ChatRoom";
 
 export default async function Page({
   params,

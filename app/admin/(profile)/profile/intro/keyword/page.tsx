@@ -1,6 +1,6 @@
 import KeywordEditor from "@/components/admin/profile/intro/keyword/Editor";
 import AdminNavigation from "@/components/layout/AdminNavigation";
-import { getKeywordNodeList } from "@/lib/services/admin/profile/intro/keyword/action";
+import { getKeywordNodeList } from "@/src/lib/api/admin/profile/intro/keyword/action";
 import { Suspense } from "react";
 
 function KeywordEditorFallback() {

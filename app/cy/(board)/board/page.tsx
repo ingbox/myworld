@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { getBoardList } from "@/lib/services/cy/board/service";
+import { getBoardList } from "@/src/lib/api/cy/board/service";
 
 // 1. 부모 컴포넌트: searchParams를 직접 await하지 않고 자식에게 통째로 넘깁니다.
 export default async function Page({

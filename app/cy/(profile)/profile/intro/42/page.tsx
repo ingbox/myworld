@@ -11,7 +11,7 @@ export default async function Page() {
     <Providers>
       <AskChat
         myName={session.user.name ?? "나"}
-        myImage={session.user.image ?? "/images/cy/noimage.jpg"}
+        myImage={session.user.image ?? "/images/cy/common/noimage.jpg"}
       />
     </Providers>
   );

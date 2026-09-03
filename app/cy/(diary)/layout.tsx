@@ -17,7 +17,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                     <div className="mt-1">
                         <div className="flex gap-2 mb-1 mt-3">
                             <div className="inline-block">
-                                <Image src="/images/photo/file.png" width={16} height={14} alt="" />
+                                <Image src="/images/cy/common/file.png" width={16} height={14} alt="" />
                             </div>
                             <Link
                                 href={`/cy/diary`}

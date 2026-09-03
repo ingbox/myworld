@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ReadOnlyEditor from "@/components/tiptap-templates/simple/read-only-editor";
+import ReadOnlyEditor from "@/components/shared/tiptap/templates/simple/read-only-editor";
 
-import { getPhotoList, getPhotoTypeList } from "@/lib/services/cy/photo/service";
+import { getPhotoList, getPhotoTypeList } from "@/src/lib/api/cy/photo/service";
 import LeftWrapper from "@/components/layout/container/main/LeftWrapper";
 import RightWrapper from "@/components/layout/container/main/RightWrapper";
 
@@ -54,7 +54,7 @@ async function PhotoCategoryContent({
       </div>
       <div className="flex gap-2 mb-1 text-[15px]">
         <div>
-          <Image src="/images/photo/file.png" width={16} height={14} alt="" />
+          <Image src="/images/cy/common/file.png" width={16} height={14} alt="" />
         </div>
         <Link href={`/cy/photo/1`} className={`text-[15px] ${type == 0 ? 'font-bold' : ''}`}>전체보기</Link>
       </div>
@@ -63,7 +63,7 @@ async function PhotoCategoryContent({
         {typeList.map((list: any) => (
           <div key={list.id} className="flex gap-2 mb-1">
             <div className="inline-block">
-              <Image src="/images/photo/file.png" width={16} height={14} alt="" />
+              <Image src="/images/cy/common/file.png" width={16} height={14} alt="" />
             </div>
             <Link
               href={`/cy/photo/1?type=${list.id}`}

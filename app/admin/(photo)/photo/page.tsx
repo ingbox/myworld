@@ -1,6 +1,6 @@
 import Editor from "@/components/admin/photo/Editor";
 import AdminNavigation from "@/components/layout/AdminNavigation";
-import { getPhotoTypeList } from "@/lib/services/cy/photo/service";
+import { getPhotoTypeList } from "@/src/lib/api/cy/photo/service";
 import { Suspense } from "react";
 
 export default async function Page() {

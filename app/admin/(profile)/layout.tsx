@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <hr className="border-dashed border-gray-200 mt-1" />
           <Accordion
             title="내 소개"
-            image="/images/profile/intro.svg"
+            image="/images/shared/profile/intro.svg"
             items={["소개", "키워드", "히스토리", "42문답"]}
             depths={[
               ["intro", "my"],
@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           />
           <Accordion
             title="내 관심"
-            image="/images/profile/friends.svg"
+            image="/images/shared/profile/friends.svg"
             items={["나의 일촌"]}
             depths={[["favor", "friend"]]}
             hrefPrefix="/admin/profile"

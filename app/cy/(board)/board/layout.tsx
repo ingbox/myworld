@@ -1,4 +1,4 @@
-import { getBoardTypeList } from "@/lib/services/common/board/service";
+import { getBoardTypeList } from "@/src/lib/api/shared/board/service";
 
 import TypeList from "@/components/cy/board/TypeList";
 import { Suspense } from "react";

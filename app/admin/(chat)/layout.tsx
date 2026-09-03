@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getRoomList } from "@/lib/services/admin/chat/service";
+import { getRoomList } from "@/src/lib/api/admin/chat/service";
 
 import LeftWrapper from "@/components/layout/container/main/LeftWrapper";
 import RightWrapper from "@/components/layout/container/main/RightWrapper";

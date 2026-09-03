@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getContentCount, getUpdatedNews } from "@/lib/services/cy/home/content/service";
+import { getContentCount, getUpdatedNews } from "@/src/lib/api/cy/home/content/service";
 import ProfileComment from "@/components/cy/home/ProfileComment";
 import Image from "next/image";
 import Link from "next/link";
@@ -117,7 +117,7 @@ export default async function Page() {
                 </div>
                 <div className="relative w-full max-w-154 aspect-616/300">
                     <Image
-                        src="/images/miniroom.png"
+                        src="/images/cy/home/miniroom.png"
                         alt=""
                         fill
                         className="object-fill md:object-fill max-md:object-contain"

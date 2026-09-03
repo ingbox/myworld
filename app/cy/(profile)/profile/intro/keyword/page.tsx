@@ -1,7 +1,7 @@
 import { auth } from "@/app/auth";
 import KeywordMaze from "@/components/cy/profile/intro/keyword/KeywordMaze";
 import KeywordMazeSkeleton from "@/components/cy/profile/intro/keyword/KeywordMazeSkeleton";
-import { getCurrentStateByEmail } from "@/lib/services/cy/profile/intro/keyword/service";
+import { getCurrentStateByEmail } from "@/src/lib/api/cy/profile/intro/keyword/service";
 import { Suspense } from "react";
 
 async function KeywordMazeLoader() {

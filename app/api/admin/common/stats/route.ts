@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GET_USER_STATS, UPDATE_USER_STATS } from './queries';
-import pool from '@/lib/db';
+import pool from '@/src/lib/db';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const body = await req.json();

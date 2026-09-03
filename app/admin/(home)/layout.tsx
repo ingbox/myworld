@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ProfileImage from "@/components/admin/home/ProfileImage";
 
-import { getProfileImage } from "@/lib/services/common/home/profile/service";
+import { getProfileImage } from "@/src/lib/api/shared/home/profile/service";
 import LeftWrapper from "@/components/layout/container/main/LeftWrapper";
 import RightWrapper from "@/components/layout/container/main/RightWrapper";
 
@@ -20,7 +20,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                     {/* TODAY IS.. */}
                     <div className="w-full h-6.5 border-2 border-gray-200 rounded-sm shadow-xs px-2 mb-2">
                         <span className="font-ginto font-bold text-[10px] text-[#459ebe] leading-6 tracking-wide">TODAY IS..</span>
-                        <Image className="inline ml-2" src="/images/common/happy.png" width={13} height={13} alt="" />
+                        <Image className="inline ml-2" src="/images/shared/home/happy.png" width={13} height={13} alt="" />
                     </div>
 
                     {/* 상태 메시지 */}

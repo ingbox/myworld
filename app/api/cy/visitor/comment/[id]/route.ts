@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import pool from "@/lib/db";
+import pool from "@/src/lib/db";
 import { DELETE_VISITOR_COMMENT } from "./queries";
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="w-full h-140 bg-white rounded-[10px] border-2 border-gray-300 shadow-md p-5">
               <div className="relative w-61.75 h-50 border-2 border-gray-300 mb-2">
                 <Image
-                  src="/images/profile.jpg"
+                  src="/images/admin/home/profile.jpg"
                   style={{ objectFit: "cover" }}
                   fill
                   alt=""
@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </span>
                 <Image
                   className="inline ml-2"
-                  src="/images/common/happy.png"
+                  src="/images/shared/home/happy.png"
                   width={13}
                   height={13}
                   alt=""

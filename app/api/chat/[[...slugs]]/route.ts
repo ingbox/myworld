@@ -1,4 +1,4 @@
-import pool from "@/lib/db";
+import pool from "@/src/lib/db";
 import { Elysia } from "elysia";
 import { GET_ROOM_LIST } from "./queries";
 
