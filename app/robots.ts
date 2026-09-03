@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getBaseUrl } from "@/app/actions/url";
+import { getBaseUrl } from "@/src/util/shared/url";
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = getBaseUrl();

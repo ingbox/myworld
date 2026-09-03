@@ -1,4 +1,4 @@
-import { GoogleSignIn } from "@/app/actions/cy/auth";
+import { GoogleSignIn } from "@/src/lib/api/cy/auth/action";
 import Image from 'next/image';
 
 export default function GoogleButton() {

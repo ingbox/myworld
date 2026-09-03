@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Navigation from "@/components/layout/item/Navigation/Navigation"
 import Jukebox from "@/components/shared/jukebox/Jukebox";
 import Link from "next/link";
-// import { GoogleSignIn } from "@/app/actions/cy/auth";
+import Image from "next/image";
 
 import Clip from "@/components/layout/item/Clip";
 
@@ -14,7 +14,7 @@ import { SessionProvider } from "next-auth/react";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-w-335 min-h-screen
+        <div className="relative min-w-335 min-h-screen
         max-md:min-w-0
         "
             style={{
@@ -57,10 +57,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                             <div className="flex w-full absolute left-0 -bottom-2.5 max-h-4.5 justify-center items-center px-4">
                                 <SessionProvider>
-                                  <div className="flex w-full items-center">
+                                    <div className="flex w-full items-center">
                                         <ChatButton />
                                         <LoginButton />
-                                  </div>
+                                    </div>
                                 </SessionProvider>
                             </div>
                         </div>
@@ -70,6 +70,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
                 </div>
             </div>
+
+            <Image src="/images/shared/home/calvin-and-hobbes.png" alt="" width={350} height={350}
+                className="absolute bottom-0 right-0 w-87.5 h-auto
+                        max-md:w-20
+                        max-md:opacity-40" />
+
         </div>
     );
 }

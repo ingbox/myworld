@@ -1,4 +1,4 @@
-import { getMessages } from '@/app/actions/chat';
+import { getMessages } from "@/src/lib/api/shared/chat/service";
 import { auth } from '@/app/auth';
 
 import ChatRoom from "@/components/admin/chat/ChatRoom";

@@ -33,3 +33,23 @@ export async function fetchMessagesPage(
 
   return res.json();
 }
+
+/**
+ * 채팅방 메시지 전체를 한 번에 가져옵니다.
+ * 관리자 채팅 초기 렌더에 사용합니다.
+ *
+ * @param roomId - 채팅방 id
+ * @returns 메시지 목록
+ * @throws API 응답이 실패한 경우
+ */
+export async function getMessages(roomId: string): Promise<ChatMessage[]> {
+  const res = await fetch(`${API_URL}/messages/${roomId}`, {
+    method: "GET",
+  });
+
+  if (!res.ok) {
+    throw new Error("메시지를 불러오지 못했습니다.");
+  }
+
+  return res.json();
+}

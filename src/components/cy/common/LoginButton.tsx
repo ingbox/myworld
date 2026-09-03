@@ -1,6 +1,6 @@
 "use client"
 
-import { GoogleSignIn, GoogleSignOut } from "@/app/actions/cy/auth";
+import { GoogleSignIn, GoogleSignOut } from "@/src/lib/api/cy/auth/action";
 import { useSession } from "next-auth/react";
 
 export default function LoginButton() {
