@@ -37,3 +37,15 @@ export const DELETE_MINIROOM_ITEM = `
   WHERE id = $1 AND deleted_at IS NULL
   RETURNING id
 `;
+
+export const INSERT_EMOJI = `
+  INSERT INTO emoji (emoji)
+  VALUES ($1)
+  RETURNING id, emoji, created_at;
+`;
+
+export const INSERT_STATUS_MESSAGE = `
+  INSERT INTO status_message (content)
+  VALUES ($1)
+  RETURNING id, content, created_at;
+`;

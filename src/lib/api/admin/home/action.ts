@@ -4,8 +4,10 @@ import { updateTag } from "next/cache";
 import pool from "@/src/lib/db";
 import {
     DELETE_MINIROOM_ITEM,
+    INSERT_EMOJI,
     INSERT_MINIROOM,
     INSERT_MINIROOM_ITEM,
+    INSERT_STATUS_MESSAGE,
     SELECT_MINIROOM,
     UPDATE_MINIROOM,
 } from "./queries";
@@ -109,4 +111,49 @@ export async function deleteMiniroomItem(itemId: number) {
     }
 
     updateTag("miniroomItems");
+}
+
+/**
+ * 새로운 이모지를 데이터베이스에 추가합니다.
+ *
+ * Form action 전용 핸들러: FormData에서 emoji 값을 읽어 저장합니다.
+ * 
+ * @param formData - Form에서 전달된 데이터(FormData)
+ * @returns 저장된 이모지 행
+ * @throws 이모지 저장에 실패한 경우
+ */
+export async function insertEmoji(formData: FormData) {
+    const emoji = (formData.get("emoji") as string)?.trim();
+    if (!emoji) {
+        throw new Error("이모지를 입력해 주세요.");
+    }
+
+    const result = await pool.query(INSERT_EMOJI, [emoji]);
+    if (result.rowCount === 0) {
+        throw new Error("이모지 저장에 실패했습니다.");
+    }
+    updateTag("emoji");
+    return result.rows[0];
+}
+
+/**
+ * 홈 왼쪽 상태 메시지를 추가합니다.
+ * Form action 전용 핸들러: FormData에서 content를 읽어 저장합니다.
+ *
+ * @param formData - Form에서 전달된 데이터(FormData)
+ * @returns 저장된 상태 메시지 행
+ * @throws 저장에 실패한 경우
+ */
+export async function insertStatusMessage(formData: FormData) {
+    const content = (formData.get("content") as string)?.trim();
+    if (!content) {
+        throw new Error("상태 메시지를 입력해 주세요.");
+    }
+
+    const result = await pool.query(INSERT_STATUS_MESSAGE, [content]);
+    if (result.rowCount === 0) {
+        throw new Error("상태 메시지 저장에 실패했습니다.");
+    }
+    updateTag("statusMessage");
+    return result.rows[0];
 }

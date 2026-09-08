@@ -1,47 +1,19 @@
 "use client";
+
 import Image from "next/image";
-import { useMemo, useRef, useState } from "react";
-import { deleteMiniroomItem, saveMiniroom, uploadMiniroomItem } from "@/src/lib/api/admin/home/action";
-import { useRouter } from "next/navigation";
-
-export type MiniroomItem = {
-    id: number;
-    name: string | null;
-    url: string;
-    width: number | null;
-    height: number | null;
-}
-
-export type MiniroomLayer = {
-    id: string;
-    item_id: number;
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    z: number;
-}
+import type { MiniroomItemData, MiniroomLayer } from "@/src/lib/api/admin/home/types";
+import { useMiniroomCanvas } from "@/src/hooks/admin/home/use-miniroom-canvas";
+import { useUploadMiniroomItem } from "@/src/hooks/admin/home/use-upload-miniroom-item";
+import { useDeleteMiniroomItem } from "@/src/hooks/admin/home/use-delete-miniroom-item";
+import { useSaveMiniroom } from "@/src/hooks/admin/home/use-save-miniroom";
 
 type Props = {
-    items?: MiniroomItem[];
+    items?: MiniroomItemData[];
     ititialLayers?: MiniroomLayer[];
     backgroundUrl?: string | null;
     onDeleteItem?: (itemId: number) => Promise<void>;
     onSave?: (layers: MiniroomLayer[]) => Promise<void>;
-}
-
-type DragState =
-    | { type: "move"; layerId: string; offsetX: number; offsetY: number }
-    | { type: "resize"; layerId: string; startX: number; startY: number; startW: number; startH: number }
-    | null;
-
-function clamp(n: number, min: number, max: number) {
-    return Math.min(max, Math.max(min, n));
-}
-
-function newLayerId() {
-    return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
+};
 
 export default function MiniroomEditor({
     items = [],
@@ -50,125 +22,32 @@ export default function MiniroomEditor({
     onDeleteItem,
     onSave,
 }: Props) {
-    const canvasRef = useRef<HTMLDivElement>(null);
-    const [layers, setLayers] = useState<MiniroomLayer[]>(ititialLayers);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-    const [drag, setDrag] = useState<DragState>(null);
-    const [saving, setSaving] = useState(false);
+    const {
+        canvasRef,
+        layers,
+        selectedId,
+        selected,
+        itemMap,
+        handleCanvasDrop,
+        handlePointerMove,
+        beginMove,
+        beginResize,
+        stopDrag,
+        selectLayer,
+        clearSelection,
+        removeSelected,
+        removeItemFromCanvas,
+    } = useMiniroomCanvas(ititialLayers, items);
 
-    const itemMap = useMemo(
-        () => new Map(items.map(item => [item.id, item])),
-        [items],
-    );
-
-    const getCanvasSize = () => {
-        const rect = canvasRef.current?.getBoundingClientRect();
-        return {
-            width: rect?.width ?? 616,
-            height: rect?.height ?? 300,
-        };
-    };
-
-    const addItemAt = (item: MiniroomItem, clientX: number, clientY: number) => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const rect = canvas.getBoundingClientRect();
-        const { width: cw, height: ch } = getCanvasSize();
-        const aspect =
-            item.width && item.height ? item.width / item.height : 1;
-        const w = 0.18;
-        const h = clamp((w * cw) / aspect / ch, 0.08, 0.5);
-        const x = clamp((clientX - rect.left) / cw - w / 2, 0, 1 - w);
-        const y = clamp((clientY - rect.top) / ch - h / 2, 0, 1 - h);
-        const z = (layers.at(-1)?.z ?? 0) + 1;
-
-        const next: MiniroomLayer = {
-            id: newLayerId(),
-            item_id: item.id,
-            x,
-            y,
-            w,
-            h,
-            z,
-        };
-        setLayers(prev => [...prev, next]);
-        setSelectedId(next.id);
-    };
-
-    const handleCanvasDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const raw = e.dataTransfer.getData("miniroom-item");
-        if (!raw) return;
-        const item = JSON.parse(raw) as MiniroomItem;
-        addItemAt(item, e.clientX, e.clientY);
-    };
-
-
-    const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-        if (!drag) return;
-        const { width: cw, height: ch } = getCanvasSize();
-        const rect = canvasRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        const px = (e.clientX - rect.left) / cw;
-        const py = (e.clientY - rect.top) / ch;
-        setLayers((prev) =>
-            prev.map((layer) => {
-                if (layer.id !== drag.layerId) return layer;
-                if (drag.type === "move") {
-                    const x = clamp(px - drag.offsetX, 0, 1 - layer.w);
-                    const y = clamp(py - drag.offsetY, 0, 1 - layer.h);
-                    return { ...layer, x, y };
-                }
-                const w = clamp(px - drag.startX, 0.05, 1 - layer.x);
-                const h = clamp(py - drag.startY, 0.05, 1 - layer.y);
-                return { ...layer, w, h };
-            }),
-        );
-    };
-
-    const router = useRouter();
-
-    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        e.target.value = "";
-        if (!file) return;
-        await uploadMiniroomItem({ file });
-        router.refresh();
-    };
-
-    const handleDeleteItem = async (itemId: number) => {
-        if (onDeleteItem) {
-            await onDeleteItem(itemId);
-        } else {
-            await deleteMiniroomItem(itemId);
-        }
-        setLayers((prev) => prev.filter((layer) => layer.item_id !== itemId));
-        setSelectedId((prev) => {
-            const selectedLayer = layers.find((layer) => layer.id === prev);
-            return selectedLayer?.item_id === itemId ? null : prev;
-        });
-        router.refresh();
-    };
-
-    const handleSave = async () => {
-        setSaving(true);
-        try {
-            if (onSave) {
-                await onSave(layers);
-            } else {
-                await saveMiniroom(layers);
-            }
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    const selected = layers.find((layer) => layer.id === selectedId);
-
+    const { handleUpload } = useUploadMiniroomItem();
+    const { handleDeleteItem } = useDeleteMiniroomItem({
+        onDeleteItem,
+        onRemoved: removeItemFromCanvas,
+    });
+    const { saving, handleSave } = useSaveMiniroom({ layers, onSave });
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-3 px-6 py-4">
+        <div className="flex h-full min-h-0 flex-col gap-3 px-6 py-4 overflow-x-auto">
             <div className="flex w-154 items-center justify-between">
                 <p className="text-sm font-semibold text-[#459ebe]">Mini Room</p>
                 <button
@@ -187,9 +66,9 @@ export default function MiniroomEditor({
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleCanvasDrop}
                 onPointerMove={handlePointerMove}
-                onPointerUp={() => setDrag(null)}
-                onPointerLeave={() => setDrag(null)}
-                onClick={() => setSelectedId(null)}
+                onPointerUp={stopDrag}
+                onPointerLeave={stopDrag}
+                onClick={clearSelection}
             >
                 {(backgroundUrl || layers.length === 0) && (
                     <img
@@ -218,25 +97,8 @@ export default function MiniroomEditor({
                                     height: `${layer.h * 100}%`,
                                     zIndex: layer.z,
                                 }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedId(layer.id);
-                                }}
-                                onPointerDown={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedId(layer.id);
-                                    const rect = canvasRef.current?.getBoundingClientRect();
-                                    if (!rect) return;
-                                    const { width: cw, height: ch } = getCanvasSize();
-                                    const px = (e.clientX - rect.left) / cw;
-                                    const py = (e.clientY - rect.top) / ch;
-                                    setDrag({
-                                        type: "move",
-                                        layerId: layer.id,
-                                        offsetX: px - layer.x,
-                                        offsetY: py - layer.y,
-                                    });
-                                }}
+                                onClick={(e) => selectLayer(layer.id, e)}
+                                onPointerDown={(e) => beginMove(layer, e)}
                             >
                                 <img
                                     src={item.url}
@@ -247,17 +109,7 @@ export default function MiniroomEditor({
                                 {isSelected && (
                                     <div
                                         className="absolute right-0 bottom-0 h-3 w-3 cursor-se-resize bg-[#459ebe]"
-                                        onPointerDown={(e) => {
-                                            e.stopPropagation();
-                                            setDrag({
-                                                type: "resize",
-                                                layerId: layer.id,
-                                                startX: layer.x,
-                                                startY: layer.y,
-                                                startW: layer.w,
-                                                startH: layer.h,
-                                            });
-                                        }}
+                                        onPointerDown={(e) => beginResize(layer, e)}
                                     />
                                 )}
                             </div>
@@ -324,10 +176,7 @@ export default function MiniroomEditor({
                 <button
                     type="button"
                     className="self-start text-xs text-red-500"
-                    onClick={() => {
-                        setLayers((prev) => prev.filter((layer) => layer.id !== selected.id));
-                        setSelectedId(null);
-                    }}
+                    onClick={removeSelected}
                 >
                     선택한 소품 캔버스에서 빼기
                 </button>
