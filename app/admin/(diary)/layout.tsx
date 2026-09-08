@@ -1,3 +1,4 @@
+import AdminNavigation from "@/components/layout/AdminNavigation";
 import LeftWrapper from "@/components/layout/container/main/LeftWrapper";
 import RightWrapper from "@/components/layout/container/main/RightWrapper";
 
@@ -15,6 +16,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             <RightWrapper>
                 {children}
             </RightWrapper>
+            <AdminNavigation />
         </div>
     )
 }

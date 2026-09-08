@@ -8,6 +8,7 @@ import type {
   CreateDiaryRequest,
   DiaryEventData,
 } from "./types";
+import { createDiarySchema } from "./schema";
 
 /**
  * 관리자에서 다이어리 캘린더 일정을 생성합니다.
@@ -54,12 +55,13 @@ export default async function createDiaryEvent(data: CreateDiaryEventRequest) {
  * @throws 저장에 실패한 경우
  */
 export async function createDiary(data: CreateDiaryRequest) {
-  try {
-    const { content, diaryDate } = data;
+ 
+    const parsed = createDiarySchema.safeParse(data);
+    if (!parsed.success) {
+      throw new Error("다이어리 생성에 실패했습니다.");
+    }
+    const { content, diaryDate } = parsed.data;
     const result = await pool.query(INSERT_DIARY, [content, diaryDate]);
     return result.rows[0].id as number;
-  } catch (error) {
-    console.error(error);
-    throw new Error("다이어리 생성에 실패했습니다.");
-  }
+    
 }

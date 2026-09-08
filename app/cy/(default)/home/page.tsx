@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { getContentCount, getUpdatedNews } from "@/src/lib/api/cy/home/content/service";
+import { getMiniroom, getMiniroomItems } from "@/src/lib/api/admin/home/service";
 import ProfileComment from "@/components/cy/home/ProfileComment";
+import Miniroom from "@/components/cy/home/Miniroom";
 import Image from "next/image";
 import Link from "next/link";
 import ProfileCommentFallback from "@/components/cy/home/ProfileCommentFallback";
@@ -9,6 +11,10 @@ export default async function Page() {
 
     const contentCount = await getContentCount();
     const updatedNews = await getUpdatedNews();
+    const [items, miniroom] = await Promise.all([
+        getMiniroomItems(),
+        getMiniroom(),
+    ]);
 
     return (
         <div className="h-full px-7 py-5 overflow-auto max-md:px-2 max-md:py-2">
@@ -115,14 +121,11 @@ export default async function Page() {
                     <span>Mini Room</span>
                     <span className="absolute font-ginto font-light text-[8px] text-gray-400 tracking-wide -right-20 top-0.75">EXPRESS YOURSELF</span>
                 </div>
-                <div className="relative w-full max-w-154 aspect-616/300">
-                    <Image
-                        src="/images/cy/home/miniroom.png"
-                        alt=""
-                        fill
-                        className="object-fill md:object-fill max-md:object-contain"
-                    />
-                </div>
+                <Miniroom
+                    layers={miniroom?.layers}
+                    items={items}
+                    backgroundUrl={miniroom?.url}
+                />
             </div>
 
             {/* 하단 */}

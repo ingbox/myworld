@@ -1,4 +1,4 @@
-import { useDiary } from "@/src/hooks/cy/diary/use-diary";
+import { useDiary } from "@/src/hooks/cy/diary/calendar/use-diary";
 
 export default function DiaryList({ diaryDate }: { diaryDate: string }) {
     const { data, isLoading, isError } = useDiary(diaryDate);

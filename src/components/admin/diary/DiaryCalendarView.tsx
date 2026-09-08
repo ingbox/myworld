@@ -1,7 +1,7 @@
 'use client';
 
 import Calendar from '@/components/cy/diary/Calendar';
-import { useDiaryEvents } from "@/src/hooks/cy/diary/use-diary-events";
+import { useDiaryEvents } from "@/src/hooks/cy/diary/calendar/use-diary-events";
 
 export default function DiaryCalendarView() {
   const { data, isLoading, isError } = useDiaryEvents();

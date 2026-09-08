@@ -45,7 +45,7 @@ export default function AdminNavigation() {
     ]
 
     return (
-        <div className="absolute top-[100px] right-[2px] flex flex-col gap-[3px]">
+        <div className="absolute top-25 right-0.5 flex flex-col gap-0.75">
             {navigation.map((item) => {
                 const isActive =
                     pathname === item.href ||
@@ -54,7 +54,7 @@ export default function AdminNavigation() {
                     <Link href={item.href} key={item.href}>
                         <div
                             className={
-                                `w-[58px] h-[32px] rounded-r-sm border border-[#787c84] text-center text-[13px] leading-[32px] 
+                                `w-14.5 h-8 rounded-r-sm border border-[#787c84] text-center text-[13px] leading-8 
                                 ${isActive ? "bg-white text-black relative" : "bg-[#ff6b6b] text-white"}`
                             }
                             style={{
@@ -64,7 +64,7 @@ export default function AdminNavigation() {
                             {item.name}
                             {isActive && (
                                 <span
-                                    className="absolute left-[-2px] top-0 h-full w-[2px] bg-white"
+                                    className="absolute -left-0.5 top-0 h-full w-0.5 bg-white"
                                     style={{ content: "''" }}
                                 />
                             )}

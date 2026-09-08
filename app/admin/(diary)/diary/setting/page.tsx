@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createDiaryEvent from "@/src/lib/api/admin/diary/calendar/actions";
-import { diaryEventKeys } from "@/src/hooks/cy/diary/use-diary-events";
+import createDiaryEvent from "@/src/lib/api/admin/diary/calendar/action";
+import { diaryEventKeys } from "@/src/hooks/cy/diary/calendar/use-diary-events";
 import type { DiaryRepeat } from "@/src/lib/api/admin/diary/calendar/types";
 
 const repeatOptions = [
@@ -90,28 +90,31 @@ export default function DiaryEventSettingPage() {
     });
   };
 
+  const fieldClass =
+  "h-9 w-full rounded border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-[#459ebe]";
+
+
   return (
-    <div className="max-w-full mx-auto p-6 bg-white">
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <div className="h-full overflow-auto px-7 py-5 max-md:px-2 max-md:py-2">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium mb-1">제목</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">제목</label>
           <input
             type="text"
-            className="w-full border rounded px-3 py-2"
+            className={fieldClass}
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
             required
           />
         </div>
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium">하루종일</label>
+        <label className="flex items-center gap-2 text-sm text-gray-600">
           <input
             type="checkbox"
             checked={allDay}
             onChange={(e) => {
               const checked = e.target.checked;
               setAllDay(checked);
-
               if (checked) {
                 setStart((prev) => (prev ? prev.slice(0, 10) : ""));
                 setEnd((prev) => (prev ? prev.slice(0, 10) : ""));
@@ -120,55 +123,61 @@ export default function DiaryEventSettingPage() {
                 setEnd((prev) => (prev ? `${prev}T23:59` : ""));
               }
             }}
-            className="accent-sky-500"
+            className="accent-[#459ebe]"
           />
-        </div>
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">
+          하루종일
+        </label>
+        <div className="flex gap-2">
+          <div className="min-w-0 flex-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               {allDay ? "시작 날짜" : "시작"}
             </label>
             <input
               type={allDay ? "date" : "datetime-local"}
               value={start}
               onChange={(e) => setStart(e.target.value)}
-              className="w-full border rounded px-3 py-2"
+              className={fieldClass}
               required
             />
           </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">
+          <div className="min-w-0 flex-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               {allDay ? "종료 날짜" : "종료"}
             </label>
             <input
               type={allDay ? "date" : "datetime-local"}
               value={end}
               onChange={(e) => setEnd(e.target.value)}
-              className="w-full border rounded px-3 py-2"
+              className={fieldClass}
               required
             />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">반복</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">반복</label>
           <select
-            className="w-full border rounded px-2 py-2"
+            className="h-9 w-full rounded border border-gray-300 bg-white px-2 text-sm text-gray-600 outline-none focus:border-[#459ebe]"
             value={repeat}
-            onChange={e => setRepeat(e.target.value as DiaryRepeat)}
+            onChange={(e) => setRepeat(e.target.value as DiaryRepeat)}
           >
-            {repeatOptions.map(opt => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            {repeatOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">색깔</label>
-          <div className="flex gap-2 mt-1">
-            {colorOptions.map(opt => (
+          <label className="mb-1 block text-sm font-medium text-gray-700">색깔</label>
+          <div className="mt-1 flex gap-2">
+            {colorOptions.map((opt) => (
               <button
                 key={opt}
                 type="button"
-                className={`w-7 h-7 rounded-full border-2 ${color === opt ? "border-black" : "border-gray-200"}`}
+                className={`h-7 w-7 rounded-full border ${color === opt
+                    ? "border-[#459ebe] ring-1 ring-[#459ebe]"
+                    : "border-gray-300"
+                  }`}
                 style={{ background: opt }}
                 onClick={() => setColor(opt)}
                 aria-label={opt}
@@ -177,23 +186,24 @@ export default function DiaryEventSettingPage() {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">메모</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">메모</label>
           <textarea
-            className="w-full border rounded px-3 py-2 min-h-20 resize-y"
+            className="min-h-20 w-full resize-y rounded border border-gray-300 px-3 py-2 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-[#459ebe]"
             value={memo}
-            onChange={e => setMemo(e.target.value)}
+            onChange={(e) => setMemo(e.target.value)}
+            placeholder="메모"
           />
         </div>
-        {error && (
-          <div className="text-red-500 text-sm my-1">{error}</div>
-        )}
-        <button
-          type="submit"
-          className="bg-sky-500 text-white py-2 rounded font-semibold hover:bg-sky-600 transition"
-          disabled={mutation.isPending}
-        >
-          {mutation.isPending ? "추가 중..." : "일정 추가"}
-        </button>
+        {error && <p className="text-sm text-red-500">{error}</p>}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="h-9 min-w-22 rounded bg-[#459ebe] px-5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "추가 중..." : "확인"}
+          </button>
+        </div>
       </form>
     </div>
   );

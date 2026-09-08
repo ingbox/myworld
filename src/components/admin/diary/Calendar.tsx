@@ -147,7 +147,7 @@ export default function Calendar({
 
   return (
     <>
-      <div className="w-full rounded-[10px] border border-zinc-300 bg-white p-4 shadow-sm mb-">
+      <div className="w-full rounded-[10px] border border-zinc-300 bg-white p-4 shadow-sm mb-2">
         <div className="flex flex-col md:flex-row">
           {/* 왼쪽: 선택 날짜 — 모바일은 상단 가운데, 웹은 왼쪽 세로 */}
           <div className="flex flex-col items-center justify-center border-b border-dashed border-zinc-300 pb-4 md:w-22 md:shrink-0 md:border-b-0 md:border-r md:pr-4 md:pb-0 max-sm:hidden">
@@ -187,7 +187,7 @@ export default function Calendar({
 
           </div>
         </div>
-      </div >
+      </div>
 
       <QueryClientProvider client={queryClient}>
         <Diary diaryDate={selectedDate.toLocaleDateString('sv-SE')} />
