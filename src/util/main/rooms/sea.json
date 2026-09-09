@@ -1,0 +1,56 @@
+{
+  "id": "sea",
+  "kind": "outdoor",
+  "cols": 24,
+  "rows": 16,
+  "start": { "col": 9, "row": 2 },
+  "backdrop": "#0a1620",
+  "walls": { "north": 1, "south": 0, "west": 0, "east": 0 },
+  "floor": { "sheet": "classic", "srcCol": 7, "srcRow": 0, "srcCols": 2 },
+  "objects": [
+    { "piece": "path", "col": 9, "row": 1 },
+    { "piece": "path", "col": 8, "row": 2 },
+    { "piece": "path", "col": 9, "row": 2 },
+    { "piece": "path", "col": 10, "row": 2 },
+    { "piece": "path", "col": 8, "row": 3 },
+    { "piece": "path", "col": 9, "row": 3 },
+    { "piece": "path", "col": 10, "row": 3 },
+
+    { "piece": "flowers-white", "col": 6, "row": 2 },
+    { "piece": "woods-flowers", "col": 12, "row": 2 },
+    { "piece": "woods-flowers-pink", "col": 4, "row": 3 },
+    { "piece": "plant", "col": 14, "row": 3 },
+    { "piece": "rock", "col": 2, "row": 3 },
+    { "piece": "woods-rock", "col": 21, "row": 3 },
+    { "piece": "tree-round", "col": 0, "row": 1 },
+    { "piece": "tree-pine", "col": 22, "row": 1 },
+    { "piece": "woods-bush", "col": 16, "row": 2 },
+
+    {
+      "piece": "summer-shore-0",
+      "col": 0,
+      "row": 4,
+      "fillCols": 24,
+      "cycle": ["summer-shore-0", "summer-shore-1", "summer-shore-2", "summer-shore-3"]
+    },
+    {
+      "piece": "summer-water-0",
+      "col": 0,
+      "row": 5,
+      "fillCols": 24,
+      "fillRows": 11,
+      "cycle": ["summer-water-0", "summer-water-1", "summer-water-2"]
+    }
+  ],
+  "openings": [
+    {
+      "col": 8,
+      "row": 0,
+      "cols": 3,
+      "rows": 1,
+      "to": "village",
+      "spawnCol": 9,
+      "spawnRow": 14
+    }
+  ]
+}

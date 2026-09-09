@@ -1,0 +1,31 @@
+{
+  "id": "bedroom",
+  "cols": 11,
+  "rows": 9,
+  "start": { "col": 5, "row": 5 },
+  "walls": { "north": 2, "south": 1, "west": 1, "east": 1 },
+  "wallColors": {
+    "top": "#4a3226",
+    "mid": "#5c3f2e",
+    "edge": "#3e291e"
+  },
+  "floor": { "srcCol": 3, "srcRow": 5, "srcCols": 3 },
+  "objects": [
+    { "piece": "window", "col": 2, "row": 0 },
+    { "piece": "window", "col": 8, "row": 0 },
+    { "piece": "bed-green", "col": 1, "row": 3 },
+    { "piece": "nightstand", "col": 3, "row": 4 },
+    { "piece": "houseplant", "col": 9, "row": 2 }
+  ],
+  "openings": [
+    {
+      "col": 4,
+      "row": 8,
+      "cols": 2,
+      "rows": 1,
+      "to": "living",
+      "spawnCol": 6,
+      "spawnRow": 2
+    }
+  ]
+}

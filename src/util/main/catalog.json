@@ -1,0 +1,56 @@
+{
+  "tileset": "/images/game/simple-room.png",
+  "width": 384,
+  "height": 480,
+  "tile": 32,
+  "pieces": {
+    "bed": {
+      "src": { "x": 0, "y": 144, "w": 48, "h": 80 },
+      "offset": { "x": 8, "y": 16 },
+      "cols": 2,
+      "rows": 3,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "desk": {
+      "src": { "x": 8, "y": 64, "w": 80, "h": 63 },
+      "offset": { "x": 8, "y": 1 },
+      "cols": 3,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "bookshelf-left": {
+      "src": { "x": 193, "y": 3, "w": 31, "h": 90 },
+      "offset": { "x": 1, "y": 3 },
+      "cols": 1,
+      "rows": 3,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "bookshelf-right": {
+      "src": { "x": 160, "y": 3, "w": 31, "h": 90 },
+      "offset": { "x": 0, "y": 3 },
+      "cols": 1,
+      "rows": 3,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "window": {
+      "src": { "x": 352, "y": 49, "w": 31, "h": 46 },
+      "offset": { "x": 0, "y": 9 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "none",
+      "layer": "wall"
+    },
+    "rug": {
+      "src": { "x": 2, "y": 386, "w": 126, "h": 91 },
+      "offset": { "x": 1, "y": 2 },
+      "cols": 4,
+      "rows": 3,
+      "blocked": "none",
+      "layer": "floor"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "gallery",
+  "cols": 36,
+  "rows": 12,
+  "start": { "col": 18, "row": 9 },
+  "walls": { "north": 2, "south": 1, "west": 1, "east": 1 },
+  "wallColors": {
+    "top": "#3a2c28",
+    "mid": "#4e3a32",
+    "edge": "#2c211c"
+  },
+  "floor": { "sheet": "interior", "srcCol": 6, "srcRow": 3, "srcCols": 3 },
+  "objects": [
+    { "piece": "rug", "col": 16, "row": 5 },
+    { "piece": "houseplant", "col": 1, "row": 8 },
+    { "piece": "houseplant", "col": 34, "row": 8 },
+    { "piece": "bench", "col": 8, "row": 7 },
+    { "piece": "bench", "col": 16, "row": 7 },
+    { "piece": "bench", "col": 24, "row": 7 }
+  ],
+  "exhibits": [
+    { "id": "meerkat-home", "frameCol": 2, "frameRow": 0, "signCol": 4, "signRow": 2 },
+    { "id": "parking-coupon", "frameCol": 6, "frameRow": 0, "signCol": 8, "signRow": 2 },
+    { "id": "parking-qr", "frameCol": 10, "frameRow": 0, "signCol": 12, "signRow": 2 },
+    { "id": "parking-admin", "frameCol": 14, "frameRow": 0, "signCol": 16, "signRow": 2 },
+    { "id": "local-coupon", "frameCol": 18, "frameRow": 0, "signCol": 20, "signRow": 2 },
+    { "id": "myworld", "frameCol": 22, "frameRow": 0, "signCol": 24, "signRow": 2 },
+    { "id": "stockly", "frameCol": 26, "frameRow": 0, "signCol": 28, "signRow": 2 },
+    { "id": "figma", "frameCol": 30, "frameRow": 0, "signCol": 32, "signRow": 2 }
+  ],
+  "openings": [
+    {
+      "col": 17,
+      "row": 11,
+      "cols": 2,
+      "rows": 1,
+      "to": "village",
+      "spawnCol": 3,
+      "spawnRow": 7
+    }
+  ]
+}

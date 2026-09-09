@@ -43,7 +43,7 @@ export async function proxy(request: NextRequest) {
     }
 
     // 리다이렉트
-    if (pathname === '/' || pathname === '/cy') {
+    if (pathname === '/cy') {
         response = NextResponse.redirect(new URL('/cy/home', request.url));
     } else if (pathname === '/admin') {
         response = NextResponse.redirect(new URL('/admin/home', request.url));

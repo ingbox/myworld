@@ -1,0 +1,43 @@
+{
+  "id": "living",
+  "cols": 13,
+  "rows": 10,
+  "start": { "col": 6, "row": 5 },
+  "walls": { "north": 2, "south": 1, "west": 1, "east": 1 },
+  "wallColors": {
+    "top": "#4a3226",
+    "mid": "#5c3f2e",
+    "edge": "#3e291e"
+  },
+  "floor": { "srcCol": 3, "srcRow": 5, "srcCols": 3 },
+  "objects": [
+    { "piece": "window", "col": 2, "row": 0 },
+    { "piece": "window", "col": 10, "row": 0 },
+    { "piece": "rug", "col": 1, "row": 4 },
+    { "piece": "sofa", "col": 1, "row": 4 },
+    { "piece": "table", "col": 2, "row": 6 }
+  ],
+  "npcs": [
+    { "id": "bong", "col": 8, "row": 5, "facing": "left" }
+  ],
+  "openings": [
+    {
+      "col": 5,
+      "row": 0,
+      "cols": 2,
+      "rows": 2,
+      "to": "bedroom",
+      "spawnCol": 4,
+      "spawnRow": 7
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "cols": 2,
+      "rows": 1,
+      "to": "village",
+      "spawnCol": 17,
+      "spawnRow": 7
+    }
+  ]
+}

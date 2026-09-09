@@ -1,0 +1,67 @@
+{
+  "pieces": {
+    "bed-green": {
+      "sheet": "interior",
+      "src": { "x": 16, "y": 96, "w": 23, "h": 32 },
+      "offset": { "x": 4, "y": 0 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "sofa": {
+      "sheet": "interior",
+      "src": { "x": 82, "y": 131, "w": 44, "h": 26 },
+      "offset": { "x": 2, "y": 3 },
+      "cols": 3,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "nightstand": {
+      "sheet": "interior",
+      "src": { "x": 99, "y": 115, "w": 12, "h": 13 },
+      "offset": { "x": 2, "y": 2 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "houseplant": {
+      "sheet": "interior",
+      "src": { "x": 49, "y": 140, "w": 12, "h": 20 },
+      "offset": { "x": 2, "y": 12 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "table": {
+      "sheet": "interior",
+      "src": { "x": 49, "y": 107, "w": 30, "h": 21 },
+      "offset": { "x": 1, "y": 11 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "chair": {
+      "sheet": "interior",
+      "src": { "x": 49, "y": 140, "w": 12, "h": 20 },
+      "offset": { "x": 2, "y": 12 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "floor-lamp": {
+      "sheet": "interior",
+      "src": { "x": 68, "y": 148, "w": 9, "h": 12 },
+      "offset": { "x": 3, "y": 4 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    }
+  }
+}

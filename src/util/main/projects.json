@@ -1,0 +1,98 @@
+{
+  "meerkat-home": {
+    "title": "세븐미어캣 홈페이지",
+    "label": "홈페이지",
+    "summary": [
+      "주차관제 회사 공식 사이트. 프론트 퍼블리싱과 모바일·태블릿 반응형 웹을 맡았다.",
+      "문의하기 API 연동과 카카오 비즈톡 알림까지 이었다.",
+      "GDWEB WINNER PRIZE를 받았다."
+    ],
+    "cover": "/images/game/exhibits/meerkat-home.jpg",
+    "accent": "#f97316",
+    "url": ""
+  },
+  "parking-coupon": {
+    "title": "주차 할인 쿠폰 시스템",
+    "label": "할인 쿠폰",
+    "summary": [
+      "상가가 방문 차량에 주차 할인 시간을 부여하는 서비스. Next.js 프론트를 담당했다.",
+      "입차 조회, 할인 부여, 내역 관리. FE 2 / BE 1 팀에서 프론트를 맡았다.",
+      "Next.js 12에서 15로 마이그레이션을 주도했고, 누적 100만 건 이상을 운영 중이다."
+    ],
+    "cover": "/images/game/exhibits/parking-coupon.png",
+    "accent": "#ea580c",
+    "url": ""
+  },
+  "parking-qr": {
+    "title": "QR 주차 사전정산",
+    "label": "QR 정산",
+    "summary": [
+      "정산기 대신 QR로 웹에서 선결제하는 서비스. 기획부터 풀스택을 혼자 만들었다.",
+      "차량 검색·결제·정산 흐름. Next.js, Node.js, 자사 정산 API, Ubuntu 배포.",
+      "반응형 웹과 광고 영역. 일 평균 10건 넘게 쓰이며 CS를 보고 고쳤다."
+    ],
+    "cover": "/images/game/exhibits/parking-qr.png",
+    "accent": "#c2410c",
+    "url": ""
+  },
+  "parking-admin": {
+    "title": "주차관제 관리자",
+    "label": "관리자",
+    "summary": [
+      "유료·무료 주차장 관리자 페이지의 유지보수와 기능 개선을 맡았다.",
+      "입출차, 방문자, 쿠폰, 정산, 공동현관, 게시판 등 운영 기능을 다뤘다.",
+      "차단기별 회차 시간과 순찰 기능을 새로 넣었다."
+    ],
+    "cover": "/images/game/exhibits/parking-admin.png",
+    "accent": "#9a3412",
+    "url": ""
+  },
+  "local-coupon": {
+    "title": "지역 쿠폰",
+    "label": "지역 쿠폰",
+    "summary": [
+      "지역 쿠폰 서비스의 대규모 페이지를 프론트 단독으로 만들었다.",
+      "쿠폰 발급과 사용 흐름 UI/UX를 구현했다.",
+      "런칭과 수익화 구조를 만들고, 실제 사용 데이터를 확보했다."
+    ],
+    "cover": "/images/game/exhibits/local-coupon.png",
+    "accent": "#fb923c",
+    "url": ""
+  },
+  "myworld": {
+    "title": "MyWorld",
+    "label": "미니홈피",
+    "summary": [
+      "싸이월드풍 미니홈피. Next.js 16, TypeScript, PostgreSQL로 구조를 나눠 만들었다.",
+      "Route와 Query를 분리하고, Docker, AWS Lightsail, GitHub Actions로 배포한다.",
+      "완성도를 우선하며 점진적으로 고치는 중이다. 이 마을도 그 안의 한 공간이다."
+    ],
+    "cover": "/images/game/exhibits/myworld.png",
+    "accent": "#4a60ab",
+    "url": "https://www.gieok.my"
+  },
+  "stockly": {
+    "title": "Stockly",
+    "label": "Stockly",
+    "summary": [
+      "AI 주식 분석 데모. 약 4시간 만에 기획부터 연동까지 끝낸 풀스택 MVP다.",
+      "Next.js 대시보드와 챗봇, FastAPI, KIS API, PostgreSQL, OpenAI를 썼다.",
+      "숫자는 서버가 계산하고, 모델은 그 결과만 설명한다."
+    ],
+    "cover": "/images/game/exhibits/stockly.png",
+    "accent": "#166534",
+    "url": ""
+  },
+  "figma": {
+    "title": "Figma UI/UX",
+    "label": "Figma",
+    "summary": [
+      "Frame, Auto Layout, Component, Variable로 화면을 일관되게 구성했다.",
+      "Constraints로 반응형 레이아웃을 잡고, 반복 UI는 컴포넌트로 재사용했다.",
+      "Figma MCP와 Cursor를 연동해 디자인에서 구현까지 시간을 줄였다."
+    ],
+    "cover": "/images/game/exhibits/figma.png",
+    "accent": "#a259ff",
+    "url": "https://www.figma.com/design/RFTVbjCP8FbIa6pxS7sUvv/%EC%97%B0%EC%8A%B5?m=auto&t=N9wQAZW0FaVT5r4i-1"
+  }
+}

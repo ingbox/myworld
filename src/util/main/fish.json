@@ -1,0 +1,214 @@
+{
+  "fish": [
+    {
+      "id": "anchovy",
+      "name": "멸치",
+      "sea": "south",
+      "rarity": "common",
+      "weight": 14,
+      "sprite": "/images/game/fish/anchovy.png",
+      "cell": "0-9",
+      "blurb": "은빛으로 반짝이는 작은 생선. 떼 지어 다닌다."
+    },
+    {
+      "id": "mackerel",
+      "name": "고등어",
+      "sea": "south",
+      "rarity": "common",
+      "weight": 12,
+      "sprite": "/images/game/fish/mackerel.png",
+      "cell": "1-10",
+      "blurb": "등에 물결무늬가 있는 흔한 등푸른생선."
+    },
+    {
+      "id": "squid",
+      "name": "살오징어",
+      "sea": "west",
+      "rarity": "common",
+      "weight": 10,
+      "sprite": "/images/game/fish/squid.png",
+      "cell": "2-13",
+      "blurb": "붉은 몸통에 다리가 달린 오징어. 구이용으로 유명하다."
+    },
+    {
+      "id": "croaker",
+      "name": "참조기",
+      "sea": "west",
+      "rarity": "common",
+      "weight": 8,
+      "sprite": "/images/game/fish/croaker.png",
+      "cell": "2-2",
+      "blurb": "노란빛이 도는 서해의 대표 생선."
+    },
+    {
+      "id": "shad",
+      "name": "전어",
+      "sea": "south",
+      "rarity": "common",
+      "weight": 6,
+      "sprite": "/images/game/fish/shad.png",
+      "cell": "0-8",
+      "blurb": "가을에 살 오른다는 작고 고소한 생선."
+    },
+    {
+      "id": "pollack",
+      "name": "명태",
+      "sea": "east",
+      "rarity": "uncommon",
+      "weight": 6,
+      "sprite": "/images/game/fish/pollack.png",
+      "cell": "2-0",
+      "blurb": "동해의 은빛 생선. 말리면 북어가 된다."
+    },
+    {
+      "id": "flounder",
+      "name": "넙치",
+      "sea": "west",
+      "rarity": "uncommon",
+      "weight": 5,
+      "sprite": "/images/game/fish/flounder.png",
+      "cell": "2-5",
+      "blurb": "바닥에 납작 엎드린 광어. 눈이 한쪽에 몰려 있다."
+    },
+    {
+      "id": "hairtail",
+      "name": "갈치",
+      "sea": "south",
+      "rarity": "uncommon",
+      "weight": 5,
+      "sprite": "/images/game/fish/hairtail.png",
+      "cell": "2-11",
+      "blurb": "칼처럼 길고 은빛으로 빛나는 남해 별미."
+    },
+    {
+      "id": "blue-crab",
+      "name": "꽃게",
+      "sea": "west",
+      "rarity": "uncommon",
+      "weight": 4,
+      "sprite": "/images/game/fish/blue-crab.png",
+      "cell": "1-7",
+      "blurb": "집게가 큰 서해 게. 찜으로 많이 먹는다."
+    },
+    {
+      "id": "webfoot",
+      "name": "주꾸미",
+      "sea": "west",
+      "rarity": "uncommon",
+      "weight": 5,
+      "sprite": "/images/game/fish/webfoot.png",
+      "cell": "3-5",
+      "blurb": "낙지보다 작고 통통한 서해 문어 친척."
+    },
+    {
+      "id": "prawn",
+      "name": "대하",
+      "sea": "west",
+      "rarity": "uncommon",
+      "weight": 3,
+      "sprite": "/images/game/fish/prawn.png",
+      "cell": "1-4",
+      "blurb": "몸집이 큰 새우. 구우면 단맛이 난다."
+    },
+    {
+      "id": "spanish-mackerel",
+      "name": "삼치",
+      "sea": "south",
+      "rarity": "uncommon",
+      "weight": 3,
+      "sprite": "/images/game/fish/spanish-mackerel.png",
+      "cell": "1-11",
+      "blurb": "길고 빠른 은빛 생선. 살이 부드럽다."
+    },
+    {
+      "id": "yellowtail",
+      "name": "방어",
+      "sea": "east",
+      "rarity": "uncommon",
+      "weight": 3,
+      "sprite": "/images/game/fish/yellowtail.png",
+      "cell": "1-13",
+      "blurb": "옆줄이 노란 대형 등푸른생선."
+    },
+    {
+      "id": "conger",
+      "name": "붕장어",
+      "sea": "south",
+      "rarity": "uncommon",
+      "weight": 3,
+      "sprite": "/images/game/fish/conger.png",
+      "cell": "2-10",
+      "blurb": "뱀처럼 긴 장어. 통구이로 유명하다."
+    },
+    {
+      "id": "turban",
+      "name": "소라",
+      "sea": "south",
+      "rarity": "uncommon",
+      "weight": 2,
+      "sprite": "/images/game/fish/turban.png",
+      "cell": "4-0",
+      "blurb": "나선 껍데기 안에 든 고둥. 바다에서 건졌다."
+    },
+    {
+      "id": "red-seabream",
+      "name": "참돔",
+      "sea": "south",
+      "rarity": "rare",
+      "weight": 2,
+      "sprite": "/images/game/fish/red-seabream.png",
+      "cell": "2-4",
+      "blurb": "분홍빛이 도는 귀한 도미. 잔칫상에 오른다."
+    },
+    {
+      "id": "puffer",
+      "name": "복어",
+      "sea": "east",
+      "rarity": "rare",
+      "weight": 2,
+      "sprite": "/images/game/fish/puffer.png",
+      "cell": "2-8",
+      "blurb": "동그란 몸에 독이 있는 동해 복어."
+    },
+    {
+      "id": "skate",
+      "name": "홍어",
+      "sea": "west",
+      "rarity": "rare",
+      "weight": 2,
+      "sprite": "/images/game/fish/skate.png",
+      "cell": "0-13",
+      "blurb": "마름모꼴 몸통의 서해 가오리 친척."
+    },
+    {
+      "id": "snow-crab",
+      "name": "대게",
+      "sea": "east",
+      "rarity": "rare",
+      "weight": 1,
+      "sprite": "/images/game/fish/snow-crab.png",
+      "cell": "1-8",
+      "blurb": "다리가 긴 동해 게. 잘 안 잡힌다."
+    },
+    {
+      "id": "octopus",
+      "name": "문어",
+      "sea": "east",
+      "rarity": "rare",
+      "weight": 2,
+      "sprite": "/images/game/fish/octopus.png",
+      "cell": "3-6",
+      "blurb": "다리가 굵은 동해 문어. 힘이 세다."
+    },
+    {
+      "id": "monkfish",
+      "name": "아귀",
+      "sea": "west",
+      "rarity": "rare",
+      "weight": 2,
+      "sprite": "/images/game/fish/monkfish.png",
+      "cell": "2-7",
+      "blurb": "입이 큰 심해 생선. 찜으로 먹는다."
+    }
+  ]
+}

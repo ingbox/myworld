@@ -1,0 +1,356 @@
+{
+  "pieces": {
+    "path": {
+      "sheet": "classic",
+      "src": { "x": 16, "y": 64, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "house-wall": {
+      "sheet": "classic",
+      "src": { "x": 256, "y": 0, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "house-wall-top": {
+      "sheet": "classic",
+      "src": { "x": 272, "y": 0, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "house-window": {
+      "sheet": "classic",
+      "src": { "x": 240, "y": 0, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "house-door": {
+      "sheet": "classic",
+      "src": { "x": 304, "y": 32, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "object"
+    },
+    "tree-round": {
+      "sheet": "classic",
+      "src": { "x": 96, "y": 80, "w": 32, "h": 32 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "tree-pine": {
+      "sheet": "classic",
+      "src": { "x": 128, "y": 80, "w": 16, "h": 32 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "well": {
+      "sheet": "classic",
+      "src": { "x": 192, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "bucket": {
+      "sheet": "classic",
+      "src": { "x": 176, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "rock": {
+      "sheet": "classic",
+      "src": { "x": 144, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "rocks": {
+      "sheet": "classic",
+      "src": { "x": 160, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "plant": {
+      "sheet": "classic",
+      "src": { "x": 160, "y": 112, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "flowers-white": {
+      "sheet": "classic",
+      "src": { "x": 144, "y": 112, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "fence-left": {
+      "sheet": "classic",
+      "src": { "x": 80, "y": 96, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "fence-mid": {
+      "sheet": "classic",
+      "src": { "x": 64, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "fence-right": {
+      "sheet": "classic",
+      "src": { "x": 64, "y": 96, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "water": {
+      "sheet": "classic",
+      "src": { "x": 240, "y": 32, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "floor"
+    },
+    "woods-tree": {
+      "sheet": "woods",
+      "src": { "x": 272, "y": 16, "w": 64, "h": 64 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 4,
+      "rows": 4,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "woods-round": {
+      "sheet": "woods",
+      "src": { "x": 272, "y": 96, "w": 32, "h": 32 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "woods-pine": {
+      "sheet": "woods",
+      "src": { "x": 304, "y": 96, "w": 32, "h": 32 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "woods-flowers": {
+      "sheet": "woods",
+      "src": { "x": 80, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "woods-flowers-pink": {
+      "sheet": "woods",
+      "src": { "x": 96, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "woods-bush": {
+      "sheet": "woods",
+      "src": { "x": 112, "y": 80, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "woods-rock": {
+      "sheet": "woods",
+      "src": { "x": 224, "y": 32, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "cobble": {
+      "sheet": "village-v2",
+      "src": { "x": 32, "y": 16, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "lamp": {
+      "sheet": "village-v2",
+      "src": { "x": 164, "y": 36, "w": 21, "h": 42 },
+      "offset": { "x": 5, "y": 6 },
+      "cols": 2,
+      "rows": 3,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "stall": {
+      "sheet": "village-v2",
+      "src": { "x": 19, "y": 120, "w": 43, "h": 40 },
+      "offset": { "x": 2, "y": 8 },
+      "cols": 3,
+      "rows": 3,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "pot-yellow": {
+      "sheet": "village-v2",
+      "src": { "x": 212, "y": 82, "w": 9, "h": 14 },
+      "offset": { "x": 3, "y": 2 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "house-blue": {
+      "sheet": "village-v2",
+      "src": { "x": 148, "y": 155, "w": 115, "h": 69 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 8,
+      "rows": 5,
+      "blocked": "all",
+      "pass": [[1, 4], [2, 4]],
+      "layer": "object"
+    },
+    "bench": {
+      "sheet": "village-v2",
+      "src": { "x": 208, "y": 25, "w": 32, "h": 23 },
+      "offset": { "x": 0, "y": 9 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "sign": {
+      "sheet": "village-v2",
+      "src": { "x": 0, "y": 224, "w": 16, "h": 20 },
+      "offset": { "x": 0, "y": -4 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "frame": {
+      "sheet": "village-v2",
+      "src": { "x": 20, "y": 224, "w": 21, "h": 24 },
+      "offset": { "x": 5, "y": 4 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "none",
+      "layer": "wall"
+    },
+    "summer-shore-0": {
+      "sheet": "summer",
+      "src": { "x": 96, "y": 176, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "summer-shore-1": {
+      "sheet": "summer",
+      "src": { "x": 112, "y": 176, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "summer-shore-2": {
+      "sheet": "summer",
+      "src": { "x": 128, "y": 176, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "summer-shore-3": {
+      "sheet": "summer",
+      "src": { "x": 144, "y": 176, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "summer-water-0": {
+      "sheet": "summer",
+      "src": { "x": 176, "y": 208, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "floor"
+    },
+    "summer-water-1": {
+      "sheet": "summer",
+      "src": { "x": 192, "y": 208, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "floor"
+    },
+    "summer-water-2": {
+      "sheet": "summer",
+      "src": { "x": 208, "y": 208, "w": 16, "h": 16 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "floor"
+    }
+  }
+}
