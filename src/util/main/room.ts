@@ -1,4 +1,4 @@
-import { TILE } from "@/src/util/main/chip";
+import { DIR_DELTA, TILE, type Dir } from "@/src/util/main/chip";
 import catalog from "@/src/util/main/catalog.json";
 import outdoorCatalog from "@/src/util/main/outdoor.json";
 import interiorCatalog from "@/src/util/main/interior.json";
@@ -81,6 +81,8 @@ export type RoomLayout = {
     fillRows?: number;
     /** 반복할 때 이 조각들을 번갈아 씁니다. */
     cycle?: string[];
+    /** 조사하면 이 번호 아이템을 줍니다. */
+    give?: number;
   }>;
   openings?: Opening[];
   npcs?: NpcPlacement[];
@@ -94,6 +96,7 @@ export type RoomSprite = CatalogPiece & {
   col: number;
   row: number;
   blockedCells: Array<[number, number]>;
+  give?: number;
 };
 
 export type Room = Omit<RoomLayout, "objects" | "npcs" | "exhibits"> & {
@@ -263,6 +266,7 @@ export function resolveRoom(
           ...piece,
           sheet: piece.sheet ?? "room",
           blockedCells: blockedCells(piece),
+          give: obj.give,
         });
         stamp += 1;
       }
@@ -389,6 +393,56 @@ export function buildWalkable(room: Room): boolean[][] {
 
 export function spriteBottomY(sprite: RoomSprite) {
   return (sprite.row + sprite.rows) * TILE;
+}
+
+/**
+ * 이 조각이 그 칸을 차지하는지 봅니다.
+ *
+ * @param sprite - 방 조각
+ * @param col - 열
+ * @param row - 행
+ */
+export function spriteOccupies(sprite: RoomSprite, col: number, row: number) {
+  const dc = col - sprite.col;
+  const dr = row - sprite.row;
+  return dc >= 0 && dr >= 0 && dc < sprite.cols && dr < sprite.rows;
+}
+
+/**
+ * 지금 바라보는 칸의 조각을 찾습니다.
+ *
+ * @param sprites - 이 방의 조각
+ * @param col - 플레이어 열
+ * @param row - 플레이어 행
+ * @param facing - 바라보는 방향
+ */
+export function findSpriteInFront(
+  sprites: RoomSprite[],
+  col: number,
+  row: number,
+  facing: Dir,
+) {
+  const nextCol = col + DIR_DELTA[facing].dc;
+  const nextRow = row + DIR_DELTA[facing].dr;
+  return sprites.find((sprite) => spriteOccupies(sprite, nextCol, nextRow));
+}
+
+/**
+ * 조각과 플레이어가 상하좌우로 붙어 있는지 봅니다.
+ *
+ * @param sprite - 방 조각
+ * @param col - 플레이어 열
+ * @param row - 플레이어 행
+ */
+export function isAdjacentSprite(sprite: RoomSprite, col: number, row: number) {
+  for (let dr = 0; dr < sprite.rows; dr++) {
+    for (let dc = 0; dc < sprite.cols; dc++) {
+      if (Math.abs(sprite.col + dc - col) + Math.abs(sprite.row + dr - row) === 1) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export const ROOMS: Record<string, Room> = {

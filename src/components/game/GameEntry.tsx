@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import HouseWorld from "@/src/components/game/HouseWorld";
 import TutorialScreen from "@/src/components/game/TutorialScreen";
-import { markGameStarted } from "@/src/util/main/mark-game-started";
+import { ensurePlayer, markGameStarted } from "@/src/util/main/mark-game-started";
 
 type Props = {
   started: boolean;
@@ -19,6 +19,11 @@ export default function GameEntry({ started }: Props) {
     setPlay(true);
     void markGameStarted();
   }, []);
+
+  useEffect(() => {
+    if (!play) return;
+    void ensurePlayer();
+  }, [play]);
 
   if (!play) {
     return <TutorialScreen onStart={onStart} />;

@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "id": "witch-candy",
+      "no": 1,
+      "name": "마녀의 캔디",
+      "blurb": "마녀가 나눠 준 사탕이다. 먹어도 아무 일도 일어나지 않는다.",
+      "use": true,
+      "album": true,
+      "maxPerPlayer": 3,
+      "sprite": "/images/game/items/witch-candy.png"
+    }
+  ]
+}

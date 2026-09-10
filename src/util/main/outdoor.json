@@ -65,11 +65,11 @@
     },
     "well": {
       "sheet": "classic",
-      "src": { "x": 192, "y": 80, "w": 16, "h": 16 },
+      "src": { "x": 192, "y": 64, "w": 16, "h": 32 },
       "offset": { "x": 0, "y": 0 },
       "cols": 1,
-      "rows": 1,
-      "blocked": "all",
+      "rows": 2,
+      "blocked": "bottom",
       "layer": "object"
     },
     "bucket": {
@@ -164,10 +164,10 @@
     },
     "woods-round": {
       "sheet": "woods",
-      "src": { "x": 272, "y": 96, "w": 32, "h": 32 },
+      "src": { "x": 272, "y": 80, "w": 32, "h": 48 },
       "offset": { "x": 0, "y": 0 },
       "cols": 2,
-      "rows": 2,
+      "rows": 3,
       "blocked": "bottom",
       "layer": "object"
     },

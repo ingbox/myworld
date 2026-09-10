@@ -2,6 +2,7 @@
   "fish": [
     {
       "id": "anchovy",
+      "no": 256,
       "name": "멸치",
       "sea": "south",
       "rarity": "common",
@@ -12,6 +13,7 @@
     },
     {
       "id": "mackerel",
+      "no": 257,
       "name": "고등어",
       "sea": "south",
       "rarity": "common",
@@ -22,6 +24,7 @@
     },
     {
       "id": "squid",
+      "no": 258,
       "name": "살오징어",
       "sea": "west",
       "rarity": "common",
@@ -32,6 +35,7 @@
     },
     {
       "id": "croaker",
+      "no": 259,
       "name": "참조기",
       "sea": "west",
       "rarity": "common",
@@ -42,6 +46,7 @@
     },
     {
       "id": "shad",
+      "no": 260,
       "name": "전어",
       "sea": "south",
       "rarity": "common",
@@ -52,6 +57,7 @@
     },
     {
       "id": "pollack",
+      "no": 261,
       "name": "명태",
       "sea": "east",
       "rarity": "uncommon",
@@ -62,6 +68,7 @@
     },
     {
       "id": "flounder",
+      "no": 262,
       "name": "넙치",
       "sea": "west",
       "rarity": "uncommon",
@@ -72,6 +79,7 @@
     },
     {
       "id": "hairtail",
+      "no": 263,
       "name": "갈치",
       "sea": "south",
       "rarity": "uncommon",
@@ -82,6 +90,7 @@
     },
     {
       "id": "blue-crab",
+      "no": 264,
       "name": "꽃게",
       "sea": "west",
       "rarity": "uncommon",
@@ -92,6 +101,7 @@
     },
     {
       "id": "webfoot",
+      "no": 265,
       "name": "주꾸미",
       "sea": "west",
       "rarity": "uncommon",
@@ -102,6 +112,7 @@
     },
     {
       "id": "prawn",
+      "no": 266,
       "name": "대하",
       "sea": "west",
       "rarity": "uncommon",
@@ -112,6 +123,7 @@
     },
     {
       "id": "spanish-mackerel",
+      "no": 267,
       "name": "삼치",
       "sea": "south",
       "rarity": "uncommon",
@@ -122,6 +134,7 @@
     },
     {
       "id": "yellowtail",
+      "no": 268,
       "name": "방어",
       "sea": "east",
       "rarity": "uncommon",
@@ -132,6 +145,7 @@
     },
     {
       "id": "conger",
+      "no": 269,
       "name": "붕장어",
       "sea": "south",
       "rarity": "uncommon",
@@ -142,6 +156,7 @@
     },
     {
       "id": "turban",
+      "no": 270,
       "name": "소라",
       "sea": "south",
       "rarity": "uncommon",
@@ -152,6 +167,7 @@
     },
     {
       "id": "red-seabream",
+      "no": 271,
       "name": "참돔",
       "sea": "south",
       "rarity": "rare",
@@ -162,6 +178,7 @@
     },
     {
       "id": "puffer",
+      "no": 272,
       "name": "복어",
       "sea": "east",
       "rarity": "rare",
@@ -172,6 +189,7 @@
     },
     {
       "id": "skate",
+      "no": 273,
       "name": "홍어",
       "sea": "west",
       "rarity": "rare",
@@ -182,6 +200,7 @@
     },
     {
       "id": "snow-crab",
+      "no": 274,
       "name": "대게",
       "sea": "east",
       "rarity": "rare",
@@ -192,6 +211,7 @@
     },
     {
       "id": "octopus",
+      "no": 275,
       "name": "문어",
       "sea": "east",
       "rarity": "rare",
@@ -202,6 +222,7 @@
     },
     {
       "id": "monkfish",
+      "no": 276,
       "name": "아귀",
       "sea": "west",
       "rarity": "rare",

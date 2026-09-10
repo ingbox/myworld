@@ -14,6 +14,7 @@ export type FishSea = "west" | "east" | "south";
 
 export type FishDef = {
   id: string;
+  no: number;
   name: string;
   sea: FishSea;
   rarity: FishRarity;
@@ -33,6 +34,8 @@ export type FishingState = {
 };
 
 export const FISH_LIST = catalog.fish as FishDef[];
+
+export const FISH_BY_NO = new Map(FISH_LIST.map((fish) => [fish.no, fish]));
 
 const FISH_WEIGHT = FISH_LIST.reduce((sum, fish) => sum + fish.weight, 0);
 

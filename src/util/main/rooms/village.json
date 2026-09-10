@@ -70,11 +70,11 @@
     { "piece": "fence-mid", "col": 13, "row": 12 },
     { "piece": "fence-right", "col": 14, "row": 12 },
 
-    { "piece": "well", "col": 9, "row": 7 },
-    { "piece": "bucket", "col": 10, "row": 7 },
+    { "piece": "well", "col": 9, "row": 6 },
+    { "piece": "bucket", "col": 10, "row": 7, "give": 1 },
 
     { "piece": "woods-pine", "col": 21, "row": 0 },
-    { "piece": "woods-round", "col": 0, "row": 12 },
+    { "piece": "woods-round", "col": 0, "row": 11 },
     { "piece": "tree-round", "col": 6, "row": 0 },
     { "piece": "tree-round", "col": 20, "row": 10 },
     { "piece": "tree-round", "col": 11, "row": 12 },
