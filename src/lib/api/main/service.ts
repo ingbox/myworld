@@ -1,7 +1,8 @@
 import "server-only";
 
 import pool from "@/src/lib/db";
-import { ITEM_BY_NO } from "@/src/util/main/item";
+import { lookupItem } from "@/src/util/main/item";
+import { DOTDOM_NO } from "@/src/util/main/fish";
 import {
   DECREMENT_PLAYER_ITEM,
   INSERT_ITEM_USE,
@@ -12,18 +13,27 @@ import {
   SELECT_ITEM_CIRCULATING,
   SELECT_ITEM_USES,
   SELECT_PLAYER_HAS_ITEM,
+  SELECT_PLAYER_HAS_USED_ITEM,
   SELECT_PLAYER_ITEMS,
   SELECT_PLAYER_USES,
+  INSERT_PLAYER_CAVE,
+  SELECT_CAVE_PUZZLE,
+  SELECT_CAVE_PUZZLE_GATES,
+  SELECT_PLAYER_CAVE_GATES,
   UPSERT_GAME_ITEM,
   UPSERT_GAME_PLAYER,
   UPSERT_PLAYER_ITEM,
 } from "./queries";
 import type {
+  CaveProgress,
+  CavePuzzlePublic,
+  CaveSolveResult,
   GameItemRow,
   GameItemUseRow,
   GamePlayerItemRow,
   ItemMoveResult,
 } from "./types";
+import { hasCaveRoom, normalizeCaveAnswer } from "@/src/util/main/cave";
 
 type ItemQueryRow = {
   no: number;
@@ -69,13 +79,13 @@ export async function ensureGamePlayer(playerId: string) {
 }
 
 /**
- * 목록에 있는 아이템이면 `game_item`에 맞춰 둡니다. 한도는 없어도 됩니다.
+ * 사용할 수 있거나 목록에 있는 아이템이면 `game_item`에 맞춰 둡니다.
  *
  * @param no - 아이템 번호
  */
 export async function ensureCatalogItem(no: number): Promise<GameItemRow | null> {
-  const def = ITEM_BY_NO.get(no);
-  if (def) {
+  const def = lookupItem(no);
+  if (def.use || def.album || def.maxCount !== null || def.maxPerPlayer !== null) {
     await pool.query(UPSERT_GAME_ITEM, [
       def.no,
       def.name,
@@ -142,6 +152,17 @@ export async function getPlayerItemCount(playerId: string, no: number) {
   const row = result.rows[0] as { count?: number } | undefined;
   if (!row) return null;
   return Number(row.count);
+}
+
+/**
+ * 그 사용자가 이 아이템을 이미 사용했는지 봅니다. `game_item_use`를 읽습니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ * @param no - 아이템 번호
+ */
+export async function playerHasUsedItem(playerId: string, no: number) {
+  const result = await pool.query(SELECT_PLAYER_HAS_USED_ITEM, [playerId, no]);
+  return result.rows.length > 0;
 }
 
 /**
@@ -245,12 +266,20 @@ export async function usePlayerItem(playerId: string, no: number): Promise<ItemM
   const item = await ensureCatalogItem(no);
   if (!item) return emptyMove("없는 아이템이다.");
   if (!item.canUse) return emptyMove("사용할 수 없는 아이템이다.");
+  const def = lookupItem(no);
 
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
     await client.query(UPSERT_GAME_PLAYER, [playerId]);
     await client.query(LOCK_GAME_ITEM, [no]);
+    if (def.useOnce) {
+      const usedRow = await client.query(SELECT_PLAYER_HAS_USED_ITEM, [playerId, no]);
+      if (usedRow.rows.length > 0) {
+        await client.query("ROLLBACK");
+        return emptyMove("이미 사용했다.");
+      }
+    }
     const mine = await client.query(LOCK_PLAYER_ITEM, [playerId, no]);
     const playerHeld = Number((mine.rows[0] as { count?: number } | undefined)?.count ?? 0);
     if (playerHeld < 1) {
@@ -272,7 +301,7 @@ export async function usePlayerItem(playerId: string, no: number): Promise<ItemM
     await client.query("COMMIT");
     return {
       ok: true,
-      message: "사용했다.",
+      message: no === DOTDOM_NO ? "희귀한 물고기가 더 잘 잡힌다." : "사용했다.",
       count,
       playerHeld: count,
       circulating,
@@ -283,4 +312,113 @@ export async function usePlayerItem(playerId: string, no: number): Promise<ItemM
   } finally {
     client.release();
   }
+}
+
+type CavePuzzleRow = {
+  gate: number;
+  prompt: string;
+  answer: string;
+};
+
+function emptyCaveProgress(): CaveProgress {
+  return { solved: [], puzzles: [] };
+}
+
+function emptyCaveSolve(message: string, progress: CaveProgress): CaveSolveResult {
+  return { ok: false, message, already: false, last: false, ...progress };
+}
+
+async function readCaveProgress(playerId: string): Promise<CaveProgress> {
+  const [puzzles, solved] = await Promise.all([
+    pool.query(SELECT_CAVE_PUZZLE_GATES),
+    pool.query(SELECT_PLAYER_CAVE_GATES, [playerId]),
+  ]);
+  return {
+    puzzles: (puzzles.rows as { gate: number }[]).map((row) => Number(row.gate)),
+    solved: (solved.rows as { gate: number }[]).map((row) => Number(row.gate)),
+  };
+}
+
+function openedMessage(gate: number, puzzles: number[]) {
+  if (!hasCaveRoom(gate)) {
+    return "마지막 관문이 열렸다. 그 너머는 아직 막혀 있다. 보상은 아직 준비 중이다.";
+  }
+  if (!puzzles.includes(gate + 1)) {
+    return "관문이 열렸다. 보상은 아직 준비 중이다.";
+  }
+  return "관문이 열렸다.";
+}
+
+/**
+ * 있는 관문 번호와 이 사용자가 푼 관문을 읽습니다. 정답은 보내지 않습니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ */
+export async function getCaveProgress(playerId: string): Promise<CaveProgress> {
+  return readCaveProgress(playerId);
+}
+
+/**
+ * 표지판에 적을 문제만 읽습니다. 없으면 null입니다.
+ *
+ * @param gate - 관문 번호
+ */
+export async function getCavePuzzle(gate: number): Promise<CavePuzzlePublic | null> {
+  if (!Number.isInteger(gate) || gate < 0) return null;
+  const result = await pool.query(SELECT_CAVE_PUZZLE, [gate]);
+  const row = result.rows[0] as CavePuzzleRow | undefined;
+  if (!row) return null;
+  return { gate: Number(row.gate), prompt: row.prompt };
+}
+
+/**
+ * 관문 답을 맞춥니다. 다음 방·다음 문제가 없으면 넘어가지 못하게 안내합니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ * @param gate - 관문 번호
+ * @param answer - 사용자가 입력한 답
+ */
+export async function submitCaveAnswer(
+  playerId: string,
+  gate: number,
+  answer: string,
+): Promise<CaveSolveResult> {
+  if (!Number.isInteger(gate) || gate < 0) {
+    return emptyCaveSolve("표지판에 아무 글도 없다.", emptyCaveProgress());
+  }
+
+  const progress = await readCaveProgress(playerId);
+  const puzzle = await pool.query(SELECT_CAVE_PUZZLE, [gate]);
+  const row = puzzle.rows[0] as CavePuzzleRow | undefined;
+  if (!row) {
+    return emptyCaveSolve("표지판에 아무 글도 없다.", progress);
+  }
+
+  const already = progress.solved.includes(gate);
+  const last = !progress.puzzles.includes(gate + 1) || !hasCaveRoom(gate);
+
+  if (already) {
+    return {
+      ok: true,
+      message: openedMessage(gate, progress.puzzles),
+      already: true,
+      last,
+      ...progress,
+    };
+  }
+
+  if (normalizeCaveAnswer(answer) !== normalizeCaveAnswer(row.answer)) {
+    return emptyCaveSolve("아닌 것 같다.", progress);
+  }
+
+  await pool.query(UPSERT_GAME_PLAYER, [playerId]);
+  await pool.query(INSERT_PLAYER_CAVE, [playerId, gate]);
+  const next = await readCaveProgress(playerId);
+  return {
+    ok: true,
+    message: openedMessage(gate, next.puzzles),
+    already: false,
+    last: !next.puzzles.includes(gate + 1) || !hasCaveRoom(gate),
+    ...next,
+  };
 }

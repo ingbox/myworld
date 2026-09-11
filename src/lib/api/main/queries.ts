@@ -117,3 +117,45 @@ export const SELECT_ITEM_USES = `
   WHERE item_no = $1
   ORDER BY used_at DESC
 `;
+
+export const SELECT_PLAYER_HAS_USED_ITEM = `
+  SELECT 1
+  FROM game_item_use
+  WHERE player_id = $1::uuid
+    AND item_no = $2
+  LIMIT 1
+`;
+
+export const SELECT_CAVE_PUZZLE_GATES = `
+  SELECT gate
+  FROM game_cave_puzzle
+  ORDER BY gate ASC
+`;
+
+export const SELECT_CAVE_PUZZLE = `
+  SELECT gate, prompt, answer
+  FROM game_cave_puzzle
+  WHERE gate = $1
+  LIMIT 1
+`;
+
+export const SELECT_PLAYER_CAVE_GATES = `
+  SELECT gate
+  FROM game_player_cave
+  WHERE player_id = $1::uuid
+  ORDER BY gate ASC
+`;
+
+export const SELECT_PLAYER_CAVE_SOLVED = `
+  SELECT 1
+  FROM game_player_cave
+  WHERE player_id = $1::uuid
+    AND gate = $2
+  LIMIT 1
+`;
+
+export const INSERT_PLAYER_CAVE = `
+  INSERT INTO game_player_cave (player_id, gate, solved_at)
+  VALUES ($1::uuid, $2, NOW())
+  ON CONFLICT (player_id, gate) DO NOTHING
+`;

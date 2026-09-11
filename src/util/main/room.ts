@@ -7,6 +7,8 @@ import livingLayout from "@/src/util/main/rooms/living.json";
 import villageLayout from "@/src/util/main/rooms/village.json";
 import galleryLayout from "@/src/util/main/rooms/gallery.json";
 import seaLayout from "@/src/util/main/rooms/sea.json";
+import dungeonCatalog from "@/src/util/main/dungeon.json";
+import { CAVE_LAYOUTS } from "@/src/util/main/rooms/caves";
 import { resolveNpcs, type NpcPlacement, type RoomNpc } from "@/src/util/main/npc";
 import {
   resolveExhibits,
@@ -52,6 +54,14 @@ export type Opening = {
   to: string;
   spawnCol: number;
   spawnRow: number;
+  /** 이 관문을 풀어야 지나갈 수 있습니다. */
+  needGate?: number;
+};
+
+/** 동굴 통로를 열지 막을지 볼 때 쓰는 진행 상황입니다. */
+export type CaveAccess = {
+  solvedGates: ReadonlySet<number>;
+  puzzleGates: ReadonlySet<number>;
 };
 
 export type FloorFill = {
@@ -83,6 +93,8 @@ export type RoomLayout = {
     cycle?: string[];
     /** 조사하면 이 번호 아이템을 줍니다. */
     give?: number;
+    /** 조사하면 이 관문 문제가 나옵니다. */
+    gate?: number;
   }>;
   openings?: Opening[];
   npcs?: NpcPlacement[];
@@ -97,6 +109,7 @@ export type RoomSprite = CatalogPiece & {
   row: number;
   blockedCells: Array<[number, number]>;
   give?: number;
+  gate?: number;
 };
 
 export type Room = Omit<RoomLayout, "objects" | "npcs" | "exhibits"> & {
@@ -144,12 +157,37 @@ export const SHEETS: Record<string, TilesetSheet> = {
     height: 256,
     tile: 16,
   },
+  "dungeon-a2": {
+    src: "/images/game/Dungeon_A2.png",
+    width: 768,
+    height: 576,
+    tile: 48,
+  },
+  "dungeon-a4": {
+    src: "/images/game/Dungeon_A4.png",
+    width: 768,
+    height: 720,
+    tile: 48,
+  },
+  "dungeon-b": {
+    src: "/images/game/Dungeon_B.png",
+    width: 768,
+    height: 768,
+    tile: 48,
+  },
+  "dungeon-c": {
+    src: "/images/game/Dungeon_C.png",
+    width: 768,
+    height: 768,
+    tile: 48,
+  },
 };
 
 const PIECES: Record<string, CatalogPiece> = {
   ...(catalog.pieces as Record<string, CatalogPiece>),
   ...(outdoorCatalog.pieces as Record<string, CatalogPiece>),
   ...(interiorCatalog.pieces as Record<string, CatalogPiece>),
+  ...(dungeonCatalog.pieces as Record<string, CatalogPiece>),
 };
 
 function blockedCells(piece: CatalogPiece): Array<[number, number]> {
@@ -267,6 +305,7 @@ export function resolveRoom(
           sheet: piece.sheet ?? "room",
           blockedCells: blockedCells(piece),
           give: obj.give,
+          gate: obj.gate,
         });
         stamp += 1;
       }
@@ -318,14 +357,33 @@ export function resolveRoom(
   };
 }
 
-export function isOpeningTile(room: Room, col: number, row: number) {
+export function isOpeningTile(room: Room, col: number, row: number, access?: CaveAccess) {
   return room.openings.some(
     (opening) =>
-      col >= opening.col &&
-      col < opening.col + opening.cols &&
-      row >= opening.row &&
-      row < opening.row + opening.rows,
+      openingCovers(opening, col, row) && openingIsOpen(opening, access),
   );
+}
+
+function openingCovers(opening: Opening, col: number, row: number) {
+  return (
+    col >= opening.col &&
+    col < opening.col + opening.cols &&
+    row >= opening.row &&
+    row < opening.row + opening.rows
+  );
+}
+
+/**
+ * 통로 목적지가 있고, 잠긴 관문이면 풀었을 때만 열립니다.
+ *
+ * @param opening - 방 JSON 통로
+ * @param access - 푼 관문·있는 문제. 없으면 잠긴 통로는 닫힙니다.
+ */
+export function openingIsOpen(opening: Opening, access?: CaveAccess) {
+  if (!ROOMS[opening.to]) return false;
+  if (opening.needGate == null) return true;
+  if (!access) return false;
+  return access.puzzleGates.has(opening.needGate) && access.solvedGates.has(opening.needGate);
 }
 
 /**
@@ -334,19 +392,16 @@ export function isOpeningTile(room: Room, col: number, row: number) {
  * @param room - 현재 방
  * @param col - 열
  * @param row - 행
+ * @param access - 동굴 진행
  */
-export function findOpening(room: Room, col: number, row: number) {
+export function findOpening(room: Room, col: number, row: number, access?: CaveAccess) {
   return room.openings.find(
-    (opening) =>
-      col >= opening.col &&
-      col < opening.col + opening.cols &&
-      row >= opening.row &&
-      row < opening.row + opening.rows,
+    (opening) => openingCovers(opening, col, row) && openingIsOpen(opening, access),
   );
 }
 
-export function isWallTile(room: Room, col: number, row: number) {
-  if (isOpeningTile(room, col, row)) return false;
+export function isWallTile(room: Room, col: number, row: number, access?: CaveAccess) {
+  if (isOpeningTile(room, col, row, access)) return false;
   const { west, east, north, south } = room.walls;
   if (col < west || col >= room.cols - east) return true;
   if (row < north || row >= room.rows - south) return true;
@@ -354,14 +409,15 @@ export function isWallTile(room: Room, col: number, row: number) {
 }
 
 /**
- * 벽·가구 발자국만 막힌 걷기 맵을 만듭니다.
+ * 벽·가구 발자국만 막힌 걷기 맵을 만듭니다. 열린 통로 칸은 조각이 막아도 지나갑니다.
  *
  * @param room - resolveRoom 결과
+ * @param access - 동굴 진행
  * @returns walkable[row][col]
  */
-export function buildWalkable(room: Room): boolean[][] {
+export function buildWalkable(room: Room, access?: CaveAccess): boolean[][] {
   const grid = Array.from({ length: room.rows }, (_, row) =>
-    Array.from({ length: room.cols }, (_, col) => !isWallTile(room, col, row)),
+    Array.from({ length: room.cols }, (_, col) => !isWallTile(room, col, row, access)),
   );
 
   for (const sprite of room.sprites) {
@@ -369,6 +425,7 @@ export function buildWalkable(room: Room): boolean[][] {
       const col = sprite.col + dc;
       const row = sprite.row + dr;
       if (row < 0 || col < 0 || row >= room.rows || col >= room.cols) continue;
+      if (isOpeningTile(room, col, row, access)) continue;
       grid[row][col] = false;
     }
   }
@@ -424,7 +481,11 @@ export function findSpriteInFront(
 ) {
   const nextCol = col + DIR_DELTA[facing].dc;
   const nextRow = row + DIR_DELTA[facing].dr;
-  return sprites.find((sprite) => spriteOccupies(sprite, nextCol, nextRow));
+  const hits = sprites.filter((sprite) => spriteOccupies(sprite, nextCol, nextRow));
+  return (
+    hits.find((sprite) => sprite.gate != null || sprite.give != null) ??
+    hits[hits.length - 1]
+  );
 }
 
 /**
@@ -451,6 +512,7 @@ export const ROOMS: Record<string, Room> = {
   village: resolveRoom(villageLayout as RoomLayout),
   gallery: resolveRoom(galleryLayout as RoomLayout),
   sea: resolveRoom(seaLayout as RoomLayout),
+  ...Object.fromEntries(CAVE_LAYOUTS.map((layout) => [layout.id, resolveRoom(layout)])),
 };
 
 export const TILESET_SHEET = SHEETS.room;

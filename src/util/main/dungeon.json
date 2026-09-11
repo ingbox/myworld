@@ -1,0 +1,121 @@
+{
+  "pieces": {
+    "dungeon-dirt": {
+      "sheet": "dungeon-a2",
+      "src": { "x": 48, "y": 96, "w": 48, "h": 48 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "none",
+      "layer": "floor"
+    },
+    "dungeon-cave-hole": {
+      "sheet": "dungeon-a2",
+      "src": { "x": 384, "y": 48, "w": 96, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 2,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-brick": {
+      "sheet": "dungeon-a4",
+      "src": { "x": 0, "y": 336, "w": 48, "h": 48 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "wall"
+    },
+    "dungeon-gate-blue": {
+      "sheet": "dungeon-b",
+      "src": { "x": 240, "y": 384, "w": 144, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 3,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-gate-black": {
+      "sheet": "dungeon-b",
+      "src": { "x": 96, "y": 384, "w": 144, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 3,
+      "rows": 2,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-sign": {
+      "sheet": "dungeon-b",
+      "src": { "x": 480, "y": 288, "w": 48, "h": 48 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-crystal": {
+      "sheet": "dungeon-b",
+      "src": { "x": 240, "y": 288, "w": 48, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "dungeon-ice": {
+      "sheet": "dungeon-b",
+      "src": { "x": 144, "y": 288, "w": 48, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "dungeon-rock": {
+      "sheet": "dungeon-b",
+      "src": { "x": 0, "y": 192, "w": 48, "h": 48 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-rock-gray": {
+      "sheet": "dungeon-b",
+      "src": { "x": 48, "y": 192, "w": 48, "h": 48 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 1,
+      "blocked": "all",
+      "layer": "object"
+    },
+    "dungeon-obelisk": {
+      "sheet": "dungeon-b",
+      "src": { "x": 0, "y": 384, "w": 48, "h": 96 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 2,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "dungeon-pillar": {
+      "sheet": "dungeon-c",
+      "src": { "x": 0, "y": 0, "w": 48, "h": 144 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 3,
+      "blocked": "bottom",
+      "layer": "object"
+    },
+    "dungeon-pillar-leaf": {
+      "sheet": "dungeon-c",
+      "src": { "x": 144, "y": 0, "w": 48, "h": 144 },
+      "offset": { "x": 0, "y": 0 },
+      "cols": 1,
+      "rows": 3,
+      "blocked": "bottom",
+      "layer": "object"
+    }
+  }
+}

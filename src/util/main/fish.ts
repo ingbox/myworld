@@ -22,6 +22,9 @@ export type FishDef = {
   sprite: string;
   blurb: string;
   cell?: string;
+  use?: boolean;
+  useOnce?: boolean;
+  album?: boolean;
 };
 
 export type FishingState = {
@@ -37,7 +40,11 @@ export const FISH_LIST = catalog.fish as FishDef[];
 
 export const FISH_BY_NO = new Map(FISH_LIST.map((fish) => [fish.no, fish]));
 
-const FISH_WEIGHT = FISH_LIST.reduce((sum, fish) => sum + fish.weight, 0);
+/** 돗돔. 사용하면 희귀 생선 가중치가 올라갑니다. */
+export const DOTDOM_NO = 2;
+
+/** 돗돔을 쓴 뒤 희귀 생선 가중치 배율 */
+export const RARE_CATCH_BOOST = 1.5;
 
 /** 물이 있는 칸인지 봅니다. */
 export function isWaterTile(room: Room, col: number, row: number) {
@@ -58,13 +65,20 @@ export function randomBiteDelay() {
 }
 
 /**
- * 가중치대로 잡을 생선을 고릅니다.
+ * 가중치대로 잡을 생선을 고릅니다. 희귀 배율을 주면 rare 가중치만 곱합니다.
+ *
+ * @param rareMultiplier - rare 등급 가중치 배율. 기본 1
  */
-export function pickCatch(): FishDef {
-  let roll = Math.random() * FISH_WEIGHT;
-  for (const fish of FISH_LIST) {
-    roll -= fish.weight;
-    if (roll < 0) return fish;
+export function pickCatch(rareMultiplier = 1): FishDef {
+  const scaled = FISH_LIST.map((fish) => ({
+    fish,
+    weight: fish.rarity === "rare" ? fish.weight * rareMultiplier : fish.weight,
+  }));
+  const total = scaled.reduce((sum, row) => sum + row.weight, 0);
+  let roll = Math.random() * total;
+  for (const row of scaled) {
+    roll -= row.weight;
+    if (roll < 0) return row.fish;
   }
   return FISH_LIST[FISH_LIST.length - 1];
 }

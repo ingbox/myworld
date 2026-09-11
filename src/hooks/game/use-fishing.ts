@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { type Dir } from "@/src/util/main/chip";
 import {
   FISH_BITE_WINDOW_MS,
@@ -14,8 +14,10 @@ import {
 /**
  * 던지기 → 입질 대기 → 챔질 창 → 결과까지 낚시 흐름을 돌립니다.
  */
-export function useFishing() {
+export function useFishing(rareMultiplier = 1) {
   const [fishing, setFishing] = useState<FishingState | null>(null);
+  const rareMultiplierRef = useRef(rareMultiplier);
+  rareMultiplierRef.current = rareMultiplier;
 
   const start = useCallback((facing: Dir) => {
     const now = performance.now();
@@ -36,7 +38,7 @@ export function useFishing() {
         return { ...current, phase: "reel", success: false, catch: null };
       }
       if (current.phase === "bite") {
-        return { ...current, phase: "reel", success: true, catch: pickCatch() };
+        return { ...current, phase: "reel", success: true, catch: pickCatch(rareMultiplierRef.current) };
       }
       if (current.phase === "done") {
         return null;

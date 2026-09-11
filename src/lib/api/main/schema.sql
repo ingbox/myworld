@@ -61,3 +61,36 @@ ON CONFLICT (no) DO UPDATE SET
   max_count = EXCLUDED.max_count,
   max_per_player = EXCLUDED.max_per_player,
   updated_at = NOW();
+
+INSERT INTO game_item (no, name, can_use, can_album, max_count, max_per_player)
+VALUES (2, '돗돔', TRUE, TRUE, NULL, NULL)
+ON CONFLICT (no) DO UPDATE SET
+  name = EXCLUDED.name,
+  can_use = EXCLUDED.can_use,
+  can_album = EXCLUDED.can_album,
+  max_count = EXCLUDED.max_count,
+  max_per_player = EXCLUDED.max_per_player,
+  updated_at = NOW();
+
+-- 동굴 관문 문제. gate 0 은 낚시터 입구. 그다음부터는 안쪽 관문입니다.
+CREATE TABLE IF NOT EXISTS game_cave_puzzle (
+  gate INTEGER PRIMARY KEY CHECK (gate >= 0),
+  prompt TEXT NOT NULL,
+  answer TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS game_player_cave (
+  player_id UUID NOT NULL REFERENCES game_player (id),
+  gate INTEGER NOT NULL REFERENCES game_cave_puzzle (gate) ON DELETE CASCADE,
+  solved_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (player_id, gate)
+);
+
+CREATE INDEX IF NOT EXISTS game_player_cave_player_idx
+  ON game_player_cave (player_id, solved_at DESC);
+
+INSERT INTO game_cave_puzzle (gate, prompt, answer)
+VALUES (0, '봉인된 동굴이다. 입구에 새겨진 글자를 맞춰라.', '열려야 참깨야')
+ON CONFLICT (gate) DO UPDATE SET
+  prompt = EXCLUDED.prompt,
+  answer = EXCLUDED.answer;

@@ -14,6 +14,8 @@ export type ItemDef = {
   sprite: string;
   /** 처음 방문하면 가방에 한 개 넣습니다. */
   starter: boolean;
+  /** 한 플레이에서 한 번만 사용할 수 있습니다. 사용 여부는 DB를 봅니다. */
+  useOnce: boolean;
 };
 
 type ItemJson = {
@@ -27,6 +29,7 @@ type ItemJson = {
   maxPerPlayer?: number | null;
   sprite?: string;
   starter?: boolean;
+  useOnce?: boolean;
 };
 
 function fromJson(item: ItemJson): ItemDef {
@@ -41,6 +44,7 @@ function fromJson(item: ItemJson): ItemDef {
     maxPerPlayer: item.maxPerPlayer ?? null,
     sprite: item.sprite ?? "",
     starter: item.starter === true,
+    useOnce: item.useOnce === true,
   };
 }
 
@@ -57,12 +61,13 @@ function fromFish(no: number): ItemDef | null {
     no: fish.no,
     name: fish.name,
     blurb: fish.blurb,
-    use: false,
-    album: false,
+    use: fish.use === true,
+    album: fish.album === true,
     maxCount: null,
     maxPerPlayer: null,
     sprite: fish.sprite,
     starter: false,
+    useOnce: fish.useOnce === true,
   };
 }
 
@@ -85,6 +90,7 @@ export function lookupItem(no: number): ItemDef {
       maxPerPlayer: null,
       sprite: "",
       starter: false,
+      useOnce: false,
     }
   );
 }
@@ -95,7 +101,7 @@ export function lookupItem(no: number): ItemDef {
  * @param no - 아이템 번호
  */
 export function itemTrackedInDb(no: number) {
-  return ITEM_BY_NO.has(no);
+  return ITEM_BY_NO.has(no) || lookupItem(no).use;
 }
 
 /**

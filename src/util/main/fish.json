@@ -230,6 +230,19 @@
       "sprite": "/images/game/fish/monkfish.png",
       "cell": "2-7",
       "blurb": "입이 큰 심해 생선. 찜으로 먹는다."
+    },
+    {
+      "id": "dotdom",
+      "no": 2,
+      "name": "돗돔",
+      "sea": "south",
+      "rarity": "rare",
+      "weight": 0.1,
+      "sprite": "/images/game/fish/dotdom.png",
+      "use": true,
+      "useOnce": true,
+      "album": true,
+      "blurb": "은빛으로 빛나는 아주 귀한 생선. 먹으면 희귀한 물고기가 더 잘 잡힌다."
     }
   ]
 }

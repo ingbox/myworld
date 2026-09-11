@@ -15,29 +15,48 @@
     { "piece": "path", "col": 8, "row": 3 },
     { "piece": "path", "col": 9, "row": 3 },
     { "piece": "path", "col": 10, "row": 3 },
+    { "piece": "path", "col": 11, "row": 3 },
+    { "piece": "path", "col": 12, "row": 3 },
+    { "piece": "path", "col": 13, "row": 3 },
+    { "piece": "path", "col": 14, "row": 3 },
+    { "piece": "path", "col": 15, "row": 3 },
+    { "piece": "path", "col": 16, "row": 3 },
+    { "piece": "path", "col": 17, "row": 3 },
+    { "piece": "path", "col": 18, "row": 3 },
+    { "piece": "path", "col": 19, "row": 3 },
 
     { "piece": "flowers-white", "col": 6, "row": 2 },
     { "piece": "woods-flowers", "col": 12, "row": 2 },
     { "piece": "woods-flowers-pink", "col": 4, "row": 3 },
-    { "piece": "plant", "col": 14, "row": 3 },
+    { "piece": "plant", "col": 14, "row": 2 },
     { "piece": "rock", "col": 2, "row": 3 },
-    { "piece": "woods-rock", "col": 21, "row": 3 },
+    { "piece": "woods-rock", "col": 23, "row": 5 },
     { "piece": "tree-round", "col": 0, "row": 1 },
-    { "piece": "tree-pine", "col": 22, "row": 1 },
     { "piece": "woods-bush", "col": 16, "row": 2 },
+
+    {
+      "piece": "dungeon-dirt",
+      "col": 20,
+      "row": 1,
+      "fillCols": 4,
+      "fillRows": 15
+    },
+    { "piece": "dungeon-cave-hole", "col": 21, "row": 2 },
+    { "piece": "dungeon-sign", "col": 20, "row": 3, "gate": 0 },
+    { "piece": "dungeon-rock", "col": 20, "row": 1 },
 
     {
       "piece": "summer-shore-0",
       "col": 0,
       "row": 4,
-      "fillCols": 24,
+      "fillCols": 20,
       "cycle": ["summer-shore-0", "summer-shore-1", "summer-shore-2", "summer-shore-3"]
     },
     {
       "piece": "summer-water-0",
       "col": 0,
       "row": 5,
-      "fillCols": 24,
+      "fillCols": 20,
       "fillRows": 11,
       "cycle": ["summer-water-0", "summer-water-1", "summer-water-2"]
     }
@@ -51,6 +70,16 @@
       "to": "village",
       "spawnCol": 9,
       "spawnRow": 14
+    },
+    {
+      "col": 21,
+      "row": 2,
+      "cols": 2,
+      "rows": 2,
+      "to": "cave-0",
+      "spawnCol": 8,
+      "spawnRow": 9,
+      "needGate": 0
     }
   ]
 }

@@ -13,6 +13,7 @@ import type { InventoryItem } from "@/src/components/game/InventoryBox";
 import AlbumBox from "@/src/components/game/AlbumBox";
 import ItemActionBox from "@/src/components/game/ItemActionBox";
 import NoticeBox from "@/src/components/game/NoticeBox";
+import QuizBox from "@/src/components/game/QuizBox";
 import ExhibitOverlay from "@/src/components/game/ExhibitOverlay";
 import ChoiceBox from "@/src/components/game/ChoiceBox";
 import FishingFx from "@/src/components/game/FishingFx";
@@ -20,11 +21,17 @@ import {
   addCatch,
   getAlbum,
   getBag,
+  getRareCatchBoost,
   pickupItem,
   registerToAlbum,
   unregisterFromAlbum,
   useBagItem,
 } from "@/src/util/main/bag-action";
+import {
+  getCaveProgress,
+  getCavePuzzle,
+  submitCaveAnswer,
+} from "@/src/util/main/cave-action";
 import type { BagEntry } from "@/src/util/main/bag";
 import { moveAlbumCursor } from "@/src/util/main/album";
 import { useTileWalk } from "@/src/hooks/game/use-tile-walk";
@@ -40,6 +47,7 @@ import {
   exhibitCoverStyle,
   spriteBottomY,
   tileBackground,
+  type CaveAccess,
   type Room,
 } from "@/src/util/main/room";
 import { CAMERA_SCALE, TILE, type Dir } from "@/src/util/main/chip";
@@ -149,11 +157,21 @@ export default function HouseWorld() {
     pick: "use" | "register";
   } | null>(null);
   const [notice, setNotice] = useState<{ title?: string; text: string } | null>(null);
+  const [solvedGates, setSolvedGates] = useState<number[]>([]);
+  const [puzzleGates, setPuzzleGates] = useState<number[]>([]);
+  const [quiz, setQuiz] = useState<{
+    gate: number;
+    prompt: string;
+    draft: string;
+    error?: string;
+    pending?: boolean;
+  } | null>(null);
+  const [rareMultiplier, setRareMultiplier] = useState(1);
   const savedCatchRef = useRef<FishDef | null>(null);
   const exhibitRef = useRef<RoomExhibit | null>(null);
   exhibitRef.current = exhibit;
   const room = ROOMS[roomId] ?? ROOMS.bedroom;
-  const { fishing, start: startFish, hook: hookFish, stop: stopFish } = useFishing();
+  const { fishing, start: startFish, hook: hookFish, stop: stopFish } = useFishing(rareMultiplier);
   const busy =
     talk !== null ||
     exhibit !== null ||
@@ -162,23 +180,31 @@ export default function HouseWorld() {
     bagOpen ||
     albumOpen ||
     itemAction !== null ||
-    notice !== null;
+    notice !== null ||
+    quiz !== null;
   const remember = useGameWorldStore((state) => state.remember);
+  const caveAccess = useMemo<CaveAccess>(
+    () => ({
+      solvedGates: new Set(solvedGates),
+      puzzleGates: new Set(puzzleGates),
+    }),
+    [solvedGates, puzzleGates],
+  );
 
-  const walkable = useMemo(() => buildWalkable(room), [room]);
+  const walkable = useMemo(() => buildWalkable(room, caveAccess), [room, caveAccess]);
   const canWalk = useCallback(
     (col: number, row: number) => walkable[row]?.[col] === true,
     [walkable],
   );
   const onArrive = useCallback(
     (col: number, row: number) => {
-      const opening = findOpening(room, col, row);
-      if (!opening || !ROOMS[opening.to]) return false;
+      const opening = findOpening(room, col, row, caveAccess);
+      if (!opening) return false;
       setRoomId(opening.to);
       setSpawn({ col: opening.spawnCol, row: opening.spawnRow });
       return true;
     },
-    [room],
+    [room, caveAccess],
   );
   const { col, row, px, py, facing, walkFrame, holdStart, holdEnd, isMoving } =
     useTileWalk({
@@ -201,6 +227,7 @@ export default function HouseWorld() {
   const facingExhibit = findExhibitInFront(room.exhibits, col, row, facing);
   const facingGive = findSpriteInFront(room.sprites, col, row, facing);
   const giveNo = facingGive?.give;
+  const facingGate = facingGive?.gate;
   const canFish = canFishAt(room, col, row, facing);
   const worldRef = useRef({ roomId, col, row, facing, ready });
   worldRef.current = { roomId, col, row, facing, ready };
@@ -216,11 +243,14 @@ export default function HouseWorld() {
 
   useEffect(() => {
     let cancelled = false;
-    void Promise.all([getBag(), getAlbum()]).then(([entries, nos]) => {
-      if (cancelled) return;
-      setBag(entries);
-      setAlbum(nos);
-    });
+    void Promise.all([getBag(), getAlbum(), getRareCatchBoost()]).then(
+      ([entries, nos, boost]) => {
+        if (cancelled) return;
+        setBag(entries);
+        setAlbum(nos);
+        setRareMultiplier(boost);
+      },
+    );
     return () => {
       cancelled = true;
     };
@@ -248,6 +278,10 @@ export default function HouseWorld() {
       }
       if (cancelled) return;
       const saved = sanitizeGameWorld(useGameWorldStore.getState());
+      const progress = await getCaveProgress();
+      if (cancelled) return;
+      setSolvedGates(progress.solved);
+      setPuzzleGates(progress.puzzles);
       setRoomId(saved.roomId);
       setSpawn({ col: saved.col, row: saved.row });
       setStartFacing(saved.facing);
@@ -318,10 +352,10 @@ export default function HouseWorld() {
       setBagOpen(false);
       return;
     }
-    if (talk || exhibit || choice || fishing) return;
+    if (talk || exhibit || choice || fishing || quiz) return;
     setAlbumOpen(false);
     setBagOpen(true);
-  }, [ready, notice, itemAction, bagOpen, talk, exhibit, choice, fishing]);
+  }, [ready, notice, itemAction, bagOpen, talk, exhibit, choice, fishing, quiz]);
 
   const toggleAlbum = useCallback(() => {
     if (!ready) return;
@@ -334,11 +368,11 @@ export default function HouseWorld() {
       setItemAction(null);
       return;
     }
-    if (talk || exhibit || choice || fishing) return;
+    if (talk || exhibit || choice || fishing || quiz) return;
     setBagOpen(false);
     setItemAction(null);
     setAlbumOpen(true);
-  }, [ready, notice, albumOpen, talk, exhibit, choice, fishing]);
+  }, [ready, notice, albumOpen, talk, exhibit, choice, fishing, quiz]);
 
   const confirmItemAction = useCallback(() => {
     if (!itemAction) return;
@@ -354,6 +388,9 @@ export default function HouseWorld() {
         setAlbum(res.album);
         setItemAction(null);
         setNotice({ text: res.message });
+        if (res.ok) {
+          void getRareCatchBoost().then(setRareMultiplier);
+        }
       });
       return;
     }
@@ -379,6 +416,44 @@ export default function HouseWorld() {
     });
   }, [ready]);
 
+  const openQuiz = useCallback(
+    (gate: number) => {
+      if (!ready) return;
+      void getCavePuzzle(gate).then((puzzle) => {
+        if (!puzzle) {
+          setNotice({ text: "표지판에 아무 글도 없다." });
+          return;
+        }
+        if (solvedGates.includes(gate)) {
+          setNotice({ title: "표지판", text: `${puzzle.prompt} 이미 열렸다.` });
+          return;
+        }
+        setQuiz({ gate: puzzle.gate, prompt: puzzle.prompt, draft: "" });
+      });
+    },
+    [ready, solvedGates],
+  );
+
+  const confirmQuiz = useCallback(() => {
+    if (!quiz || quiz.pending) return;
+    const current = quiz;
+    setQuiz({ ...current, pending: true, error: undefined });
+    void submitCaveAnswer(current.gate, current.draft).then((res) => {
+      setSolvedGates(res.solved);
+      setPuzzleGates(res.puzzles);
+      if (!res.ok) {
+        setQuiz((open) =>
+          open && open.gate === current.gate
+            ? { ...open, pending: false, error: res.message }
+            : open,
+        );
+        return;
+      }
+      setQuiz(null);
+      setNotice({ text: res.message });
+    });
+  }, [quiz]);
+
   const confirmAlbum = useCallback(() => {
     void unregisterFromAlbum(albumCursor).then((res) => {
       setBag(res.bag);
@@ -389,6 +464,10 @@ export default function HouseWorld() {
 
   const confirm = useCallback(() => {
     if (!ready) return;
+    if (quiz) {
+      confirmQuiz();
+      return;
+    }
     if (notice) {
       setNotice(null);
       return;
@@ -430,6 +509,10 @@ export default function HouseWorld() {
       return;
     }
     if (isMoving) return;
+    if (facingGate != null) {
+      openQuiz(facingGate);
+      return;
+    }
     if (giveNo) {
       takeGive(giveNo);
       return;
@@ -446,11 +529,12 @@ export default function HouseWorld() {
     if (facingNpc) {
       setTalk({ npc: facingNpc, line: 0 });
     }
-  }, [ready, notice, itemAction, albumOpen, bagOpen, fishing, talk, exhibit, exhibitPage, choice, isMoving, giveNo, takeGive, canFish, facing, facingNpc, facingExhibit, finishExhibit, confirmChoice, confirmItemAction, confirmAlbum, hookFish, startFish]);
+  }, [ready, quiz, confirmQuiz, notice, itemAction, albumOpen, bagOpen, fishing, talk, exhibit, exhibitPage, choice, isMoving, facingGate, openQuiz, giveNo, takeGive, canFish, facing, facingNpc, facingExhibit, finishExhibit, confirmChoice, confirmItemAction, confirmAlbum, hookFish, startFish]);
 
   const onHoldStart = useCallback(
     (dir: Dir) => {
       if (notice) return;
+      if (quiz) return;
       if (itemAction) {
         if (!itemAction.item.use || !itemAction.item.album) return;
         if (dir === "left" || dir === "up") setItemAction({ ...itemAction, pick: "use" });
@@ -469,7 +553,7 @@ export default function HouseWorld() {
       if (fishing || bagOpen) return;
       holdStart(dir);
     },
-    [notice, itemAction, albumOpen, choice, fishing, bagOpen, holdStart],
+    [notice, quiz, itemAction, albumOpen, choice, fishing, bagOpen, holdStart],
   );
 
   useEffect(() => {
@@ -481,6 +565,7 @@ export default function HouseWorld() {
     setAlbumOpen(false);
     setItemAction(null);
     setNotice(null);
+    setQuiz(null);
     stopFish();
   }, [roomId, stopFish]);
 
@@ -506,6 +591,13 @@ export default function HouseWorld() {
 
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
+      if (quiz) {
+        if (e.code === "Escape") {
+          e.preventDefault();
+          if (!e.repeat) setQuiz(null);
+        }
+        return;
+      }
       if (e.code === "KeyI") {
         e.preventDefault();
         if (!e.repeat) toggleBag();
@@ -519,6 +611,10 @@ export default function HouseWorld() {
       if (e.code === "Escape") {
         e.preventDefault();
         if (e.repeat || !ready) return;
+        if (quiz) {
+          setQuiz(null);
+          return;
+        }
         if (itemAction) {
           setItemAction(null);
           return;
@@ -571,7 +667,7 @@ export default function HouseWorld() {
       window.removeEventListener("keydown", onDown);
       window.removeEventListener("keyup", onUp);
     };
-  }, [holdEnd, confirm, busy, choice, onHoldStart, ready, fishing, hookFish, isMoving, talk, exhibit, bagOpen, albumOpen, itemAction, notice, canFish, startFish, facing, toggleBag, toggleAlbum]);
+  }, [holdEnd, confirm, busy, choice, onHoldStart, ready, fishing, hookFish, isMoving, talk, exhibit, bagOpen, albumOpen, itemAction, notice, quiz, canFish, startFish, facing, toggleBag, toggleAlbum]);
 
   return (
     <div
@@ -621,16 +717,30 @@ export default function HouseWorld() {
             sprite={sprite}
             zIndex={spriteBottomY(sprite) > playerBottom ? 12 : 8}
             onClick={
-              sprite.give
+              sprite.give || sprite.gate != null
                 ? () => {
                     if (busy || isMoving) return;
                     if (!isAdjacentSprite(sprite, col, row)) return;
+                    if (sprite.gate != null) {
+                      openQuiz(sprite.gate);
+                      return;
+                    }
                     takeGive(sprite.give!);
                   }
                 : undefined
             }
           />
         ))}
+        {objectSprites.map((sprite) =>
+          sprite.gate != null && !busy && isAdjacentSprite(sprite, col, row) ? (
+            <EmotionBalloon
+              key={`gate-emote-${sprite.id}`}
+              emotion="exclaim"
+              px={sprite.col * TILE}
+              py={sprite.row * TILE}
+            />
+          ) : null,
+        )}
         {room.exhibits.map((item) => {
           const signPx = item.signCol * TILE;
           const signPy = item.signRow * TILE;
@@ -742,6 +852,17 @@ export default function HouseWorld() {
           onConfirm={confirmItemAction}
         />
       ) : null}
+      {quiz ? (
+        <QuizBox
+          prompt={quiz.prompt}
+          value={quiz.draft}
+          error={quiz.error}
+          pending={quiz.pending}
+          onChange={(draft) => setQuiz({ ...quiz, draft, error: undefined })}
+          onSubmit={confirmQuiz}
+          onClose={() => setQuiz(null)}
+        />
+      ) : null}
       {notice ? (
         <NoticeBox
           title={notice.title}
@@ -782,7 +903,7 @@ export default function HouseWorld() {
         </button>
       ) : null}
       <DPad onHoldStart={onHoldStart} onHoldEnd={holdEnd} />
-      {!talk && !exhibit && !choice && !fishing ? (
+      {!talk && !exhibit && !choice && !fishing && !quiz ? (
         <MenuButtons
           onAlbum={toggleAlbum}
           onBag={toggleBag}
@@ -792,7 +913,7 @@ export default function HouseWorld() {
       ) : null}
       <ActionButton
         onConfirm={confirm}
-        hint={Boolean(busy || facingNpc || facingExhibit || giveNo || canFish)}
+        hint={Boolean(busy || facingNpc || facingExhibit || giveNo || facingGate != null || canFish)}
       />
         </>
       ) : null}

@@ -19,13 +19,14 @@ import {
   itemTrackedInDb,
   lookupItem,
 } from "@/src/util/main/item";
-import { objectParticle } from "@/src/util/main/fish";
 import { ensurePlayer } from "@/src/util/main/mark-game-started";
 import {
   getPlayerItemCount,
   grantPlayerItem,
+  playerHasUsedItem,
   usePlayerItem,
 } from "@/src/lib/api/main/service";
+import { DOTDOM_NO, RARE_CATCH_BOOST, objectParticle } from "@/src/util/main/fish";
 
 const SECRET = process.env.FISH_BAG_SECRET ?? "pokemon12";
 
@@ -363,8 +364,26 @@ export async function useBagItem(no: number): Promise<AlbumResult> {
   await writeDex(dex, counts);
   return {
     ok: true,
-    message: "사용했다.",
+    message: usedMessage(no),
     bag: readBag(jar, { [dex.cookie]: counts }),
     album,
   };
+}
+
+function usedMessage(no: number) {
+  if (no === DOTDOM_NO) return "희귀한 물고기가 더 잘 잡힌다.";
+  return "사용했다.";
+}
+
+/**
+ * 돗돔을 사용한 적 있으면 희귀 생선 가중치 배율을 줍니다. DB 사용 기록을 봅니다.
+ */
+export async function getRareCatchBoost() {
+  const playerId = await ensurePlayer();
+  try {
+    if (await playerHasUsedItem(playerId, DOTDOM_NO)) return RARE_CATCH_BOOST;
+  } catch {
+    /* 테이블이 아직 없어도 기본 확률로 잡습니다. */
+  }
+  return 1;
 }

@@ -27,3 +27,20 @@ export type ItemMoveResult = {
   playerHeld: number;
   circulating: number;
 };
+
+export type CavePuzzlePublic = {
+  gate: number;
+  prompt: string;
+};
+
+export type CaveProgress = {
+  solved: number[];
+  puzzles: number[];
+};
+
+export type CaveSolveResult = CaveProgress & {
+  ok: boolean;
+  message: string;
+  already: boolean;
+  last: boolean;
+};
