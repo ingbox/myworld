@@ -21,11 +21,15 @@ import {
 } from "@/src/util/main/item";
 import { ensurePlayer } from "@/src/util/main/mark-game-started";
 import {
+  buyShopItem as saveBuy,
   getPlayerItemCount,
+  getPlayerMoney,
   grantPlayerItem,
   playerHasUsedItem,
+  sellShopItem as saveSell,
   usePlayerItem,
 } from "@/src/lib/api/main/service";
+import { itemSellPrice, shopBuyPrice } from "@/src/util/main/shop";
 import { DOTDOM_NO, RARE_CATCH_BOOST, objectParticle } from "@/src/util/main/fish";
 
 const SECRET = process.env.FISH_BAG_SECRET ?? "pokemon12";
@@ -386,4 +390,126 @@ export async function getRareCatchBoost() {
     /* 테이블이 아직 없어도 기본 확률로 잡습니다. */
   }
   return 1;
+}
+
+export type TradeResult = {
+  ok: boolean;
+  message: string;
+  bag: BagEntry[];
+  money: number;
+};
+
+/**
+ * 소지금을 읽습니다. 테이블이 없어도 0으로 봅니다.
+ */
+export async function getWallet() {
+  const playerId = await ensurePlayer();
+  try {
+    return await getPlayerMoney(playerId);
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * 상점에서 아이템 1개를 삽니다.
+ *
+ * @param no - 아이템 번호
+ */
+export async function buyShopItem(no: number): Promise<TradeResult> {
+  const playerId = await ensurePlayer();
+  const jar = await cookies();
+  const bag = readBag(jar);
+  let money = 0;
+  try {
+    money = await getPlayerMoney(playerId);
+  } catch {
+    return { ok: false, message: "지금은 거래할 수 없다.", bag, money: 0 };
+  }
+  const price = shopBuyPrice(no);
+  if (price == null) {
+    return { ok: false, message: "여기서는 팔지 않는다.", bag, money };
+  }
+  const dex = dexForNo(no);
+  if (!dex) {
+    return { ok: false, message: "살 수 없다.", bag, money };
+  }
+  const item = lookupItem(no);
+  const counts = Buffer.from(decodeDex(jar.get(dex.cookie)?.value, dex.size));
+  const index = dexIndex(dex, no);
+  if (counts[index] >= (item.maxPerPlayer ?? BAG_COUNT_MAX)) {
+    return { ok: false, message: "더 이상 가질 수 없다.", bag, money };
+  }
+  let traded;
+  try {
+    traded = await saveBuy(playerId, no);
+  } catch {
+    return { ok: false, message: "지금은 거래할 수 없다.", bag, money };
+  }
+  if (!traded.ok) {
+    return { ok: false, message: traded.message, bag, money: traded.money };
+  }
+  counts[index] = Math.min(BAG_COUNT_MAX, counts[index] + 1);
+  await writeDex(dex, counts);
+  return {
+    ok: true,
+    message: `${item.name}${objectParticle(item.name)} 샀다.`,
+    bag: readBag(jar, { [dex.cookie]: counts }),
+    money: traded.money,
+  };
+}
+
+/**
+ * 가방의 아이템을 상점에 팝니다.
+ *
+ * @param no - 아이템 번호
+ * @param qty - 팔 개수
+ */
+export async function sellBagItem(no: number, qty = 1): Promise<TradeResult> {
+  const playerId = await ensurePlayer();
+  const jar = await cookies();
+  const bag = readBag(jar);
+  let money = 0;
+  try {
+    money = await getPlayerMoney(playerId);
+  } catch {
+    return { ok: false, message: "지금은 거래할 수 없다.", bag, money: 0 };
+  }
+  const price = itemSellPrice(no);
+  if (price < 1) {
+    return { ok: false, message: "살 수 없는 물건이다.", bag, money };
+  }
+  if (!Number.isInteger(qty) || qty < 1) {
+    return { ok: false, message: "개수가 올바르지 않다.", bag, money };
+  }
+  const dex = dexForNo(no);
+  if (!dex) {
+    return { ok: false, message: "팔 수 없다.", bag, money };
+  }
+  const item = lookupItem(no);
+  const counts = Buffer.from(decodeDex(jar.get(dex.cookie)?.value, dex.size));
+  const index = dexIndex(dex, no);
+  if (counts[index] < qty) {
+    return { ok: false, message: "가진 아이템이 없다.", bag, money };
+  }
+  let traded;
+  try {
+    traded = await saveSell(playerId, no, qty);
+  } catch {
+    return { ok: false, message: "지금은 거래할 수 없다.", bag, money };
+  }
+  if (!traded.ok) {
+    return { ok: false, message: traded.message, bag, money: traded.money };
+  }
+  counts[index] -= qty;
+  await writeDex(dex, counts);
+  const sold = qty === 1
+    ? `${item.name}${objectParticle(item.name)} 팔았다.`
+    : `${item.name}${objectParticle(item.name)} ${qty}개 팔았다.`;
+  return {
+    ok: true,
+    message: sold,
+    bag: readBag(jar, { [dex.cookie]: counts }),
+    money: traded.money,
+  };
 }

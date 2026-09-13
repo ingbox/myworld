@@ -2,6 +2,10 @@ export const TILE = 32;
 
 export const CAMERA_SCALE = 2.5;
 export const STEP_MS = 200;
+/** 같은 방향을 연속으로 누르면 이 속도로 한 칸을 갑니다. */
+export const DASH_STEP_MS = 130;
+/** 짧게 떼고 이 시간 안에 같은 방향을 다시 눌러야 대시합니다. */
+export const DASH_TAP_MS = 150;
 
 export type Dir = "down" | "left" | "right" | "up";
 

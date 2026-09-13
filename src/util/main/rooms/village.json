@@ -87,7 +87,7 @@
     { "piece": "woods-rock", "col": 21, "row": 13 },
     { "piece": "woods-bush", "col": 10, "row": 3 },
     { "piece": "woods-bush", "col": 20, "row": 6 },
-    { "piece": "stall", "col": 11, "row": 6 },
+    { "piece": "stall", "col": 11, "row": 6, "shop": true },
     { "piece": "lamp", "col": 20, "row": 7 },
     { "piece": "pot-yellow", "col": 14, "row": 7 },
     { "piece": "plant", "col": 18, "row": 8 },
@@ -133,6 +133,7 @@
     }
   ],
   "npcs": [
-    { "id": "yejin", "col": 8, "row": 7, "facing": "down" }
+    { "id": "yejin", "col": 8, "row": 7, "facing": "down" },
+    { "id": "manseok", "col": 12, "row": 7, "facing": "down" }
   ]
 }

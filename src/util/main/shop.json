@@ -1,0 +1,6 @@
+{
+  "npc": "manseok",
+  "wares": [
+    { "no": 1, "price": 80 }
+  ]
+}

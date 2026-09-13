@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { DIR_DELTA, STEP_MS, TILE, type Dir } from "@/src/util/main/chip";
+import { DASH_STEP_MS, DASH_TAP_MS, DIR_DELTA, STEP_MS, TILE, type Dir } from "@/src/util/main/chip";
 
 type Options = {
   cols: number;
@@ -55,12 +55,16 @@ export function useTileWalk({
   const [facing, setFacing] = useState<Dir>(startFacing);
   const [walkFrame, setWalkFrame] = useState<0 | 1 | 2>(1);
   const [isMoving, setIsMoving] = useState(false);
+  const [dashing, setDashing] = useState(false);
 
   const colRef = useRef(startCol);
   const rowRef = useRef(startRow);
   const movingRef = useRef(false);
   const queueRef = useRef<Dir | null>(null);
   const heldRef = useRef<Set<Dir>>(new Set());
+  const dashingRef = useRef(false);
+  const lastTapRef = useRef<{ dir: Dir; at: number; heldMs: number } | null>(null);
+  const pressAtRef = useRef<Partial<Record<Dir, number>>>({});
   const rafRef = useRef<number>(0);
   const onArriveRef = useRef(onArrive);
   onArriveRef.current = onArrive;
@@ -90,9 +94,10 @@ export function useTileWalk({
       const toX = nextCol * tile;
       const toY = nextRow * tile;
       const startedAt = performance.now();
+      const duration = dashingRef.current ? DASH_STEP_MS : stepMs;
 
       const tick = (now: number) => {
-        const t = Math.min(1, (now - startedAt) / stepMs);
+        const t = Math.min(1, (now - startedAt) / duration);
         setPx(fromX + (toX - fromX) * t);
         setPy(fromY + (toY - fromY) * t);
         setWalkFrame(walkFrameAt(t));
@@ -147,6 +152,19 @@ export function useTileWalk({
 
   const holdStart = useCallback(
     (dir: Dir) => {
+      const now = performance.now();
+      const last = lastTapRef.current;
+      if (
+        last &&
+        last.dir === dir &&
+        last.heldMs <= DASH_TAP_MS &&
+        now - last.at <= DASH_TAP_MS
+      ) {
+        dashingRef.current = true;
+        setDashing(true);
+        lastTapRef.current = null;
+      }
+      pressAtRef.current[dir] = now;
       heldRef.current.add(dir);
       requestMove(dir);
     },
@@ -154,7 +172,14 @@ export function useTileWalk({
   );
 
   const holdEnd = useCallback((dir: Dir) => {
+    const now = performance.now();
+    const started = pressAtRef.current[dir] ?? now;
+    delete pressAtRef.current[dir];
     heldRef.current.delete(dir);
+    lastTapRef.current = { dir, at: now, heldMs: now - started };
+    if (heldRef.current.size > 0) return;
+    dashingRef.current = false;
+    setDashing(false);
   }, []);
 
   useLayoutEffect(() => {
@@ -169,6 +194,9 @@ export function useTileWalk({
     movingRef.current = false;
     setIsMoving(false);
     queueRef.current = null;
+    dashingRef.current = false;
+    setDashing(false);
+    lastTapRef.current = null;
 
     const held = [...heldRef.current].at(-1);
     if (!held) return;
@@ -179,6 +207,12 @@ export function useTileWalk({
   useLayoutEffect(() => {
     setFacing(startFacing);
   }, [startFacing]);
+
+  useEffect(() => {
+    if (!paused) return;
+    dashingRef.current = false;
+    setDashing(false);
+  }, [paused]);
 
   useEffect(() => {
     return () => {
@@ -197,5 +231,6 @@ export function useTileWalk({
     holdStart,
     holdEnd,
     isMoving,
+    dashing,
   };
 }

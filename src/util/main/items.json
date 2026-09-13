@@ -8,6 +8,7 @@
       "use": true,
       "album": true,
       "maxPerPlayer": 3,
+      "sellPrice": 20,
       "sprite": "/images/game/items/witch-candy.png"
     }
   ]

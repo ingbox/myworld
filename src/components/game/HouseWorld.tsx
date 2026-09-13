@@ -14,6 +14,7 @@ import AlbumBox from "@/src/components/game/AlbumBox";
 import ItemActionBox from "@/src/components/game/ItemActionBox";
 import NoticeBox from "@/src/components/game/NoticeBox";
 import QuizBox from "@/src/components/game/QuizBox";
+import ShopBox from "@/src/components/game/ShopBox";
 import ExhibitOverlay from "@/src/components/game/ExhibitOverlay";
 import ChoiceBox from "@/src/components/game/ChoiceBox";
 import FishingFx from "@/src/components/game/FishingFx";
@@ -22,8 +23,11 @@ import {
   getAlbum,
   getBag,
   getRareCatchBoost,
+  buyShopItem,
+  getWallet,
   pickupItem,
   registerToAlbum,
+  sellBagItem,
   unregisterFromAlbum,
   useBagItem,
 } from "@/src/util/main/bag-action";
@@ -46,6 +50,7 @@ import {
   isWallTile,
   exhibitCoverStyle,
   spriteBottomY,
+  spriteOccupies,
   tileBackground,
   type CaveAccess,
   type Room,
@@ -63,6 +68,9 @@ import {
 import { sanitizeGameWorld, useGameWorldStore } from "@/src/stores/useGameWorldStore";
 import { lookupItem } from "@/src/util/main/item";
 import { canFishAt, objectParticle, type FishDef } from "@/src/util/main/fish";
+
+/** 한 칸마다 바로 쓰지 않고, 잠깐 멈춘 뒤에 localStorage 에 남깁니다. */
+const SAVE_POS_MS = 600;
 
 const KEY_DIR: Record<string, Dir> = {
   ArrowUp: "up",
@@ -157,6 +165,9 @@ export default function HouseWorld() {
     pick: "use" | "register";
   } | null>(null);
   const [notice, setNotice] = useState<{ title?: string; text: string } | null>(null);
+  const [shopOpen, setShopOpen] = useState(false);
+  const [shopPending, setShopPending] = useState(false);
+  const [money, setMoney] = useState(0);
   const [solvedGates, setSolvedGates] = useState<number[]>([]);
   const [puzzleGates, setPuzzleGates] = useState<number[]>([]);
   const [quiz, setQuiz] = useState<{
@@ -181,8 +192,12 @@ export default function HouseWorld() {
     albumOpen ||
     itemAction !== null ||
     notice !== null ||
-    quiz !== null;
+    quiz !== null ||
+    shopOpen;
   const remember = useGameWorldStore((state) => state.remember);
+  const rememberRef = useRef(remember);
+  rememberRef.current = remember;
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const caveAccess = useMemo<CaveAccess>(
     () => ({
       solvedGates: new Set(solvedGates),
@@ -228,6 +243,7 @@ export default function HouseWorld() {
   const facingGive = findSpriteInFront(room.sprites, col, row, facing);
   const giveNo = facingGive?.give;
   const facingGate = facingGive?.gate;
+  const facingShop = Boolean(facingGive?.shop || facingNpc?.shop);
   const canFish = canFishAt(room, col, row, facing);
   const worldRef = useRef({ roomId, col, row, facing, ready });
   worldRef.current = { roomId, col, row, facing, ready };
@@ -243,12 +259,13 @@ export default function HouseWorld() {
 
   useEffect(() => {
     let cancelled = false;
-    void Promise.all([getBag(), getAlbum(), getRareCatchBoost()]).then(
-      ([entries, nos, boost]) => {
+    void Promise.all([getBag(), getAlbum(), getRareCatchBoost(), getWallet()]).then(
+      ([entries, nos, boost, wallet]) => {
         if (cancelled) return;
         setBag(entries);
         setAlbum(nos);
         setRareMultiplier(boost);
+        setMoney(wallet);
       },
     );
     return () => {
@@ -293,33 +310,43 @@ export default function HouseWorld() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!ready || isMoving) return;
-    remember({ roomId, col, row, facing });
-  }, [ready, isMoving, roomId, col, row, facing, remember]);
+  const flushSave = useCallback(() => {
+    if (saveTimerRef.current) {
+      clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = null;
+    }
+    const current = worldRef.current;
+    if (!current.ready) return;
+    rememberRef.current({
+      roomId: current.roomId,
+      col: current.col,
+      row: current.row,
+      facing: current.facing,
+    });
+  }, []);
+
+  const scheduleSave = useCallback(() => {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(flushSave, SAVE_POS_MS);
+  }, [flushSave]);
 
   useEffect(() => {
-    const save = () => {
-      const current = worldRef.current;
-      if (!current.ready) return;
-      remember({
-        roomId: current.roomId,
-        col: current.col,
-        row: current.row,
-        facing: current.facing,
-      });
-    };
+    if (!ready || isMoving) return;
+    scheduleSave();
+  }, [ready, isMoving, roomId, col, row, facing, scheduleSave]);
+
+  useEffect(() => {
     const onHide = () => {
-      if (document.visibilityState === "hidden") save();
+      if (document.visibilityState === "hidden") flushSave();
     };
-    window.addEventListener("pagehide", save);
+    window.addEventListener("pagehide", flushSave);
     document.addEventListener("visibilitychange", onHide);
     return () => {
-      save();
-      window.removeEventListener("pagehide", save);
+      flushSave();
+      window.removeEventListener("pagehide", flushSave);
       document.removeEventListener("visibilitychange", onHide);
     };
-  }, [remember]);
+  }, [flushSave]);
 
   const finishExhibit = useCallback(() => {
     const current = exhibitRef.current;
@@ -352,10 +379,10 @@ export default function HouseWorld() {
       setBagOpen(false);
       return;
     }
-    if (talk || exhibit || choice || fishing || quiz) return;
+    if (talk || exhibit || choice || fishing || quiz || shopOpen) return;
     setAlbumOpen(false);
     setBagOpen(true);
-  }, [ready, notice, itemAction, bagOpen, talk, exhibit, choice, fishing, quiz]);
+  }, [ready, notice, itemAction, bagOpen, talk, exhibit, choice, fishing, quiz, shopOpen]);
 
   const toggleAlbum = useCallback(() => {
     if (!ready) return;
@@ -368,11 +395,11 @@ export default function HouseWorld() {
       setItemAction(null);
       return;
     }
-    if (talk || exhibit || choice || fishing || quiz) return;
+    if (talk || exhibit || choice || fishing || quiz || shopOpen) return;
     setBagOpen(false);
     setItemAction(null);
     setAlbumOpen(true);
-  }, [ready, notice, albumOpen, talk, exhibit, choice, fishing, quiz]);
+  }, [ready, notice, albumOpen, talk, exhibit, choice, fishing, quiz, shopOpen]);
 
   const confirmItemAction = useCallback(() => {
     if (!itemAction) return;
@@ -472,6 +499,10 @@ export default function HouseWorld() {
       setNotice(null);
       return;
     }
+    if (shopOpen) {
+      setShopOpen(false);
+      return;
+    }
     if (itemAction) {
       confirmItemAction();
       return;
@@ -526,15 +557,20 @@ export default function HouseWorld() {
       setExhibit(facingExhibit);
       return;
     }
+    if (facingShop) {
+      setShopOpen(true);
+      return;
+    }
     if (facingNpc) {
       setTalk({ npc: facingNpc, line: 0 });
     }
-  }, [ready, quiz, confirmQuiz, notice, itemAction, albumOpen, bagOpen, fishing, talk, exhibit, exhibitPage, choice, isMoving, facingGate, openQuiz, giveNo, takeGive, canFish, facing, facingNpc, facingExhibit, finishExhibit, confirmChoice, confirmItemAction, confirmAlbum, hookFish, startFish]);
+  }, [ready, quiz, confirmQuiz, shopOpen, notice, itemAction, albumOpen, bagOpen, fishing, talk, exhibit, exhibitPage, choice, isMoving, facingGate, openQuiz, giveNo, takeGive, canFish, facing, facingShop, facingNpc, facingExhibit, finishExhibit, confirmChoice, confirmItemAction, confirmAlbum, hookFish, startFish]);
 
   const onHoldStart = useCallback(
     (dir: Dir) => {
       if (notice) return;
       if (quiz) return;
+      if (shopOpen) return;
       if (itemAction) {
         if (!itemAction.item.use || !itemAction.item.album) return;
         if (dir === "left" || dir === "up") setItemAction({ ...itemAction, pick: "use" });
@@ -553,7 +589,7 @@ export default function HouseWorld() {
       if (fishing || bagOpen) return;
       holdStart(dir);
     },
-    [notice, quiz, itemAction, albumOpen, choice, fishing, bagOpen, holdStart],
+    [notice, quiz, shopOpen, itemAction, albumOpen, choice, fishing, bagOpen, holdStart],
   );
 
   useEffect(() => {
@@ -566,6 +602,7 @@ export default function HouseWorld() {
     setItemAction(null);
     setNotice(null);
     setQuiz(null);
+    setShopOpen(false);
     stopFish();
   }, [roomId, stopFish]);
 
@@ -615,6 +652,14 @@ export default function HouseWorld() {
           setQuiz(null);
           return;
         }
+        if (notice) {
+          setNotice(null);
+          return;
+        }
+        if (shopOpen) {
+          setShopOpen(false);
+          return;
+        }
         if (itemAction) {
           setItemAction(null);
           return;
@@ -626,9 +671,6 @@ export default function HouseWorld() {
         if (albumOpen) {
           setAlbumOpen(false);
           return;
-        }
-        if (notice) {
-          setNotice(null);
         }
         return;
       }
@@ -644,6 +686,15 @@ export default function HouseWorld() {
         return;
       }
       if (e.code === "Space" || e.code === "Enter" || e.code === "KeyZ") {
+        const field = e.target;
+        if (
+          field instanceof HTMLElement &&
+          (field.tagName === "INPUT" ||
+            field.tagName === "TEXTAREA" ||
+            field.isContentEditable)
+        ) {
+          return;
+        }
         e.preventDefault();
         if (!e.repeat) confirm();
         return;
@@ -717,10 +768,14 @@ export default function HouseWorld() {
             sprite={sprite}
             zIndex={spriteBottomY(sprite) > playerBottom ? 12 : 8}
             onClick={
-              sprite.give || sprite.gate != null
+              sprite.give || sprite.gate != null || sprite.shop
                 ? () => {
                     if (busy || isMoving) return;
                     if (!isAdjacentSprite(sprite, col, row)) return;
+                    if (sprite.shop) {
+                      setShopOpen(true);
+                      return;
+                    }
                     if (sprite.gate != null) {
                       openQuiz(sprite.gate);
                       return;
@@ -758,9 +813,14 @@ export default function HouseWorld() {
           const npcPx = npc.col * TILE;
           const npcPy = npc.row * TILE;
           const talkLine = talk?.npc.id === npc.id ? talk.npc.lines[talk.line] : null;
+          const shopHere = objectSprites.find(
+            (sprite) => sprite.shop && spriteOccupies(sprite, npc.col, npc.row),
+          );
+          const nearShop = Boolean(npc.shop && shopHere && isAdjacentSprite(shopHere, col, row));
+          const stallZ = shopHere && spriteBottomY(shopHere) > playerBottom ? 12 : 8;
           const emotion = talkLine?.balloon
             ? talkLine.balloon
-            : !busy && isAdjacentNpc(npc, col, row)
+            : !busy && (nearShop || isAdjacentNpc(npc, col, row))
               ? "exclaim"
               : null;
           return (
@@ -769,7 +829,18 @@ export default function HouseWorld() {
                 px={npcPx}
                 py={npcPy}
                 facing={npc.facing}
-                zIndex={npcBottom > playerBottom ? 12 : 8}
+                zIndex={shopHere ? stallZ + 1 : npcBottom > playerBottom ? 12 : 8}
+                onClick={
+                  !busy && (nearShop || isAdjacentNpc(npc, col, row))
+                    ? () => {
+                        if (npc.shop) {
+                          setShopOpen(true);
+                          return;
+                        }
+                        setTalk({ npc, line: 0 });
+                      }
+                    : undefined
+                }
               />
               {emotion ? (
                 <EmotionBalloon emotion={emotion} px={npcPx} py={npcPy} />
@@ -852,6 +923,34 @@ export default function HouseWorld() {
           onConfirm={confirmItemAction}
         />
       ) : null}
+      {shopOpen ? (
+        <ShopBox
+          items={bagItems}
+          money={money}
+          pending={shopPending}
+          onBuy={(no) => {
+            if (shopPending) return;
+            setShopPending(true);
+            void buyShopItem(no).then((res) => {
+              setBag(res.bag);
+              setMoney(res.money);
+              setShopPending(false);
+              setNotice({ text: res.message });
+            });
+          }}
+          onSell={(no, qty) => {
+            if (shopPending) return;
+            setShopPending(true);
+            void sellBagItem(no, qty).then((res) => {
+              setBag(res.bag);
+              setMoney(res.money);
+              setShopPending(false);
+              setNotice({ text: res.message });
+            });
+          }}
+          onClose={() => setShopOpen(false)}
+        />
+      ) : null}
       {quiz ? (
         <QuizBox
           prompt={quiz.prompt}
@@ -903,7 +1002,7 @@ export default function HouseWorld() {
         </button>
       ) : null}
       <DPad onHoldStart={onHoldStart} onHoldEnd={holdEnd} />
-      {!talk && !exhibit && !choice && !fishing && !quiz ? (
+      {!talk && !exhibit && !choice && !fishing && !quiz && !shopOpen ? (
         <MenuButtons
           onAlbum={toggleAlbum}
           onBag={toggleBag}
@@ -913,7 +1012,15 @@ export default function HouseWorld() {
       ) : null}
       <ActionButton
         onConfirm={confirm}
-        hint={Boolean(busy || facingNpc || facingExhibit || giveNo || facingGate != null || canFish)}
+        hint={Boolean(
+          busy ||
+            facingNpc ||
+            facingShop ||
+            facingExhibit ||
+            giveNo ||
+            facingGate != null ||
+            canFish,
+        )}
       />
         </>
       ) : null}

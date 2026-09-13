@@ -9,7 +9,8 @@
       "weight": 14,
       "sprite": "/images/game/fish/anchovy.png",
       "cell": "0-9",
-      "blurb": "은빛으로 반짝이는 작은 생선. 떼 지어 다닌다."
+      "blurb": "은빛으로 반짝이는 작은 생선. 떼 지어 다닌다.",
+      "sellPrice": 8
     },
     {
       "id": "mackerel",
@@ -20,7 +21,8 @@
       "weight": 12,
       "sprite": "/images/game/fish/mackerel.png",
       "cell": "1-10",
-      "blurb": "등에 물결무늬가 있는 흔한 등푸른생선."
+      "blurb": "등에 물결무늬가 있는 흔한 등푸른생선.",
+      "sellPrice": 10
     },
     {
       "id": "squid",
@@ -31,7 +33,8 @@
       "weight": 10,
       "sprite": "/images/game/fish/squid.png",
       "cell": "2-13",
-      "blurb": "붉은 몸통에 다리가 달린 오징어. 구이용으로 유명하다."
+      "blurb": "붉은 몸통에 다리가 달린 오징어. 구이용으로 유명하다.",
+      "sellPrice": 12
     },
     {
       "id": "croaker",
@@ -42,7 +45,8 @@
       "weight": 8,
       "sprite": "/images/game/fish/croaker.png",
       "cell": "2-2",
-      "blurb": "노란빛이 도는 서해의 대표 생선."
+      "blurb": "노란빛이 도는 서해의 대표 생선.",
+      "sellPrice": 14
     },
     {
       "id": "shad",
@@ -53,7 +57,8 @@
       "weight": 6,
       "sprite": "/images/game/fish/shad.png",
       "cell": "0-8",
-      "blurb": "가을에 살 오른다는 작고 고소한 생선."
+      "blurb": "가을에 살 오른다는 작고 고소한 생선.",
+      "sellPrice": 16
     },
     {
       "id": "pollack",
@@ -64,7 +69,8 @@
       "weight": 6,
       "sprite": "/images/game/fish/pollack.png",
       "cell": "2-0",
-      "blurb": "동해의 은빛 생선. 말리면 북어가 된다."
+      "blurb": "동해의 은빛 생선. 말리면 북어가 된다.",
+      "sellPrice": 28
     },
     {
       "id": "flounder",
@@ -75,7 +81,8 @@
       "weight": 5,
       "sprite": "/images/game/fish/flounder.png",
       "cell": "2-5",
-      "blurb": "바닥에 납작 엎드린 광어. 눈이 한쪽에 몰려 있다."
+      "blurb": "바닥에 납작 엎드린 광어. 눈이 한쪽에 몰려 있다.",
+      "sellPrice": 32
     },
     {
       "id": "hairtail",
@@ -86,7 +93,8 @@
       "weight": 5,
       "sprite": "/images/game/fish/hairtail.png",
       "cell": "2-11",
-      "blurb": "칼처럼 길고 은빛으로 빛나는 남해 별미."
+      "blurb": "칼처럼 길고 은빛으로 빛나는 남해 별미.",
+      "sellPrice": 34
     },
     {
       "id": "blue-crab",
@@ -97,7 +105,8 @@
       "weight": 4,
       "sprite": "/images/game/fish/blue-crab.png",
       "cell": "1-7",
-      "blurb": "집게가 큰 서해 게. 찜으로 많이 먹는다."
+      "blurb": "집게가 큰 서해 게. 찜으로 많이 먹는다.",
+      "sellPrice": 38
     },
     {
       "id": "webfoot",
@@ -108,7 +117,8 @@
       "weight": 5,
       "sprite": "/images/game/fish/webfoot.png",
       "cell": "3-5",
-      "blurb": "낙지보다 작고 통통한 서해 문어 친척."
+      "blurb": "낙지보다 작고 통통한 서해 문어 친척.",
+      "sellPrice": 30
     },
     {
       "id": "prawn",
@@ -119,7 +129,8 @@
       "weight": 3,
       "sprite": "/images/game/fish/prawn.png",
       "cell": "1-4",
-      "blurb": "몸집이 큰 새우. 구우면 단맛이 난다."
+      "blurb": "몸집이 큰 새우. 구우면 단맛이 난다.",
+      "sellPrice": 42
     },
     {
       "id": "spanish-mackerel",
@@ -130,7 +141,8 @@
       "weight": 3,
       "sprite": "/images/game/fish/spanish-mackerel.png",
       "cell": "1-11",
-      "blurb": "길고 빠른 은빛 생선. 살이 부드럽다."
+      "blurb": "길고 빠른 은빛 생선. 살이 부드럽다.",
+      "sellPrice": 40
     },
     {
       "id": "yellowtail",
@@ -141,7 +153,8 @@
       "weight": 3,
       "sprite": "/images/game/fish/yellowtail.png",
       "cell": "1-13",
-      "blurb": "옆줄이 노란 대형 등푸른생선."
+      "blurb": "옆줄이 노란 대형 등푸른생선.",
+      "sellPrice": 48
     },
     {
       "id": "conger",
@@ -152,7 +165,8 @@
       "weight": 3,
       "sprite": "/images/game/fish/conger.png",
       "cell": "2-10",
-      "blurb": "뱀처럼 긴 장어. 통구이로 유명하다."
+      "blurb": "뱀처럼 긴 장어. 통구이로 유명하다.",
+      "sellPrice": 36
     },
     {
       "id": "turban",
@@ -163,7 +177,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/turban.png",
       "cell": "4-0",
-      "blurb": "나선 껍데기 안에 든 고둥. 바다에서 건졌다."
+      "blurb": "나선 껍데기 안에 든 고둥. 바다에서 건졌다.",
+      "sellPrice": 26
     },
     {
       "id": "red-seabream",
@@ -174,7 +189,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/red-seabream.png",
       "cell": "2-4",
-      "blurb": "분홍빛이 도는 귀한 도미. 잔칫상에 오른다."
+      "blurb": "분홍빛이 도는 귀한 도미. 잔칫상에 오른다.",
+      "sellPrice": 90
     },
     {
       "id": "puffer",
@@ -185,7 +201,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/puffer.png",
       "cell": "2-8",
-      "blurb": "동그란 몸에 독이 있는 동해 복어."
+      "blurb": "동그란 몸에 독이 있는 동해 복어.",
+      "sellPrice": 95
     },
     {
       "id": "skate",
@@ -196,7 +213,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/skate.png",
       "cell": "0-13",
-      "blurb": "마름모꼴 몸통의 서해 가오리 친척."
+      "blurb": "마름모꼴 몸통의 서해 가오리 친척.",
+      "sellPrice": 88
     },
     {
       "id": "snow-crab",
@@ -207,7 +225,8 @@
       "weight": 1,
       "sprite": "/images/game/fish/snow-crab.png",
       "cell": "1-8",
-      "blurb": "다리가 긴 동해 게. 잘 안 잡힌다."
+      "blurb": "다리가 긴 동해 게. 잘 안 잡힌다.",
+      "sellPrice": 160
     },
     {
       "id": "octopus",
@@ -218,7 +237,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/octopus.png",
       "cell": "3-6",
-      "blurb": "다리가 굵은 동해 문어. 힘이 세다."
+      "blurb": "다리가 굵은 동해 문어. 힘이 세다.",
+      "sellPrice": 100
     },
     {
       "id": "monkfish",
@@ -229,7 +249,8 @@
       "weight": 2,
       "sprite": "/images/game/fish/monkfish.png",
       "cell": "2-7",
-      "blurb": "입이 큰 심해 생선. 찜으로 먹는다."
+      "blurb": "입이 큰 심해 생선. 찜으로 먹는다.",
+      "sellPrice": 85
     },
     {
       "id": "dotdom",
@@ -242,7 +263,8 @@
       "use": true,
       "useOnce": true,
       "album": true,
-      "blurb": "은빛으로 빛나는 아주 귀한 생선. 먹으면 희귀한 물고기가 더 잘 잡힌다."
+      "blurb": "은빛으로 빛나는 아주 귀한 생선. 먹으면 희귀한 물고기가 더 잘 잡힌다.",
+      "sellPrice": 800
     }
   ]
 }

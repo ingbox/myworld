@@ -12,6 +12,8 @@ export type NpcDef = {
   name: string;
   facing?: Dir;
   lines: LineJson[];
+  /** true면 말을 걸 때 상점 창을 엽니다. */
+  shop?: boolean;
 };
 
 export type RoomNpc = Omit<NpcDef, "lines"> & {

@@ -44,3 +44,9 @@ export type CaveSolveResult = CaveProgress & {
   already: boolean;
   last: boolean;
 };
+
+export type MoneyTradeResult = {
+  ok: boolean;
+  message: string;
+  money: number;
+};

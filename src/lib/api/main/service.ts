@@ -1,25 +1,32 @@
 import "server-only";
 
 import pool from "@/src/lib/db";
-import { lookupItem } from "@/src/util/main/item";
-import { DOTDOM_NO } from "@/src/util/main/fish";
+import { itemHasStockLimit, itemTrackedInDb, lookupItem } from "@/src/util/main/item";
+import { DOTDOM_NO, objectParticle } from "@/src/util/main/fish";
+import { hasCaveRoom, normalizeCaveAnswer } from "@/src/util/main/cave";
+import { itemSellPrice, shopBuyPrice } from "@/src/util/main/shop";
 import {
   DECREMENT_PLAYER_ITEM,
+  DECREMENT_PLAYER_ITEM_BY,
   INSERT_ITEM_USE,
+  INSERT_MONEY_LOG,
+  INSERT_PLAYER_CAVE,
   LOCK_GAME_ITEM,
+  LOCK_GAME_PLAYER,
   LOCK_PLAYER_ITEM,
+  SELECT_CAVE_PUZZLE,
+  SELECT_CAVE_PUZZLE_GATES,
   SELECT_GAME_ITEM_BY_NO,
   SELECT_GAME_ITEM_LIST,
   SELECT_ITEM_CIRCULATING,
   SELECT_ITEM_USES,
+  SELECT_PLAYER_CAVE_GATES,
   SELECT_PLAYER_HAS_ITEM,
   SELECT_PLAYER_HAS_USED_ITEM,
   SELECT_PLAYER_ITEMS,
+  SELECT_PLAYER_MONEY,
   SELECT_PLAYER_USES,
-  INSERT_PLAYER_CAVE,
-  SELECT_CAVE_PUZZLE,
-  SELECT_CAVE_PUZZLE_GATES,
-  SELECT_PLAYER_CAVE_GATES,
+  UPDATE_PLAYER_MONEY,
   UPSERT_GAME_ITEM,
   UPSERT_GAME_PLAYER,
   UPSERT_PLAYER_ITEM,
@@ -32,8 +39,8 @@ import type {
   GameItemUseRow,
   GamePlayerItemRow,
   ItemMoveResult,
+  MoneyTradeResult,
 } from "./types";
-import { hasCaveRoom, normalizeCaveAnswer } from "@/src/util/main/cave";
 
 type ItemQueryRow = {
   no: number;
@@ -421,4 +428,126 @@ export async function submitCaveAnswer(
     last: !next.puzzles.includes(gate + 1) || !hasCaveRoom(gate),
     ...next,
   };
+}
+
+function emptyTrade(message: string, money = 0): MoneyTradeResult {
+  return { ok: false, message, money };
+}
+
+/**
+ * 그 사용자의 소지금을 읽습니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ */
+export async function getPlayerMoney(playerId: string) {
+  await pool.query(UPSERT_GAME_PLAYER, [playerId]);
+  const result = await pool.query(SELECT_PLAYER_MONEY, [playerId]);
+  return Number((result.rows[0] as { money?: number } | undefined)?.money ?? 0);
+}
+
+/**
+ * 상점에서 아이템 1개를 삽니다. 소지금을 빼고 거래 기록을 남깁니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ * @param no - 아이템 번호
+ */
+export async function buyShopItem(playerId: string, no: number): Promise<MoneyTradeResult> {
+  const price = shopBuyPrice(no);
+  if (price == null) return emptyTrade("여기서는 팔지 않는다.");
+  const item = lookupItem(no);
+  const exists = await ensureCatalogItem(no);
+  if (!exists && (itemTrackedInDb(no) || itemHasStockLimit(no))) {
+    return emptyTrade("없는 아이템이다.");
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    await client.query(UPSERT_GAME_PLAYER, [playerId]);
+    const locked = await client.query(LOCK_GAME_PLAYER, [playerId]);
+    const money = Number((locked.rows[0] as { money?: number } | undefined)?.money ?? 0);
+    if (money < price) {
+      await client.query("ROLLBACK");
+      return emptyTrade("돈이 부족하다.", money);
+    }
+
+    if (itemTrackedInDb(no) || itemHasStockLimit(no)) {
+      await client.query(LOCK_GAME_ITEM, [no]);
+      const circ = await client.query(SELECT_ITEM_CIRCULATING, [no]);
+      const circulating = Number((circ.rows[0] as { circulating: number }).circulating);
+      const mine = await client.query(SELECT_PLAYER_HAS_ITEM, [playerId, no]);
+      const playerHeld = Number((mine.rows[0] as { count?: number } | undefined)?.count ?? 0);
+      if (item.maxPerPlayer !== null && playerHeld + 1 > item.maxPerPlayer) {
+        await client.query("ROLLBACK");
+        return emptyTrade("더 이상 가질 수 없다.", money);
+      }
+      if (item.maxCount !== null && circulating + 1 > item.maxCount) {
+        await client.query("ROLLBACK");
+        return emptyTrade("더 이상 얻을 수 없다.", money);
+      }
+      await client.query(UPSERT_PLAYER_ITEM, [playerId, no, 1]);
+    }
+
+    const nextMoney = money - price;
+    await client.query(UPDATE_PLAYER_MONEY, [playerId, nextMoney]);
+    await client.query(INSERT_MONEY_LOG, [playerId, "buy", no, 1, price, -price, nextMoney]);
+    await client.query("COMMIT");
+    return { ok: true, message: `${item.name}${objectParticle(item.name)} 샀다.`, money: nextMoney };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * 아이템을 상점에 팝니다. 소지금을 더하고 거래 기록을 남깁니다.
+ *
+ * @param playerId - 게임 사용자 UUID
+ * @param no - 아이템 번호
+ * @param qty - 팔 개수
+ */
+export async function sellShopItem(
+  playerId: string,
+  no: number,
+  qty = 1,
+): Promise<MoneyTradeResult> {
+  const price = itemSellPrice(no);
+  if (price < 1) return emptyTrade("살 수 없는 물건이다.");
+  if (!Number.isInteger(qty) || qty < 1) return emptyTrade("개수가 올바르지 않다.");
+  const item = lookupItem(no);
+  const delta = price * qty;
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    await client.query(UPSERT_GAME_PLAYER, [playerId]);
+    const locked = await client.query(LOCK_GAME_PLAYER, [playerId]);
+    const money = Number((locked.rows[0] as { money?: number } | undefined)?.money ?? 0);
+
+    if (itemTrackedInDb(no) || itemHasStockLimit(no)) {
+      const mine = await client.query(LOCK_PLAYER_ITEM, [playerId, no]);
+      const playerHeld = Number((mine.rows[0] as { count?: number } | undefined)?.count ?? 0);
+      if (playerHeld < qty) {
+        await client.query("ROLLBACK");
+        return emptyTrade("가진 아이템이 없다.", money);
+      }
+      await client.query(DECREMENT_PLAYER_ITEM_BY, [playerId, no, qty]);
+    }
+
+    const nextMoney = money + delta;
+    await client.query(UPDATE_PLAYER_MONEY, [playerId, nextMoney]);
+    await client.query(INSERT_MONEY_LOG, [playerId, "sell", no, qty, price, delta, nextMoney]);
+    await client.query("COMMIT");
+    const sold = qty === 1
+      ? `${item.name}${objectParticle(item.name)} 팔았다.`
+      : `${item.name}${objectParticle(item.name)} ${qty}개 팔았다.`;
+    return { ok: true, message: sold, money: nextMoney };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }

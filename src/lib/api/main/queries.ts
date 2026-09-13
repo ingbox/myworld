@@ -98,6 +98,15 @@ export const DECREMENT_PLAYER_ITEM = `
   RETURNING count
 `;
 
+export const DECREMENT_PLAYER_ITEM_BY = `
+  UPDATE game_player_item
+  SET count = count - $3, updated_at = NOW()
+  WHERE player_id = $1::uuid
+    AND item_no = $2
+    AND count >= $3
+  RETURNING count
+`;
+
 export const INSERT_ITEM_USE = `
   INSERT INTO game_item_use (player_id, item_no, used_at)
   VALUES ($1::uuid, $2, NOW())
@@ -158,4 +167,33 @@ export const INSERT_PLAYER_CAVE = `
   INSERT INTO game_player_cave (player_id, gate, solved_at)
   VALUES ($1::uuid, $2, NOW())
   ON CONFLICT (player_id, gate) DO NOTHING
+`;
+
+export const SELECT_PLAYER_MONEY = `
+  SELECT money
+  FROM game_player
+  WHERE id = $1::uuid
+  LIMIT 1
+`;
+
+export const LOCK_GAME_PLAYER = `
+  SELECT id, money
+  FROM game_player
+  WHERE id = $1::uuid
+  FOR UPDATE
+`;
+
+export const UPDATE_PLAYER_MONEY = `
+  UPDATE game_player
+  SET money = $2, last_seen_at = NOW()
+  WHERE id = $1::uuid
+  RETURNING money
+`;
+
+export const INSERT_MONEY_LOG = `
+  INSERT INTO game_money_log (
+    player_id, kind, item_no, qty, unit_price, delta, balance, created_at
+  )
+  VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, NOW())
+  RETURNING id
 `;

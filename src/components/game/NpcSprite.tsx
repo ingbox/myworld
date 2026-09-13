@@ -9,11 +9,12 @@ type Props = {
   py: number;
   facing: Dir;
   zIndex?: number;
+  onClick?: () => void;
 };
 
 const IDLE_MS = 280;
 
-export default function NpcSprite({ px, py, facing, zIndex = 8 }: Props) {
+export default function NpcSprite({ px, py, facing, zIndex = 8, onClick }: Props) {
   const [frame, setFrame] = useState(0);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function NpcSprite({ px, py, facing, zIndex = 8 }: Props) {
   return (
     <div
       data-entity="npc"
-      className="pointer-events-none absolute"
+      className={`absolute ${onClick ? "pointer-events-auto cursor-pointer" : "pointer-events-none"}`}
       style={{
         left: px,
         top: py,
@@ -35,7 +36,16 @@ export default function NpcSprite({ px, py, facing, zIndex = 8 }: Props) {
         zIndex,
         ...npcIdleStyle(facing, frame),
       }}
-      aria-hidden
+      aria-hidden={!onClick}
+      role={onClick ? "button" : undefined}
+      onClick={
+        onClick
+          ? (e) => {
+              e.stopPropagation();
+              onClick();
+            }
+          : undefined
+      }
     />
   );
 }

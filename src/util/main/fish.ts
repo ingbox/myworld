@@ -25,6 +25,7 @@ export type FishDef = {
   use?: boolean;
   useOnce?: boolean;
   album?: boolean;
+  sellPrice?: number;
 };
 
 export type FishingState = {

@@ -95,6 +95,8 @@ export type RoomLayout = {
     give?: number;
     /** 조사하면 이 관문 문제가 나옵니다. */
     gate?: number;
+    /** 조사하면 상점 창을 엽니다. */
+    shop?: boolean;
   }>;
   openings?: Opening[];
   npcs?: NpcPlacement[];
@@ -110,6 +112,7 @@ export type RoomSprite = CatalogPiece & {
   blockedCells: Array<[number, number]>;
   give?: number;
   gate?: number;
+  shop?: boolean;
 };
 
 export type Room = Omit<RoomLayout, "objects" | "npcs" | "exhibits"> & {
@@ -306,6 +309,7 @@ export function resolveRoom(
           blockedCells: blockedCells(piece),
           give: obj.give,
           gate: obj.gate,
+          shop: obj.shop,
         });
         stamp += 1;
       }
@@ -483,7 +487,7 @@ export function findSpriteInFront(
   const nextRow = row + DIR_DELTA[facing].dr;
   const hits = sprites.filter((sprite) => spriteOccupies(sprite, nextCol, nextRow));
   return (
-    hits.find((sprite) => sprite.gate != null || sprite.give != null) ??
+    hits.find((sprite) => sprite.gate != null || sprite.give != null || sprite.shop) ??
     hits[hits.length - 1]
   );
 }

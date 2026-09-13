@@ -94,3 +94,23 @@ VALUES (0, '봉인된 동굴이다. 입구에 새겨진 글자를 맞춰라.', '
 ON CONFLICT (gate) DO UPDATE SET
   prompt = EXCLUDED.prompt,
   answer = EXCLUDED.answer;
+
+-- 소지금과 상점 거래 기록
+ALTER TABLE game_player ADD COLUMN IF NOT EXISTS money INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE game_player DROP CONSTRAINT IF EXISTS game_player_money_chk;
+ALTER TABLE game_player ADD CONSTRAINT game_player_money_chk CHECK (money >= 0);
+
+CREATE TABLE IF NOT EXISTS game_money_log (
+  id BIGSERIAL PRIMARY KEY,
+  player_id UUID NOT NULL REFERENCES game_player (id),
+  kind TEXT NOT NULL CHECK (kind IN ('buy', 'sell')),
+  item_no INTEGER NOT NULL,
+  qty INTEGER NOT NULL CHECK (qty > 0),
+  unit_price INTEGER NOT NULL CHECK (unit_price >= 0),
+  delta INTEGER NOT NULL,
+  balance INTEGER NOT NULL CHECK (balance >= 0),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS game_money_log_player_idx
+  ON game_money_log (player_id, created_at DESC);

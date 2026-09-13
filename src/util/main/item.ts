@@ -16,6 +16,8 @@ export type ItemDef = {
   starter: boolean;
   /** 한 플레이에서 한 번만 사용할 수 있습니다. 사용 여부는 DB를 봅니다. */
   useOnce: boolean;
+  /** 상점에 팔 때 받는 돈. 0이면 팔 수 없습니다. */
+  sellPrice: number;
 };
 
 type ItemJson = {
@@ -30,6 +32,7 @@ type ItemJson = {
   sprite?: string;
   starter?: boolean;
   useOnce?: boolean;
+  sellPrice?: number;
 };
 
 function fromJson(item: ItemJson): ItemDef {
@@ -45,6 +48,7 @@ function fromJson(item: ItemJson): ItemDef {
     sprite: item.sprite ?? "",
     starter: item.starter === true,
     useOnce: item.useOnce === true,
+    sellPrice: item.sellPrice ?? 0,
   };
 }
 
@@ -68,6 +72,7 @@ function fromFish(no: number): ItemDef | null {
     sprite: fish.sprite,
     starter: false,
     useOnce: fish.useOnce === true,
+    sellPrice: fish.sellPrice ?? 0,
   };
 }
 
@@ -91,6 +96,7 @@ export function lookupItem(no: number): ItemDef {
       sprite: "",
       starter: false,
       useOnce: false,
+      sellPrice: 0,
     }
   );
 }
