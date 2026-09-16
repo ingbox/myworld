@@ -1174,3 +1174,14 @@ textarea {
   width: 100% !important;
   height: 100% !important;
 }
+
+/* 그림 캐러셀 — 같은 목록을 두 번 붙여놓고 절반만큼 밀어 끊김 없이 순환 */
+@keyframes orm-drawing-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

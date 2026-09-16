@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Cat {
+  id        String   @id
+  url       String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  drawings CatDrawing[]
+
+  @@map("cat")
+}
+
+model CatDrawing {
+  id        Int      @id @default(autoincrement())
+  catId     String   @map("cat_id")
+  imageUrl  String   @map("image_url")
+  score     Int?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  cat Cat @relation(fields: [catId], references: [id], onDelete: Cascade)
+
+  @@index([score(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("cat_drawing")
+}
