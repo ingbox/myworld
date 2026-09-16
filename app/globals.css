@@ -1185,3 +1185,32 @@ textarea {
     transform: translateX(-50%);
   }
 }
+
+.sound-bubble {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes float-across {
+  from {
+    transform: translateX(-20%) translateY(0) rotate(0deg);
+  }
+
+  to {
+    transform: translateX(110vw) translateY(var(--drift-y, 0px)) rotate(var(--drift-r, 0deg));
+  }
+}
+
+@keyframes float-across-reverse {
+  from {
+    transform: translateX(110%) translateY(0) rotate(0deg);
+  }
+
+  to {
+    transform: translateX(-40vw) translateY(var(--drift-y, 0px)) rotate(var(--drift-r, 0deg));
+  }
+}

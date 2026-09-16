@@ -3,6 +3,7 @@ import Sidebar from "@/components/orm/Sidebar";
 import CatGallery from "@/components/orm/CatGallery";
 import CatCanvas from "@/components/orm/CatCanvas";
 import CatCarousel from "@/components/orm/CatCarousel";
+import CatSounds from "@/components/orm/CatSounds";
 import {
   getCatList,
   getDrawingList,
@@ -72,6 +73,8 @@ export default function Page() {
         >
           <CarouselSection />
         </Suspense>
+
+        <CatSounds />
       </main>
     </div>
   );

@@ -5,8 +5,46 @@ import pg from "pg";
 
 const redis = new Redis(process.env.REDIS_URL as string);
 
+const CAT_SOUND_ROOM = "cats-sounds";
+const CAT_SOUND_KEY = "cat:sounds";
+const TWO_HOURS_SEC = 2 * 60 * 60;
+const TWO_HOURS_MS = TWO_HOURS_SEC * 1000;
+const CAT_SOUND_MAX = 100;
+const AMBIENT_SOUNDS = ["야옹", "냐옹", "냥", "먀아", "그르릉", "하악", "냥냥", "미야우"];
+
 function recentKey(roomId: string) {
   return `chat:recent:${roomId}`;
+}
+
+type CatSound = {
+  id: string;
+  text: string;
+  createdAt: number;
+};
+
+async function pruneCatSounds() {
+  await redis.zremrangebyscore(CAT_SOUND_KEY, 0, Date.now() - TWO_HOURS_MS);
+}
+
+async function addCatSound(text: string): Promise<CatSound> {
+  const sound: CatSound = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    text,
+    createdAt: Date.now(),
+  };
+
+  await pruneCatSounds();
+  await redis.zadd(CAT_SOUND_KEY, sound.createdAt, JSON.stringify(sound));
+  await redis.zremrangebyrank(CAT_SOUND_KEY, 0, -CAT_SOUND_MAX - 1);
+  await redis.expire(CAT_SOUND_KEY, TWO_HOURS_SEC);
+
+  return sound;
+}
+
+async function listCatSounds(): Promise<CatSound[]> {
+  await pruneCatSounds();
+  const rows = await redis.zrange(CAT_SOUND_KEY, "0", "-1");
+  return rows.map((row) => JSON.parse(row) as CatSound);
 }
 
 const pool = new pg.Pool({
@@ -138,6 +176,42 @@ const app = new Elysia()
       }),
     }
   )
+
+  .get("/cat-sounds", async () => listCatSounds())
+
+  .post(
+    "/cat-sound",
+    async ({ body, set }) => {
+      const text = body.text.trim();
+      if (!text) {
+        set.status = 400;
+        return { error: "text is required" };
+      }
+
+      const sound = await addCatSound(text);
+      app.server?.publish(CAT_SOUND_ROOM, JSON.stringify(sound));
+      return sound;
+    },
+    {
+      body: t.Object({
+        text: t.String({ minLength: 1, maxLength: 30 }),
+      }),
+    },
+  )
+
   .listen(3005);
+
+setInterval(() => {
+  const text = AMBIENT_SOUNDS[Math.floor(Math.random() * AMBIENT_SOUNDS.length)];
+  app.server?.publish(
+    CAT_SOUND_ROOM,
+    JSON.stringify({
+      id: `ambient-${Date.now()}`,
+      text,
+      createdAt: Date.now(),
+      ambient: true,
+    }),
+  );
+}, 1500);
 
 console.log("🚀 Chat Server Running :3005");

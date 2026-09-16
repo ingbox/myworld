@@ -133,9 +133,20 @@ export default function CatCanvas({ initialCat }: { initialCat: CatData | null }
                 </span>
                 <h2 className="text-2xl font-semibold text-slate-100">/cats/drawings</h2>
             </div>
-            <p className="text-slate-400 text-sm mb-6 ml-16 font-mono">
-                Copy the cat on the left onto the canvas.
-            </p>
+
+            <div className="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-6 font-mono text-sm">
+                <div className="text-slate-500 text-xs mb-3 uppercase tracking-wider">Request</div>
+                <div className="text-slate-300">
+                    <span className="text-emerald-400 font-semibold">prisma</span>
+                    <span className="text-slate-500">.catDrawing.</span>
+                    <span className="text-sky-400">create</span>
+                </div>
+                <div className="mt-2 text-xs text-slate-500">
+                    catId=<span className="text-amber-400">{reference?.id ?? "null"}</span>
+                    {" "}score=<span className="text-emerald-400">CLIP</span>
+                    {" "}file=<span className="text-violet-300">image/png</span>
+                </div>
+            </div>
 
             <div className="bg-slate-800/60 border border-slate-700 rounded-xl overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2 border-b border-slate-700 bg-slate-800/80">

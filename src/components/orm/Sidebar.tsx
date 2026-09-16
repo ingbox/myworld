@@ -15,6 +15,12 @@ export default function Sidebar() {
       badgeColor: "text-blue-400 bg-blue-500/10 border-blue-500/20",
     },
     {
+      id: "drawings",
+      label: "GET /cats/drawings",
+      badge: "GET",
+      badgeColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    },
+    {
       id: "sounds",
       label: "WS /cats/sounds",
       badge: "WS",
