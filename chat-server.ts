@@ -2,7 +2,7 @@ import { Elysia, t } from "elysia";
 import { cors } from "@elysia/cors";
 import Redis from "ioredis";
 import pg from "pg";
-
+ 
 const redis = new Redis(process.env.REDIS_URL as string);
 
 const CAT_SOUND_ROOM = "cats-sounds";
