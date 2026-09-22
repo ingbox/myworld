@@ -42,10 +42,10 @@ export default async function Page() {
                             >
                                 <div
                                     className={`text-xs text-white rounded px-0.5 shrink-0 ${item.type === 'photo'
-                                            ? 'bg-[#a4717a]'
-                                            : item.type === 'board'
-                                                ? 'bg-[#6b9b6d]'
-                                                : 'bg-[#7a95b3]'
+                                        ? 'bg-[#a4717a]'
+                                        : item.type === 'board'
+                                            ? 'bg-[#6b9b6d]'
+                                            : 'bg-[#7a95b3]'
                                         }`}
                                 >
                                     {item.type === 'photo'
@@ -55,7 +55,10 @@ export default async function Page() {
                                             : '방명록'}
                                 </div>
 
-                                <div className="min-w-20.75 truncate text-sm">
+                                <div
+                                    className={`min-w-20.75 truncate text-sm ${item.content === "(이 글은 비밀글 입니다.)" ? "text-gray-400" : ""
+                                        }`}
+                                >
                                     {item.content}
                                 </div>
                             </Link>

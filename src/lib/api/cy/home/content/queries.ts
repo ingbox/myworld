@@ -44,7 +44,10 @@ SELECT
 export const SELECT_UPDATED_NEWS = `
 SELECT 
     id,
-    content AS content,
+    CASE
+        WHEN is_secret = true THEN '(이 글은 비밀글 입니다.)'
+        ELSE content
+    END AS content,
     created_at,
     'visitor' AS type
 FROM visitor
