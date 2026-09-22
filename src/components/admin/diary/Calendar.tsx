@@ -14,6 +14,7 @@ import DayTimeline from '@/components/cy/diary/DayTimeline';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Diary from './Diary';
+import DiaryList from '@/components/cy/diary/DiaryList';
 
 type CalendarProps = {
   diaryEvents: DiaryEvent[];
@@ -190,12 +191,9 @@ export default function Calendar({
       </div>
 
       <QueryClientProvider client={queryClient}>
+        <DiaryList diaryDate={selectedDate.toLocaleDateString('sv-SE')} />
         <Diary diaryDate={selectedDate.toLocaleDateString('sv-SE')} />
       </QueryClientProvider>
-
-      <div className="h-10">
-
-      </div>
     </>
   );
 }

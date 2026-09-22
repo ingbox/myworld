@@ -40,7 +40,7 @@ export default function DiaryList({ diaryDate }: { diaryDate: string }) {
 
     if (isError) {
         return (
-            <div className="diary-paper mt-4">
+            <div className="diary-paper mt-4 mb-4">
                 <div className="diary-paper-inner px-4 py-6 text-center text-xs text-red-400">
                     일기를 불러오지 못했습니다.
                 </div>
@@ -50,7 +50,7 @@ export default function DiaryList({ diaryDate }: { diaryDate: string }) {
 
     if (!data?.length) {
         return (
-            <div className="diary-paper mt-4">
+            <div className="diary-paper mt-4 mb-4">
                 <div className="diary-paper-inner px-4 py-6 text-center text-xs text-zinc-400">
                     이 날짜에 작성된 일기가 없습니다.
                 </div>
@@ -59,7 +59,7 @@ export default function DiaryList({ diaryDate }: { diaryDate: string }) {
     }
 
     return (
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-3 mb-4">
             {data.map((diary) => (
                 <div key={diary.id} className="diary-paper">
                     <div className="diary-paper-inner px-4 py-3">
@@ -73,7 +73,6 @@ export default function DiaryList({ diaryDate }: { diaryDate: string }) {
                         </p>
                     </div>
                 </div>
-           
             ))}
         </div>
     );

@@ -22,6 +22,8 @@ export async function createVisitor(formData: FormData) {
     const userEmail = formData.get("user_email") as string;
     const profileImage = formData.get("profile_image") as string;
 
+    const isSecret = formData.get("is_secret") === "on" ? true : false;
+
     const forwardedFor = (await headers()).get("x-forwarded-for") ?? "127.0.0.1";
     const ip = forwardedFor.split(",")[0].trim();
     const normalizedIp = ip === "::1" ? "127.0.0.1" : ip;
@@ -31,7 +33,7 @@ export async function createVisitor(formData: FormData) {
         userName,
         profileImage,
         content,
-        false,
+        isSecret,
         normalizedIp,
     ]);
 

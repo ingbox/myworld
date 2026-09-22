@@ -43,7 +43,7 @@ export default function Queue({ pageInfo, jukeboxList, currentPage, currentPageL
           <thead className="bg-[#f2f2f2]">
             <tr key={"head"} className="text-sm">
               <th className="px-1.5 font-light text-gray-600">
-                <Image src="/images/shared/jukebox/checkbox.png" width={17} height={17} alt="" />
+                <Image src="/images/cy/jukebox/checkbox.png" width={17} height={17} alt="" />
               </th>
               <th className="text-center font-light text-gray-600 max-sm:hidden">번호</th>
               <th className="font-light text-gray-600">곡명</th>

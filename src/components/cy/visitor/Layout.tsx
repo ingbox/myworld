@@ -73,7 +73,11 @@ export default async function Layout({ searchParams }: Props) {
                                         <input type="hidden" name="user_name" value={user?.name || ''} />
                                         <input type="hidden" name="user_email" value={user?.email || ''} />
                                         <input type="hidden" name="profile_image" value={user?.image || ''} />
-                                        <div className="flex justify-end mt-2">
+                                        <div className="flex justify-between mt-2">
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-xs text-gray-500 font-ginto">비밀로 하기</span>
+                                                <input type="checkbox" name="is_secret" />
+                                            </div>
                                             <button
                                                 className="text-sm w-10 h-6 border border-gray-400 text-gray-500 bg-white rounded-sm"
                                                 type="submit"
