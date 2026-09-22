@@ -8,6 +8,8 @@ type StatKey = "erotic" | "famous" | "friendly" | "karma" | "kind";
 
 export default function UserStats({ initStats }: any) {
 
+    const [open, setOpen] = useState(false);
+
     const [stats, setStats] = useState<Record<StatKey, number>>({
         erotic: initStats["erotic"].value ?? 0,
         famous: initStats["famous"].value ?? 0,
@@ -43,53 +45,64 @@ export default function UserStats({ initStats }: any) {
     ];
 
     return (
-        <div className="w-[240px]">
-            <div className="h-6 font-ginto text-[11px] text-white leading-6 bg-[#676566] text-center tracking-wide rounded-md">
-                <Link href="/cy/home">GO BACK HOME</Link>
-            </div>
-            {/* 능력치 */}
-            <div className="bg-white px-4 py-4">
-                <div className="mb-2">
-                    {statList.map(({ key, label, color }) => (
-                        <div key={key} className="flex items-center gap-4">
-                            <span className="w-[44px] text-[12px] text-gray-600 tracking-tighter">
-                                {label}
-                            </span>
-                            <div
-                                className="relative w-20 h-[5px] bg-gray-200 cursor-pointer"
-                                onMouseDown={(e) => {
-                                    setDragging(key);
-                                    handleChange(key, e);
-                                }}
-                                onMouseMove={(e) => {
-                                    if (dragging === key) handleChange(key, e);
-                                }}
-                                onMouseUp={() => setDragging(null)}
-                                onMouseLeave={() => setDragging(null)}
-                            >
-                                <div
-                                    className="absolute top-0 left-0 h-[5px]"
-                                    style={{
-                                        width: `${stats[key]}%`,
-                                        backgroundColor: color,
-                                    }}
-                                />
-                            </div>
-
-                            <div className="min-w-[18px] text-[12px] text-gray-600">
-                                {stats[key]}
-                            </div>
-                        </div>
-                    ))}
+        <>
+            <div className={`w-60 max-sm:fixed max-sm:bottom-20 max-sm:right-4 max-sm:z-50
+        ${open ? "max-sm:block" : "max-sm:hidden"}`}>
+                <div className="h-6 font-ginto text-[11px] text-white leading-6 bg-[#676566] text-center tracking-wide rounded-md">
+                    <Link href="/cy/home">GO BACK HOME</Link>
                 </div>
+                {/* 능력치 */}
+                <div className="bg-white px-4 py-4">
+                    <div className="mb-2">
+                        {statList.map(({ key, label, color }) => (
+                            <div key={key} className="flex items-center gap-4">
+                                <span className="w-11 text-[12px] text-gray-600 tracking-tighter">
+                                    {label}
+                                </span>
+                                <div
+                                    className="relative w-20 h-1.25 bg-gray-200 cursor-pointer"
+                                    onMouseDown={(e) => {
+                                        setDragging(key);
+                                        handleChange(key, e);
+                                    }}
+                                    onMouseMove={(e) => {
+                                        if (dragging === key) handleChange(key, e);
+                                    }}
+                                    onMouseUp={() => setDragging(null)}
+                                    onMouseLeave={() => setDragging(null)}
+                                >
+                                    <div
+                                        className="absolute top-0 left-0 h-1.25"
+                                        style={{
+                                            width: `${stats[key]}%`,
+                                            backgroundColor: color,
+                                        }}
+                                    />
+                                </div>
 
-                <button
-                    onClick={handleSave}
-                    className="w-full h-8 border border-gray-300 text-gray-500 text-sm rounded"
-                >
-                    저장하기
-                </button>
+                                <div className="min-w-4.5 text-[12px] text-gray-600">
+                                    {stats[key]}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={handleSave}
+                        className="w-full h-8 border border-gray-300 text-gray-500 text-sm rounded"
+                    >
+                        저장하기
+                    </button>
+                </div>
             </div>
-        </div>
+
+            <button
+                type="button"
+                onClick={() => setOpen(v => !v)}
+                className="hidden max-sm:flex fixed bottom-4 right-4 z-50 h-12 w-12 items-center justify-center rounded-full bg-black text-white text-lg font-ginto "
+            >
+                S
+            </button>
+        </>
     );
 }
