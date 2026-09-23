@@ -34,10 +34,10 @@ export default function AdminNavigation() {
         //     name: '동영상',
         //     href: '/admin/video',
         // },
-        {
-            name: '방명록',
-            href: '/admin/visitor',
-        },
+        // {
+        //     name: '방명록',
+        //     href: '/admin/visitor',
+        // },
         {
             name: '채팅',
             href: '/admin/chat',
