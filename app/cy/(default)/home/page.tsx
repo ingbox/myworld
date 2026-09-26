@@ -6,6 +6,23 @@ import Miniroom from "@/components/cy/home/Miniroom";
 import Image from "next/image";
 import Link from "next/link";
 import ProfileCommentFallback from "@/components/cy/home/ProfileCommentFallback";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "임지섭의 미니홈피 | 블로그",
+  description:
+    "싸이월드 미니홈피처럼 만든 개인 블로그입니다. 추억과 프론트엔드 작업물을 한곳에 모아두었습니다.",
+  alternates: {
+    canonical: "/cy/home",
+  },
+  openGraph: {
+    title: "임지섭의 미니홈피 | 블로그",
+    description:
+      "싸이월드 미니홈피처럼 만든 개인 블로그입니다. 추억과 프론트엔드 작업물을 한곳에 모아두었습니다.",
+    url: "/cy/home",
+  },
+};
+
 
 export default async function Page() {
 
